@@ -19,4 +19,33 @@ export const createBoardSchema = z.object({
   visibility: z.nativeEnum(BoardVisibility).optional(),
 });
 
+export const updateBoardSchema = z
+  .object({
+    title: z
+      .string()
+      .trim()
+      .min(2, "Title must be at least 2 characters.")
+      .max(120, "Title cannot exceed 120 characters.")
+      .optional(),
+
+    description: z
+      .string()
+      .trim()
+      .max(500, "Description cannot exceed 500 characters.")
+      .nullable()
+      .optional(),
+
+    visibility: z.nativeEnum(BoardVisibility).optional(),
+  })
+  .refine(
+    (data) =>
+      data.title !== undefined ||
+      data.description !== undefined ||
+      data.visibility !== undefined,
+    {
+      message: "At least one board field must be provided.",
+    }
+  );
+
 export type CreateBoardDto = z.infer<typeof createBoardSchema>;
+export type UpdateBoardDto = z.infer<typeof updateBoardSchema>;

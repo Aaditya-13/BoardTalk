@@ -12,6 +12,7 @@ import { logger } from "./lib/logger";
 import { errorHandler } from "./middlewares/error";
 import authRoutes from "./modules/auth/routes";
 import boardRoutes from "./modules/board/routes";
+import inviteRoutes from "./modules/invite/routes";
 import userRoutes from "./modules/user/routes";
 
 const app = express();
@@ -44,6 +45,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/api/v1/auth", authRoutes);
 
 app.use("/api/v1/boards", boardRoutes);
+
+app.use("/api/v1/boards", inviteRoutes);
 
 app.use("/api/v1/users", userRoutes);
 

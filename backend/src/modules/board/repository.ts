@@ -9,8 +9,41 @@ class BoardRepository {
     });
   }
 
+  findManyByOwnerId(ownerId: string) {
+    return prisma.board.findMany({
+      where: {
+        ownerId,
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+  }
+
   findById(id: string) {
     return prisma.board.findUnique({
+      where: { id },
+    });
+  }
+
+  findOwnedById(boardId: string, ownerId: string) {
+    return prisma.board.findFirst({
+      where: {
+        id: boardId,
+        ownerId,
+      },
+    });
+  }
+
+  updateById(id: string, data: Prisma.BoardUpdateInput) {
+    return prisma.board.update({
+      where: { id },
+      data,
+    });
+  }
+
+  deleteById(id: string) {
+    return prisma.board.delete({
       where: { id },
     });
   }
