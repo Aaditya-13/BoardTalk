@@ -9,6 +9,17 @@ class InviteRepository {
     });
   }
 
+  findByToken(token: string) {
+    return prisma.invite.findUnique({
+      where: {
+        token,
+      },
+      include: {
+        board: true,
+      },
+    });
+  }
+
   findByBoardId(boardId: string) {
     return prisma.invite.findMany({
       where: {

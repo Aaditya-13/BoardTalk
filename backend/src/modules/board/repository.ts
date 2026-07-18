@@ -20,6 +20,28 @@ class BoardRepository {
     });
   }
 
+  findManyAccessibleByUser(userId: string) {
+    return prisma.board.findMany({
+      where: {
+        OR: [
+          {
+            ownerId: userId,
+          },
+          {
+            collaborators: {
+              some: {
+                userId,
+              },
+            },
+          },
+        ],
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+  }
+
   findById(id: string) {
     return prisma.board.findUnique({
       where: { id },

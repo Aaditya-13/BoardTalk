@@ -1,7 +1,10 @@
 import { nanoid } from "nanoid";
 
+import { prisma } from "../../lib/prisma.js";
+import { ConflictError, NotFoundError } from "../shared/errors.js";
+
 import { boardRepository } from "../board/repository.js";
-import { NotFoundError } from "../shared/errors.js";
+import { collaboratorRepository } from "../collaborator/repository.js";
 
 import { inviteRepository } from "./repository.js";
 import type { CreateInviteDto } from "./schema.js";
@@ -53,6 +56,65 @@ class InviteService {
     }
 
     return inviteRepository.revoke(inviteId);
+  }
+
+  async acceptInvite(userId: string, token: string) {
+    const invite = await inviteRepository.findByToken(token);
+
+    if (!invite || !invite.isActive) {
+      throw new NotFoundError("Invite not found.");
+    }
+
+    if (invite.expiresAt && invite.expiresAt < new Date()) {
+      throw new NotFoundError("Invite not found.");
+    }
+
+    const board = invite.board;
+
+    if (board.ownerId === userId) {
+      throw new ConflictError("Board owner cannot accept an invite.");
+    }
+
+    const existingMembership = await collaboratorRepository.findByBoardAndUser(
+      board.id,
+      userId
+    );
+
+    if (existingMembership) {
+      throw new ConflictError("You are already a collaborator on this board.");
+    }
+
+    const accepted = await prisma.$transaction(async (transaction) => {
+      const collaborator = await transaction.collaborator.create({
+        data: {
+          boardId: board.id,
+          userId,
+          role: invite.role,
+        },
+      });
+
+      const shouldDeactivate =
+        invite.maxUses !== null && invite.uses + 1 >= invite.maxUses;
+
+      await transaction.invite.update({
+        where: {
+          id: invite.id,
+        },
+        data: {
+          uses: {
+            increment: 1,
+          },
+          isActive: shouldDeactivate ? false : invite.isActive,
+        },
+      });
+
+      return collaborator;
+    });
+
+    return {
+      board,
+      membership: accepted,
+    };
   }
 }
 

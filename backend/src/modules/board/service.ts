@@ -3,6 +3,7 @@ import type {
   Prisma,
 } from "../../generated/prisma/client.js";
 
+import { collaboratorService } from "../collaborator/service.js";
 import { NotFoundError } from "../shared/errors.js";
 
 import { boardRepository } from "./repository.js";
@@ -24,11 +25,13 @@ class BoardService {
   }
 
   listBoards(ownerId: string): Promise<Board[]> {
-    return boardRepository.findManyByOwnerId(ownerId);
+    return collaboratorService.listAccessibleBoards(ownerId);
   }
 
   async getBoard(ownerId: string, boardId: string): Promise<Board> {
-    const board = await boardRepository.findOwnedById(boardId, ownerId);
+    await collaboratorService.assertBoardAccess(boardId, ownerId);
+
+    const board = await boardRepository.findById(boardId);
 
     if (!board) {
       throw new NotFoundError("Board not found.");

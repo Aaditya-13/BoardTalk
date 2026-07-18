@@ -13,6 +13,8 @@ import { errorHandler } from "./middlewares/error";
 import authRoutes from "./modules/auth/routes";
 import boardRoutes from "./modules/board/routes";
 import inviteRoutes from "./modules/invite/routes";
+import publicInviteRoutes from "./modules/invite/public.routes";
+import collaboratorRoutes from "./modules/collaborator/routes";
 import userRoutes from "./modules/user/routes";
 
 const app = express();
@@ -46,7 +48,11 @@ app.use("/api/v1/auth", authRoutes);
 
 app.use("/api/v1/boards", boardRoutes);
 
+app.use("/api/v1/boards", collaboratorRoutes);
+
 app.use("/api/v1/boards", inviteRoutes);
+
+app.use("/api/v1/invites", publicInviteRoutes);
 
 app.use("/api/v1/users", userRoutes);
 
