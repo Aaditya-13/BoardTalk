@@ -1,23 +1,182 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Get a free hosted Postgres database in seconds: `npx create-db`
-
 generator client {
   provider = "prisma-client"
-  output   = "../generated/prisma"
+  output   = "../src/generated/prisma"
 }
 
 datasource db {
   provider = "postgresql"
 }
 
+enum AuthProvider {
+  GOOGLE
+  GITHUB
+}
+
+enum BoardVisibility {
+  PRIVATE
+  PUBLIC
+  UNLISTED
+}
+
+enum CollaboratorRole {
+  OWNER
+  EDITOR
+  COMMENTER
+  VIEWER
+}
+
 model User {
-  id        String   @id @default(cuid())
-  email     String   @unique
-  name      String?
-  imageUrl  String?
+  id         String       @id @default(uuid(7))
+  email      String       @unique
+  name       String
+  avatarUrl  String?
+  provider   AuthProvider
+  providerId String
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  ownedBoards Board[] @relation("BoardOwner")
+
+  collaborations Collaborator[]
+
+  comments Comment[]
+
+  chatMessages ChatMessage[]
+
+  refreshTokens RefreshToken[]
+
+  @@unique([provider, providerId])
+}
+
+model Board {
+  id String @id @default(uuid(7))
+
+  title       String
+  description String?
+
+  visibility BoardVisibility @default(PRIVATE)
+
+  ownerId String
+  owner   User   @relation("BoardOwner", fields: [ownerId], references: [id], onDelete: Cascade)
+
+  collaborators Collaborator[]
+
+  invites Invite[]
+
+  snapshots Snapshot[]
+
+  comments Comment[]
+
+  chatMessages ChatMessage[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Collaborator {
+  id String @id @default(uuid(7))
+
+  boardId String
+  userId  String
+
+  role CollaboratorRole
+
+  joinedAt DateTime @default(now())
+
+  board Board @relation(fields: [boardId], references: [id], onDelete: Cascade)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([boardId, userId])
+}
+
+model Invite {
+  id String @id @default(uuid(7))
+
+  boardId String
+
+  token String @unique
+
+  role CollaboratorRole
+
+  maxUses Int?
+
+  uses Int @default(0)
+
+  expiresAt DateTime?
+
+  isActive Boolean @default(true)
+
+  board Board @relation(fields: [boardId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+}
+
+model Snapshot {
+  id String @id @default(uuid(7))
+
+  boardId String
+
+  version Int
+
+  documentJson Json
+
+  board Board @relation(fields: [boardId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@unique([boardId, version])
+}
+
+model Comment {
+  id String @id @default(uuid(7))
+
+  boardId String
+
+  authorId String
+
+  content String
+
+  position Json?
+
+  resolved Boolean @default(false)
+
+  board Board @relation(fields: [boardId], references: [id], onDelete: Cascade)
+
+  author User @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  updatedAt DateTime @updatedAt
+}
+
+model ChatMessage {
+  id String @id @default(uuid(7))
+
+  boardId String
+
+  authorId String
+
+  content String
+
+  board Board @relation(fields: [boardId], references: [id], onDelete: Cascade)
+
+  author User @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+}
+
+model RefreshToken {
+  id String @id @default(uuid(7))
+
+  userId String
+
+  tokenHash String @unique
+
+  expiresAt DateTime
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
 }
