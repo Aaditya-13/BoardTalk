@@ -3,7 +3,7 @@ import { userService } from "./service.js";
 
 class UserController {
   async getCurrentUser(req: Request, res: Response) {
-    const user = await userService.getUserById(req.user.id);
+    const user = await userService.getUserById(req.user!.id);
 
     return res.status(200).json({
       success: true,
@@ -13,7 +13,7 @@ class UserController {
 
   async updateProfile(req: Request, res: Response) {
     const user = await userService.updateProfile(
-      req.user.id,
+      req.user!.id,
       req.body
     );
 
@@ -24,7 +24,7 @@ class UserController {
   }
 
   async deleteAccount(req: Request, res: Response) {
-    await userService.deleteAccount(req.user.id);
+    await userService.deleteAccount(req.user!.id);
 
     return res.status(204).send();
   }
