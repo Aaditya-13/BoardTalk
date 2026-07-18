@@ -61,6 +61,16 @@ class CollaboratorService {
     throw new ForbiddenError("You do not have access to this board.");
   }
 
+  async assertBoardWriteAccess(boardId: string, userId: string): Promise<CollaboratorRole> {
+    const role = await this.assertBoardAccess(boardId, userId);
+
+    if (role === "OWNER" || role === "EDITOR") {
+      return role;
+    }
+
+    throw new ForbiddenError("You do not have permission to modify this board.");
+  }
+
   async listAccessibleBoards(userId: string) {
     return boardRepository.findManyAccessibleByUser(userId);
   }

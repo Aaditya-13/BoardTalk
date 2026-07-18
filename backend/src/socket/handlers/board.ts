@@ -1,6 +1,7 @@
 import type { Socket } from "socket.io";
 
 import { collaboratorService } from "../../modules/collaborator/service.js";
+import { snapshotService } from "../../modules/snapshot/service.js";
 import {
   getBoardRoomName,
   joinBoardRoom,
@@ -12,6 +13,11 @@ import {
   updateCursor,
   updateSelection,
 } from "../presence.js";
+import {
+  flushSnapshot,
+  persistSnapshot,
+  queueSnapshot,
+} from "../snapshotBuffer.js";
 
 type JoinBoardPayload = {
   boardId: string;
@@ -26,6 +32,11 @@ type CursorPayload = {
 type SelectionPayload = {
   boardId: string;
   ids: string[];
+};
+
+type DocumentPayload = {
+  boardId: string;
+  documentJson: unknown;
 };
 
 export function registerBoardSocketHandlers(socket: Socket) {
@@ -58,6 +69,23 @@ export function registerBoardSocketHandlers(socket: Socket) {
           boardId: payload.boardId,
           members: presence,
         });
+
+        try {
+          const snapshot = await snapshotService.getLatestSnapshot(
+            payload.boardId,
+            socket.data.user.id
+          );
+
+          socket.emit("board:snapshot:latest", {
+            boardId: payload.boardId,
+            snapshot,
+          });
+        } catch {
+          socket.emit("board:snapshot:latest", {
+            boardId: payload.boardId,
+            snapshot: null,
+          });
+        }
 
         socket.to(getBoardRoomName(payload.boardId)).emit("board:presence:joined", {
           boardId: payload.boardId,
@@ -129,10 +157,28 @@ export function registerBoardSocketHandlers(socket: Socket) {
     });
   });
 
+  socket.on("board:document", (payload: DocumentPayload) => {
+    queueSnapshot(
+      payload.boardId,
+      socket.data.user.id,
+      payload.documentJson,
+      persistSnapshot
+    );
+  });
+
+  socket.on("board:snapshot:flush", async (payload: JoinBoardPayload) => {
+    await flushSnapshot(payload.boardId, socket.data.user.id, persistSnapshot);
+  });
+
   socket.on("disconnecting", () => {
     for (const roomName of socket.rooms) {
       if (roomName.startsWith("board:")) {
         removePresence(roomName.slice("board:".length), socket.data.user.id);
+        void flushSnapshot(
+          roomName.slice("board:".length),
+          socket.data.user.id,
+          persistSnapshot
+        );
         leaveBoardRoom(roomName.slice("board:".length), socket.id);
       }
     }
