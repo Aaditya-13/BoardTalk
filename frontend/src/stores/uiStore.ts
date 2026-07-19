@@ -1,17 +1,21 @@
 import { create } from 'zustand';
 
-type ActivePanel = 'chat' | 'comments' | 'ai' | null;
+export type SidebarTab = 'users' | 'chat' | 'ai' | 'comments';
 
 interface UIState {
   isSidebarOpen: boolean;
-  activePanel: ActivePanel;
+  activePanel: SidebarTab | null;
+  activeSidebarTab: SidebarTab;
   toggleSidebar: () => void;
-  setActivePanel: (panel: ActivePanel) => void;
+  setActivePanel: (panel: SidebarTab | null) => void;
+  setActiveSidebarTab: (tab: SidebarTab) => void;
 }
 
 export const useUIStore = create<UIState>((set) => ({
   isSidebarOpen: false,
   activePanel: null,
+  activeSidebarTab: 'chat',
   toggleSidebar: () => set((state) => ({ isSidebarOpen: !state.isSidebarOpen })),
-  setActivePanel: (panel) => set({ activePanel: panel, isSidebarOpen: !!panel }),
+  setActivePanel: (panel) => set({ activePanel: panel, isSidebarOpen: !!panel, activeSidebarTab: panel ?? 'chat' }),
+  setActiveSidebarTab: (tab) => set({ activeSidebarTab: tab, activePanel: tab, isSidebarOpen: true }),
 }));

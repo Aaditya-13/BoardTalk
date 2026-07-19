@@ -55,7 +55,7 @@ const Cursor = ({ color, name, top, left, delay, rotate = 0 }: any) => (
     style={{ top, left, rotate }}
   >
     <svg width="24" height="36" viewBox="0 0 24 36" fill="none" xmlns="http://www.w3.org/2000/svg" className="drop-shadow-md">
-      <path d="M5.65376 12.3673H5.46026L5.31717 12.4976L0.500002 16.8829L0.500002 1.19841L11.7841 12.3673H5.65376Z" fill={color} stroke="white" strokeWidth="2"/>
+      <path d="M5.65376 12.3673H5.46026L5.31717 12.4976L0.500002 16.8829L0.500002 1.19841L11.7841 12.3673H5.65376Z" fill={color} stroke="white" strokeWidth="2" />
     </svg>
     <div className="px-2 py-0.5 text-[11px] font-bold text-white rounded-full ml-3 mt-1 shadow-md" style={{ backgroundColor: color }}>
       {name}
@@ -111,7 +111,7 @@ export function LandingPage() {
   const handleGoogleLogin = () => {
     window.location.href = '/api/v1/auth/google';
   };
-  
+
   const handleGithubLogin = () => {
     window.location.href = '/api/v1/auth/github';
   };
@@ -122,7 +122,7 @@ export function LandingPage() {
 
   return (
     <div className="min-h-screen bg-[#FDFBF7] dark:bg-[#121212] flex flex-col text-black dark:text-white selection:bg-yellow-200 dark:selection:bg-yellow-500/30 font-sans overflow-x-hidden transition-colors duration-300">
-      
+
       {/* Playful Dotted Background */}
       <div className="fixed inset-0 pointer-events-none z-0 opacity-40 dark:opacity-20">
         <div className="absolute inset-0 bg-[radial-gradient(#D1D1D1_2px,transparent_2px)] dark:bg-[radial-gradient(#ffffff33_2px,transparent_2px)] [background-size:24px_24px]" />
@@ -154,7 +154,7 @@ export function LandingPage() {
       {/* Hero Section */}
       <main className="relative z-10 pt-12 pb-16 md:pt-24 md:pb-24">
         <div className="container mx-auto px-6 relative">
-          
+
           {/* Floating UI Elements (FigJam Vibe) */}
           <StickyNote color="#FFE8A3" rotate={-8} top="5%" left="15%" delay={0.2}>
             Draw together! ✍️
@@ -162,12 +162,12 @@ export function LandingPage() {
           <StickyNote color="#FFC4E1" rotate={12} top="40%" left="80%" delay={0.4}>
             Say hi to AI 🤖
           </StickyNote>
-          
+
           <Cursor color="#00D1FF" name="Sarah" top="20%" left="25%" delay={0.5} rotate={-15} />
           <Cursor color="#FF0000" name="Alex" top="60%" left="75%" delay={0.7} rotate={10} />
           <Cursor color="#00E599" name="AI Agent" top="30%" left="65%" delay={0.9} rotate={-5} />
 
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
@@ -177,27 +177,27 @@ export function LandingPage() {
               <span className="mr-2 inline-block h-2 w-2 rounded-full bg-[#00E599] animate-pulse" />
               Multiplayer Whiteboarding for Teams
             </div>
-            
+
             <h1 className="text-5xl md:text-7xl lg:text-[5.5rem] font-extrabold tracking-tight leading-[1.05] pb-2">
               Where teams <br /> think out loud.
             </h1>
-            
+
             <p className="text-lg md:text-2xl text-black/60 dark:text-white/60 font-semibold max-w-2xl mx-auto leading-relaxed">
               BoardTalk is the playful, lightning-fast whiteboard for engineering teams. Brainstorm, wireframe, and chat in real time.
             </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-6">
-              <Button 
-                size="lg" 
-                className="w-full sm:w-auto h-16 px-10 text-xl font-bold bg-[#FF4500] hover:bg-[#FF4500]/90 text-white rounded-full shadow-[0_8px_0_rgb(200,50,0)] hover:shadow-[0_4px_0_rgb(200,50,0)] hover:translate-y-1 transition-all" 
+              <Button
+                size="lg"
+                className="w-full sm:w-auto h-16 px-10 text-xl font-bold bg-[#FF4500] hover:bg-[#FF4500]/90 text-white rounded-full shadow-[0_8px_0_rgb(200,50,0)] hover:shadow-[0_4px_0_rgb(200,50,0)] hover:translate-y-1 transition-all"
                 onClick={handleGoogleLogin}
               >
                 Start for free with Google
               </Button>
-              
-              <Button 
-                variant="outline" 
-                size="lg" 
+
+              <Button
+                variant="outline"
+                size="lg"
                 className="w-full sm:w-auto h-16 px-10 text-xl font-bold border-2 border-black/20 dark:border-white/20 bg-white dark:bg-transparent hover:bg-black/5 dark:hover:bg-white/5 rounded-full transition-all group"
                 onClick={handleGuestLogin}
                 disabled={guestLogin.isPending}
@@ -213,7 +213,7 @@ export function LandingPage() {
         </div>
 
         {/* Interactive Canvas Preview Mockup */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 60 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3, duration: 0.8, type: 'spring' }}
@@ -242,15 +242,15 @@ export function LandingPage() {
             <div className="h-[500px] md:h-[700px] w-full relative bg-[#FDFBF7] dark:bg-zinc-900">
               <Tldraw autoFocus={false} />
             </div>
-            
+
             {/* Dev Login Section */}
             <div className="pt-8 border-t-[3px] border-black/5 dark:border-white/5">
               <p className="text-sm font-bold text-black/40 dark:text-white/40 mb-4 uppercase tracking-widest">Test Accounts (Dev Mode)</p>
               <div className="flex flex-wrap justify-center gap-3">
                 {['Alice', 'Bob', 'Charlie'].map((name) => (
-                  <Button 
+                  <Button
                     key={name}
-                    variant="outline" 
+                    variant="outline"
                     className="h-12 px-6 font-bold border-2 border-black/10 dark:border-white/10 hover:bg-black/5 dark:hover:bg-white/5 rounded-full"
                     onClick={() => handleDevLogin(name)}
                     disabled={devLogin.isPending}
@@ -273,7 +273,7 @@ export function LandingPage() {
       {/* Features Bento Grid */}
       <section id="features" className="relative z-10 py-24 bg-white dark:bg-[#1E1E1E] border-t-[3px] border-black/5 dark:border-white/5">
         <div className="container mx-auto px-6">
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -282,10 +282,10 @@ export function LandingPage() {
             <h2 className="text-4xl md:text-6xl font-extrabold tracking-tight">Everything you need to build.</h2>
             <p className="text-xl text-black/50 dark:text-white/50 font-bold">Simple, colorful, and wildly powerful.</p>
           </motion.div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {features.map((feature, i) => (
-              <motion.div 
+              <motion.div
                 key={i}
                 initial={{ opacity: 0, scale: 0.95 }}
                 whileInView={{ opacity: 1, scale: 1 }}

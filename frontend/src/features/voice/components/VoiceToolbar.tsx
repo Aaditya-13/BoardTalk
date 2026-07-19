@@ -3,14 +3,14 @@ import { Button } from '@/components/ui/button';
 import { Mic, MicOff, Phone, PhoneOff } from 'lucide-react';
 
 export function VoiceToolbar({ boardId }: { boardId: string }) {
-  const { inVoice, isMuted, peersCount, joinVoice, leaveVoice, toggleMute } = useVoiceRoom(boardId);
+  const { inVoice, isMuted, peers, joinVoice, leaveVoice, toggleMute } = useVoiceRoom(boardId);
 
   return (
     <div className="absolute top-4 right-4 z-[300] bg-background/80 backdrop-blur-sm p-1.5 rounded-xl border shadow-sm flex items-center gap-2">
       {inVoice && (
         <div className="px-2 text-xs font-medium text-muted-foreground border-r flex items-center gap-1.5">
           <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-          {peersCount} other{peersCount !== 1 ? 's' : ''} in voice
+          {peers.length} other{peers.length !== 1 ? 's' : ''} in voice
         </div>
       )}
       

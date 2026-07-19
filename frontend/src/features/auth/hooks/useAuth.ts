@@ -18,6 +18,18 @@ const updateProfile = async (payload: { name?: string; avatarUrl?: string }): Pr
   return data.data;
 };
 
+const uploadAvatar = async (file: File): Promise<AuthUser> => {
+  const formData = new FormData();
+  formData.append('avatar', file);
+  
+  const { data } = await api.post('/users/avatar', formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+  return data.data;
+};
+
 const devLogin = async (name: string): Promise<{ accessToken: string; user: AuthUser }> => {
   const { data } = await api.post('/auth/dev-login', { name });
   return data.data;
@@ -72,6 +84,16 @@ export const useUpdateProfile = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: updateProfile,
+    onSuccess: (updatedUser) => {
+      queryClient.setQueryData(['currentUser'], updatedUser);
+    },
+  });
+};
+
+export const useUploadAvatar = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: uploadAvatar,
     onSuccess: (updatedUser) => {
       queryClient.setQueryData(['currentUser'], updatedUser);
     },

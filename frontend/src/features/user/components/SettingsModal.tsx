@@ -1,7 +1,7 @@
 import { useState, useRef } from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 import { X, Upload, Loader2, User as UserIcon } from "lucide-react";
-import { useCurrentUser, useUpdateProfile } from "@/features/auth/hooks/useAuth";
+import { useCurrentUser, useUpdateProfile, useUploadAvatar } from "@/features/auth/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 
 interface SettingsModalProps {
@@ -12,6 +12,7 @@ interface SettingsModalProps {
 export function SettingsModal({ open, onOpenChange }: SettingsModalProps) {
   const { data: user } = useCurrentUser();
   const updateProfile = useUpdateProfile();
+  const uploadAvatar = useUploadAvatar();
   
   const [name, setName] = useState(user?.name || "");
   const [isUploading, setIsUploading] = useState(false);
@@ -37,29 +38,7 @@ export function SettingsModal({ open, onOpenChange }: SettingsModalProps) {
     setIsUploading(true);
     
     try {
-      const formData = new FormData();
-      formData.append("avatar", file);
-
-      // We don't have a specific hook for this yet, so we can use fetch directly or create a hook.
-      // For now, we'll use a direct fetch with the auth token.
-      const token = localStorage.getItem("accessToken");
-      const response = await fetch("http://localhost:5000/users/avatar", {
-        method: "POST",
-        headers: {
-          "Authorization": `Bearer ${token}`
-        },
-        body: formData
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to upload avatar");
-      }
-      
-      const result = await response.json();
-      
-      // Update the local cache with the new avatarUrl
-      updateProfile.mutate({ avatarUrl: result.data.avatarUrl });
-      
+      await uploadAvatar.mutateAsync(file);
     } catch (error) {
       console.error("Avatar upload error:", error);
       alert("Failed to upload avatar");

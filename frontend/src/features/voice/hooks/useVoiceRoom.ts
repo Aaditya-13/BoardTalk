@@ -193,7 +193,7 @@ export function useVoiceRoom(boardId: string) {
   return {
     inVoice,
     isMuted,
-    peersCount: peers.length,
+    peers,
     joinVoice,
     leaveVoice,
     toggleMute,

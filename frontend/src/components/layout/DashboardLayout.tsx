@@ -23,7 +23,7 @@ export function DashboardLayout() {
 
   return (
     <div className="min-h-screen bg-[#FDFBF7] dark:bg-[#121212] flex flex-col transition-colors duration-300 selection:bg-yellow-200 dark:selection:bg-yellow-500/30">
-      
+
       {/* Playful Dotted Background */}
       <div className="fixed inset-0 pointer-events-none z-0 opacity-40 dark:opacity-20">
         <div className="absolute inset-0 bg-[radial-gradient(#D1D1D1_2px,transparent_2px)] dark:bg-[radial-gradient(#ffffff33_2px,transparent_2px)] [background-size:24px_24px]" />
@@ -37,7 +37,7 @@ export function DashboardLayout() {
             </div>
             <span className="font-extrabold text-2xl tracking-tight text-black dark:text-white">BoardTalk</span>
           </div>
-          
+
           <div className="flex items-center gap-4">
             <Button
               variant="ghost"
@@ -48,7 +48,7 @@ export function DashboardLayout() {
               {theme === 'dark' ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
               <span className="sr-only">Toggle theme</span>
             </Button>
-            
+
             <DropdownMenu.Root>
               <DropdownMenu.Trigger asChild>
                 <button className="outline-none focus:ring-4 ring-black/10 dark:ring-white/10 rounded-full transition-all">
@@ -73,15 +73,15 @@ export function DashboardLayout() {
                     <p className="font-bold text-black dark:text-white">{user?.name || 'Guest User'}</p>
                     <p className="text-sm font-semibold text-black/50 dark:text-white/50">{user?.email || 'Guest'}</p>
                   </div>
-                  
-                  <DropdownMenu.Item 
+
+                  <DropdownMenu.Item
                     onClick={() => setIsSettingsOpen(true)}
                     className="group flex cursor-pointer select-none items-center rounded-xl px-3 py-2 text-sm font-bold text-black dark:text-white outline-none hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
                   >
                     <Settings className="mr-2 h-4 w-4" />
                     Settings
                   </DropdownMenu.Item>
-                  <DropdownMenu.Item 
+                  <DropdownMenu.Item
                     onClick={handleLogout}
                     className="group flex cursor-pointer select-none items-center rounded-xl px-3 py-2 text-sm font-bold text-[#FF5F56] outline-none hover:bg-[#FF5F56]/10 transition-colors mt-1"
                   >
@@ -99,24 +99,24 @@ export function DashboardLayout() {
         {/* Sidebar */}
         <aside className="hidden md:flex w-64 flex-col gap-2 shrink-0">
           <nav className="flex flex-col gap-2 sticky top-28">
-            <Button 
-              variant="ghost" 
+            <Button
+              variant="ghost"
               onClick={() => navigate('/dashboard')}
               className={`justify-start px-4 h-12 rounded-xl font-bold transition-all ${location.pathname === '/dashboard' ? 'bg-black/5 dark:bg-white/10 text-black dark:text-white' : 'text-black/60 dark:text-white/60 hover:text-black dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5'}`}
             >
               <LayoutDashboard className="mr-3 h-5 w-5" />
               All Boards
             </Button>
-            <Button 
-              variant="ghost" 
+            <Button
+              variant="ghost"
               onClick={() => navigate('/dashboard/starred')}
               className={`justify-start px-4 h-12 rounded-xl font-bold transition-all ${location.pathname === '/dashboard/starred' ? 'bg-black/5 dark:bg-white/10 text-black dark:text-white' : 'text-black/60 dark:text-white/60 hover:text-black dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5'}`}
             >
               <Star className="mr-3 h-5 w-5" />
               Starred
             </Button>
-            <Button 
-              variant="ghost" 
+            <Button
+              variant="ghost"
               onClick={() => navigate('/dashboard/shared')}
               className={`justify-start px-4 h-12 rounded-xl font-bold transition-all ${location.pathname === '/dashboard/shared' ? 'bg-black/5 dark:bg-white/10 text-black dark:text-white' : 'text-black/60 dark:text-white/60 hover:text-black dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5'}`}
             >
@@ -124,8 +124,8 @@ export function DashboardLayout() {
               Shared with me
             </Button>
             <div className="h-[3px] w-full bg-black/5 dark:bg-white/5 my-2 rounded-full" />
-            <Button 
-              variant="ghost" 
+            <Button
+              variant="ghost"
               onClick={() => navigate('/dashboard/trash')}
               className={`justify-start px-4 h-12 rounded-xl font-bold transition-all ${location.pathname === '/dashboard/trash' ? 'bg-black/5 dark:bg-white/10 text-black dark:text-white' : 'text-black/60 dark:text-white/60 hover:text-black dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5'}`}
             >

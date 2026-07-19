@@ -18,7 +18,7 @@ export function JoinPage() {
       .then((result) => {
         navigate(`/board/${result.board.id}`);
       })
-      .catch((err) => {
+      .catch((_err) => {
         // Just go to dashboard, the join modal can be used if it failed, or we can show an error toast
         // In a real app we'd show a dedicated error page, but this is fine for now
         navigate('/dashboard');

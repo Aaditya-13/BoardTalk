@@ -3,8 +3,10 @@ import { createTLStore, defaultShapeUtils, throttle, loadSnapshot, getSnapshot }
 import type { TLStoreWithStatus } from 'tldraw';
 import { socket, connectSocket } from '@/lib/socket';
 
+export type BoardSyncResult = TLStoreWithStatus & { role?: string };
+
 export function useBoardSync(boardId: string) {
-  const [storeWithStatus, setStoreWithStatus] = useState<TLStoreWithStatus>({ status: 'loading' });
+  const [storeWithStatus, setStoreWithStatus] = useState<BoardSyncResult>({ status: 'loading' });
 
   useEffect(() => {
     connectSocket();
@@ -16,6 +18,11 @@ export function useBoardSync(boardId: string) {
     socket.emit('board:join', { boardId }, (response: any) => {
       if (!response?.success) {
         setStoreWithStatus({ status: 'error', error: new Error('Failed to join board') });
+      } else {
+        // We temporarily store the role so we can merge it when the snapshot arrives
+        if (response.data?.role) {
+           setStoreWithStatus(prev => ({ ...prev, role: response.data.role }));
+        }
       }
     });
 
@@ -29,7 +36,15 @@ export function useBoardSync(boardId: string) {
             console.error('Failed to load snapshot:', e);
           }
         }
-        setStoreWithStatus({ status: 'synced-remote', connectionStatus: 'online', store });
+        setStoreWithStatus(prev => {
+          const role = 'role' in prev ? prev.role : undefined;
+          return { 
+            status: 'synced-remote', 
+            connectionStatus: 'online', 
+            store,
+            role
+          } as BoardSyncResult;
+        });
       }
     });
 

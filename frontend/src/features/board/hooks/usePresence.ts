@@ -47,14 +47,21 @@ export function usePresence(boardId: string, store?: TLStore) {
         
         // Update tldraw presence
         if (payload.member.cursor) {
+          // Simple string hash to generate a consistent color per user
+          let hash = 0;
+          for (let i = 0; i < payload.member.userId.length; i++) {
+            hash = payload.member.userId.charCodeAt(i) + ((hash << 5) - hash);
+          }
+          const color = `hsl(${hash % 360}, 80%, 50%)`;
+
           store.put([{
             id: `instance_presence:${payload.member.userId}`,
             typeName: 'instance_presence',
-            userId: payload.member.userId,
+            userId: `user:${payload.member.userId}`,
             userName: payload.member.name,
             lastActivityTimestamp: Date.now(),
             cursor: { x: payload.member.cursor.x, y: payload.member.cursor.y, type: 'default', rotation: 0 },
-            color: '#FF0000', // could hash userId to color
+            color: color,
             camera: { x: 0, y: 0, z: 1 },
             selectedShapeIds: [],
             currentPageId: (store.get('document:document' as any) as any)?.currentPageId || 'page:page' as any,
