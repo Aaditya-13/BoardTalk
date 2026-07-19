@@ -391,7 +391,8 @@ export const ModelName = {
   Snapshot: 'Snapshot',
   Comment: 'Comment',
   ChatMessage: 'ChatMessage',
-  RefreshToken: 'RefreshToken'
+  RefreshToken: 'RefreshToken',
+  StarredBoard: 'StarredBoard'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -407,7 +408,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "board" | "collaborator" | "invite" | "snapshot" | "comment" | "chatMessage" | "refreshToken"
+    modelProps: "user" | "board" | "collaborator" | "invite" | "snapshot" | "comment" | "chatMessage" | "refreshToken" | "starredBoard"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1003,6 +1004,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    StarredBoard: {
+      payload: Prisma.$StarredBoardPayload<ExtArgs>
+      fields: Prisma.StarredBoardFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.StarredBoardFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StarredBoardPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.StarredBoardFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StarredBoardPayload>
+        }
+        findFirst: {
+          args: Prisma.StarredBoardFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StarredBoardPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.StarredBoardFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StarredBoardPayload>
+        }
+        findMany: {
+          args: Prisma.StarredBoardFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StarredBoardPayload>[]
+        }
+        create: {
+          args: Prisma.StarredBoardCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StarredBoardPayload>
+        }
+        createMany: {
+          args: Prisma.StarredBoardCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.StarredBoardCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StarredBoardPayload>[]
+        }
+        delete: {
+          args: Prisma.StarredBoardDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StarredBoardPayload>
+        }
+        update: {
+          args: Prisma.StarredBoardUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StarredBoardPayload>
+        }
+        deleteMany: {
+          args: Prisma.StarredBoardDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.StarredBoardUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.StarredBoardUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StarredBoardPayload>[]
+        }
+        upsert: {
+          args: Prisma.StarredBoardUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StarredBoardPayload>
+        }
+        aggregate: {
+          args: Prisma.StarredBoardAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateStarredBoard>
+        }
+        groupBy: {
+          args: Prisma.StarredBoardGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.StarredBoardGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.StarredBoardCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.StarredBoardCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -1044,6 +1119,7 @@ export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof
 
 export const UserScalarFieldEnum = {
   id: 'id',
+  isGuest: 'isGuest',
   email: 'email',
   name: 'name',
   avatarUrl: 'avatarUrl',
@@ -1060,6 +1136,7 @@ export const BoardScalarFieldEnum = {
   id: 'id',
   title: 'title',
   description: 'description',
+  thumbnailUrl: 'thumbnailUrl',
   visibility: 'visibility',
   ownerId: 'ownerId',
   createdAt: 'createdAt',
@@ -1112,6 +1189,7 @@ export const CommentScalarFieldEnum = {
   authorId: 'authorId',
   content: 'content',
   position: 'position',
+  shapeId: 'shapeId',
   resolved: 'resolved',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -1141,6 +1219,15 @@ export const RefreshTokenScalarFieldEnum = {
 } as const
 
 export type RefreshTokenScalarFieldEnum = (typeof RefreshTokenScalarFieldEnum)[keyof typeof RefreshTokenScalarFieldEnum]
+
+
+export const StarredBoardScalarFieldEnum = {
+  userId: 'userId',
+  boardId: 'boardId',
+  createdAt: 'createdAt'
+} as const
+
+export type StarredBoardScalarFieldEnum = (typeof StarredBoardScalarFieldEnum)[keyof typeof StarredBoardScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -1212,6 +1299,13 @@ export type ListStringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaMod
 
 
 /**
+ * Reference to a field of type 'Boolean'
+ */
+export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+    
+
+
+/**
  * Reference to a field of type 'AuthProvider'
  */
 export type EnumAuthProviderFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AuthProvider'>
@@ -1278,13 +1372,6 @@ export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'In
  * Reference to a field of type 'Int[]'
  */
 export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
-    
-
-
-/**
- * Reference to a field of type 'Boolean'
- */
-export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
     
 
 
@@ -1433,6 +1520,7 @@ export type GlobalOmitConfig = {
   comment?: Prisma.CommentOmit
   chatMessage?: Prisma.ChatMessageOmit
   refreshToken?: Prisma.RefreshTokenOmit
+  starredBoard?: Prisma.StarredBoardOmit
 }
 
 /* Types for Logging */

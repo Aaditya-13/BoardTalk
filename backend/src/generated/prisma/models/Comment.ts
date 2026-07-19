@@ -29,6 +29,7 @@ export type CommentMinAggregateOutputType = {
   boardId: string | null
   authorId: string | null
   content: string | null
+  shapeId: string | null
   resolved: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -39,6 +40,7 @@ export type CommentMaxAggregateOutputType = {
   boardId: string | null
   authorId: string | null
   content: string | null
+  shapeId: string | null
   resolved: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -50,6 +52,7 @@ export type CommentCountAggregateOutputType = {
   authorId: number
   content: number
   position: number
+  shapeId: number
   resolved: number
   createdAt: number
   updatedAt: number
@@ -62,6 +65,7 @@ export type CommentMinAggregateInputType = {
   boardId?: true
   authorId?: true
   content?: true
+  shapeId?: true
   resolved?: true
   createdAt?: true
   updatedAt?: true
@@ -72,6 +76,7 @@ export type CommentMaxAggregateInputType = {
   boardId?: true
   authorId?: true
   content?: true
+  shapeId?: true
   resolved?: true
   createdAt?: true
   updatedAt?: true
@@ -83,6 +88,7 @@ export type CommentCountAggregateInputType = {
   authorId?: true
   content?: true
   position?: true
+  shapeId?: true
   resolved?: true
   createdAt?: true
   updatedAt?: true
@@ -167,6 +173,7 @@ export type CommentGroupByOutputType = {
   authorId: string
   content: string
   position: runtime.JsonValue | null
+  shapeId: string | null
   resolved: boolean
   createdAt: Date
   updatedAt: Date
@@ -199,6 +206,7 @@ export type CommentWhereInput = {
   authorId?: Prisma.StringFilter<"Comment"> | string
   content?: Prisma.StringFilter<"Comment"> | string
   position?: Prisma.JsonNullableFilter<"Comment">
+  shapeId?: Prisma.StringNullableFilter<"Comment"> | string | null
   resolved?: Prisma.BoolFilter<"Comment"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Comment"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Comment"> | Date | string
@@ -212,6 +220,7 @@ export type CommentOrderByWithRelationInput = {
   authorId?: Prisma.SortOrder
   content?: Prisma.SortOrder
   position?: Prisma.SortOrderInput | Prisma.SortOrder
+  shapeId?: Prisma.SortOrderInput | Prisma.SortOrder
   resolved?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -228,6 +237,7 @@ export type CommentWhereUniqueInput = Prisma.AtLeast<{
   authorId?: Prisma.StringFilter<"Comment"> | string
   content?: Prisma.StringFilter<"Comment"> | string
   position?: Prisma.JsonNullableFilter<"Comment">
+  shapeId?: Prisma.StringNullableFilter<"Comment"> | string | null
   resolved?: Prisma.BoolFilter<"Comment"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Comment"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Comment"> | Date | string
@@ -241,6 +251,7 @@ export type CommentOrderByWithAggregationInput = {
   authorId?: Prisma.SortOrder
   content?: Prisma.SortOrder
   position?: Prisma.SortOrderInput | Prisma.SortOrder
+  shapeId?: Prisma.SortOrderInput | Prisma.SortOrder
   resolved?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -258,6 +269,7 @@ export type CommentScalarWhereWithAggregatesInput = {
   authorId?: Prisma.StringWithAggregatesFilter<"Comment"> | string
   content?: Prisma.StringWithAggregatesFilter<"Comment"> | string
   position?: Prisma.JsonNullableWithAggregatesFilter<"Comment">
+  shapeId?: Prisma.StringNullableWithAggregatesFilter<"Comment"> | string | null
   resolved?: Prisma.BoolWithAggregatesFilter<"Comment"> | boolean
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Comment"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Comment"> | Date | string
@@ -267,6 +279,7 @@ export type CommentCreateInput = {
   id?: string
   content: string
   position?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  shapeId?: string | null
   resolved?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -280,6 +293,7 @@ export type CommentUncheckedCreateInput = {
   authorId: string
   content: string
   position?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  shapeId?: string | null
   resolved?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -289,6 +303,7 @@ export type CommentUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
   position?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  shapeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   resolved?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -302,6 +317,7 @@ export type CommentUncheckedUpdateInput = {
   authorId?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
   position?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  shapeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   resolved?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -313,6 +329,7 @@ export type CommentCreateManyInput = {
   authorId: string
   content: string
   position?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  shapeId?: string | null
   resolved?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -322,6 +339,7 @@ export type CommentUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
   position?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  shapeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   resolved?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -333,6 +351,7 @@ export type CommentUncheckedUpdateManyInput = {
   authorId?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
   position?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  shapeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   resolved?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -354,6 +373,7 @@ export type CommentCountOrderByAggregateInput = {
   authorId?: Prisma.SortOrder
   content?: Prisma.SortOrder
   position?: Prisma.SortOrder
+  shapeId?: Prisma.SortOrder
   resolved?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -364,6 +384,7 @@ export type CommentMaxOrderByAggregateInput = {
   boardId?: Prisma.SortOrder
   authorId?: Prisma.SortOrder
   content?: Prisma.SortOrder
+  shapeId?: Prisma.SortOrder
   resolved?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -374,6 +395,7 @@ export type CommentMinOrderByAggregateInput = {
   boardId?: Prisma.SortOrder
   authorId?: Prisma.SortOrder
   content?: Prisma.SortOrder
+  shapeId?: Prisma.SortOrder
   resolved?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -467,6 +489,7 @@ export type CommentCreateWithoutAuthorInput = {
   id?: string
   content: string
   position?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  shapeId?: string | null
   resolved?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -478,6 +501,7 @@ export type CommentUncheckedCreateWithoutAuthorInput = {
   boardId: string
   content: string
   position?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  shapeId?: string | null
   resolved?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -518,6 +542,7 @@ export type CommentScalarWhereInput = {
   authorId?: Prisma.StringFilter<"Comment"> | string
   content?: Prisma.StringFilter<"Comment"> | string
   position?: Prisma.JsonNullableFilter<"Comment">
+  shapeId?: Prisma.StringNullableFilter<"Comment"> | string | null
   resolved?: Prisma.BoolFilter<"Comment"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Comment"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Comment"> | Date | string
@@ -527,6 +552,7 @@ export type CommentCreateWithoutBoardInput = {
   id?: string
   content: string
   position?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  shapeId?: string | null
   resolved?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -538,6 +564,7 @@ export type CommentUncheckedCreateWithoutBoardInput = {
   authorId: string
   content: string
   position?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  shapeId?: string | null
   resolved?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -574,6 +601,7 @@ export type CommentCreateManyAuthorInput = {
   boardId: string
   content: string
   position?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  shapeId?: string | null
   resolved?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -583,6 +611,7 @@ export type CommentUpdateWithoutAuthorInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
   position?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  shapeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   resolved?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -594,6 +623,7 @@ export type CommentUncheckedUpdateWithoutAuthorInput = {
   boardId?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
   position?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  shapeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   resolved?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -604,6 +634,7 @@ export type CommentUncheckedUpdateManyWithoutAuthorInput = {
   boardId?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
   position?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  shapeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   resolved?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -614,6 +645,7 @@ export type CommentCreateManyBoardInput = {
   authorId: string
   content: string
   position?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  shapeId?: string | null
   resolved?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -623,6 +655,7 @@ export type CommentUpdateWithoutBoardInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
   position?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  shapeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   resolved?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -634,6 +667,7 @@ export type CommentUncheckedUpdateWithoutBoardInput = {
   authorId?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
   position?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  shapeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   resolved?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -644,6 +678,7 @@ export type CommentUncheckedUpdateManyWithoutBoardInput = {
   authorId?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
   position?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  shapeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   resolved?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -657,6 +692,7 @@ export type CommentSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   authorId?: boolean
   content?: boolean
   position?: boolean
+  shapeId?: boolean
   resolved?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -670,6 +706,7 @@ export type CommentSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   authorId?: boolean
   content?: boolean
   position?: boolean
+  shapeId?: boolean
   resolved?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -683,6 +720,7 @@ export type CommentSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   authorId?: boolean
   content?: boolean
   position?: boolean
+  shapeId?: boolean
   resolved?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -696,12 +734,13 @@ export type CommentSelectScalar = {
   authorId?: boolean
   content?: boolean
   position?: boolean
+  shapeId?: boolean
   resolved?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type CommentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "boardId" | "authorId" | "content" | "position" | "resolved" | "createdAt" | "updatedAt", ExtArgs["result"]["comment"]>
+export type CommentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "boardId" | "authorId" | "content" | "position" | "shapeId" | "resolved" | "createdAt" | "updatedAt", ExtArgs["result"]["comment"]>
 export type CommentInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   board?: boolean | Prisma.BoardDefaultArgs<ExtArgs>
   author?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -727,6 +766,7 @@ export type $CommentPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     authorId: string
     content: string
     position: runtime.JsonValue | null
+    shapeId: string | null
     resolved: boolean
     createdAt: Date
     updatedAt: Date
@@ -1160,6 +1200,7 @@ export interface CommentFieldRefs {
   readonly authorId: Prisma.FieldRef<"Comment", 'String'>
   readonly content: Prisma.FieldRef<"Comment", 'String'>
   readonly position: Prisma.FieldRef<"Comment", 'Json'>
+  readonly shapeId: Prisma.FieldRef<"Comment", 'String'>
   readonly resolved: Prisma.FieldRef<"Comment", 'Boolean'>
   readonly createdAt: Prisma.FieldRef<"Comment", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Comment", 'DateTime'>

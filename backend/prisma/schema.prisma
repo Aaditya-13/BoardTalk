@@ -27,11 +27,13 @@ enum CollaboratorRole {
 
 model User {
   id         String       @id @default(uuid(7))
-  email      String       @unique
+  isGuest    Boolean      @default(false)
+
+  email      String?      @unique
   name       String
   avatarUrl  String?
-  provider   AuthProvider
-  providerId String
+  provider   AuthProvider?
+  providerId String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -46,14 +48,17 @@ model User {
 
   refreshTokens RefreshToken[]
 
+  starredBoards StarredBoard[]
+
   @@unique([provider, providerId])
 }
 
 model Board {
   id String @id @default(uuid(7))
 
-  title       String
-  description String?
+  title        String
+  description  String?
+  thumbnailUrl String?
 
   visibility BoardVisibility @default(PRIVATE)
 
@@ -69,6 +74,8 @@ model Board {
   comments Comment[]
 
   chatMessages ChatMessage[]
+
+  starredBy StarredBoard[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -140,6 +147,8 @@ model Comment {
 
   position Json?
 
+  shapeId String?
+
   resolved Boolean @default(false)
 
   board Board @relation(fields: [boardId], references: [id], onDelete: Cascade)
@@ -182,3 +191,16 @@ model RefreshToken {
 
   revokedAt DateTime?
 }
+
+model StarredBoard {
+  userId  String
+  boardId String
+
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  board Board @relation(fields: [boardId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@id([userId, boardId])
+}
+

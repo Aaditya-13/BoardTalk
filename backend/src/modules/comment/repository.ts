@@ -24,9 +24,12 @@ class CommentRepository {
     });
   }
 
-  findManyByBoardId(boardId: string) {
+  findManyByBoardId(boardId: string, shapeId?: string) {
     return prisma.comment.findMany({
-      where: { boardId },
+      where: {
+        boardId,
+        ...(shapeId !== undefined ? { shapeId } : {}),
+      },
       include: {
         author: {
           select: {

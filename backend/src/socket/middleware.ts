@@ -59,6 +59,8 @@ export async function authenticateSocket(
     socket.data.user = {
       id: user.id,
       email: user.email,
+      name: user.name,
+      avatarUrl: user.avatarUrl,
     };
 
     next();

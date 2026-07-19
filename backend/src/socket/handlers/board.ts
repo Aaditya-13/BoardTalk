@@ -122,6 +122,8 @@ export function registerBoardSocketHandlers(
           member: {
             userId: socket.data.user.id,
             email: socket.data.user.email,
+            name: socket.data.user.name,
+            avatarUrl: socket.data.user.avatarUrl,
             role,
           },
         });

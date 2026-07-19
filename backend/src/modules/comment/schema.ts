@@ -8,6 +8,7 @@ export const createCommentSchema = z.object({
       y: z.number(),
     })
     .optional(),
+  shapeId: z.string().optional(),
 });
 
 export const updateCommentSchema = z.object({

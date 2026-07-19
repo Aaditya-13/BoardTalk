@@ -59,6 +59,18 @@ class AuthController {
     });
   }
 
+  async guestLogin(req: Request, res: Response) {
+    const result = await authService.createGuest();
+
+    res.status(200).json({
+      success: true,
+      data: {
+        user: result.user,
+        accessToken: result.tokens.accessToken,
+      },
+    });
+  }
+
   async logout(
     req: Request,
     res: Response

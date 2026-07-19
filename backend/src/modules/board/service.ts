@@ -24,8 +24,15 @@ class BoardService {
     });
   }
 
-  listBoards(ownerId: string): Promise<Board[]> {
-    return collaboratorService.listAccessibleBoards(ownerId);
+  async listBoards(ownerId: string, search?: string) {
+    const boards = await boardRepository.findManyAccessibleByUser(ownerId, search);
+    return boards.map((board) => {
+      const { starredBy, ...rest } = board;
+      return {
+        ...rest,
+        isStarred: starredBy.length > 0,
+      };
+    });
   }
 
   async getBoard(ownerId: string, boardId: string): Promise<Board> {
@@ -68,6 +75,11 @@ class BoardService {
     await this.getBoard(ownerId, boardId);
 
     await boardRepository.deleteById(boardId);
+  }
+
+  async toggleStar(ownerId: string, boardId: string): Promise<boolean> {
+    await collaboratorService.assertBoardAccess(boardId, ownerId);
+    return boardRepository.toggleStar(boardId, ownerId);
   }
 }
 

@@ -1,4 +1,4 @@
-import type { Prisma } from "../../generated/prisma/client.js";
+import { Prisma } from "../../generated/prisma/client.js";
 
 import { prisma } from "../../lib/prisma.js";
 
@@ -20,21 +20,25 @@ class BoardRepository {
     });
   }
 
-  findManyAccessibleByUser(userId: string) {
+  findManyAccessibleByUser(userId: string, search?: string) {
     return prisma.board.findMany({
       where: {
-        OR: [
+        AND: [
           {
-            ownerId: userId,
+            OR: [
+              { ownerId: userId },
+              { collaborators: { some: { userId } } },
+            ],
           },
-          {
-            collaborators: {
-              some: {
-                userId,
-              },
-            },
-          },
+          ...(search
+            ? [{ title: { contains: search, mode: Prisma.QueryMode.insensitive } }]
+            : []),
         ],
+      },
+      include: {
+        starredBy: {
+          where: { userId },
+        },
       },
       orderBy: {
         createdAt: "desc",
@@ -68,6 +72,28 @@ class BoardRepository {
     return prisma.board.delete({
       where: { id },
     });
+  }
+
+  async toggleStar(boardId: string, userId: string) {
+    const existing = await prisma.starredBoard.findUnique({
+      where: {
+        userId_boardId: { userId, boardId },
+      },
+    });
+
+    if (existing) {
+      await prisma.starredBoard.delete({
+        where: {
+          userId_boardId: { userId, boardId },
+        },
+      });
+      return false;
+    }
+
+    await prisma.starredBoard.create({
+      data: { userId, boardId },
+    });
+    return true;
   }
 }
 

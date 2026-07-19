@@ -39,6 +39,8 @@ router.get(
   authController.githubCallback
 );
 
+router.post("/guest", authController.guestLogin);
+
 router.post("/refresh", authController.refresh);
 
 router.post("/logout", authController.logout);

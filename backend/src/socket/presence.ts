@@ -4,7 +4,9 @@ import type { CollaboratorRole } from "../generated/prisma/client.js";
 
 export interface BoardPresenceMember {
   userId: string;
-  email: string;
+  email: string | null;
+  name: string;
+  avatarUrl: string | null;
   role: CollaboratorRole;
   cursor?: CursorState;
   selection?: SelectionState;
@@ -34,6 +36,8 @@ export function upsertPresence(
   const member: BoardPresenceMember = {
     userId: user.id,
     email: user.email,
+    name: user.name,
+    avatarUrl: user.avatarUrl,
     role,
   };
 

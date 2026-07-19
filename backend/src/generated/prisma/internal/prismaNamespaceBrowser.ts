@@ -58,7 +58,8 @@ export const ModelName = {
   Snapshot: 'Snapshot',
   Comment: 'Comment',
   ChatMessage: 'ChatMessage',
-  RefreshToken: 'RefreshToken'
+  RefreshToken: 'RefreshToken',
+  StarredBoard: 'StarredBoard'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -79,6 +80,7 @@ export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof
 
 export const UserScalarFieldEnum = {
   id: 'id',
+  isGuest: 'isGuest',
   email: 'email',
   name: 'name',
   avatarUrl: 'avatarUrl',
@@ -95,6 +97,7 @@ export const BoardScalarFieldEnum = {
   id: 'id',
   title: 'title',
   description: 'description',
+  thumbnailUrl: 'thumbnailUrl',
   visibility: 'visibility',
   ownerId: 'ownerId',
   createdAt: 'createdAt',
@@ -147,6 +150,7 @@ export const CommentScalarFieldEnum = {
   authorId: 'authorId',
   content: 'content',
   position: 'position',
+  shapeId: 'shapeId',
   resolved: 'resolved',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -176,6 +180,15 @@ export const RefreshTokenScalarFieldEnum = {
 } as const
 
 export type RefreshTokenScalarFieldEnum = (typeof RefreshTokenScalarFieldEnum)[keyof typeof RefreshTokenScalarFieldEnum]
+
+
+export const StarredBoardScalarFieldEnum = {
+  userId: 'userId',
+  boardId: 'boardId',
+  createdAt: 'createdAt'
+} as const
+
+export type StarredBoardScalarFieldEnum = (typeof StarredBoardScalarFieldEnum)[keyof typeof StarredBoardScalarFieldEnum]
 
 
 export const SortOrder = {

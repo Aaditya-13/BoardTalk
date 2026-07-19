@@ -85,6 +85,28 @@ await authRepository.createRefreshToken(
     };
   }
 
+  async createGuest(): Promise<AuthResult> {
+    const data: Prisma.UserCreateInput = {
+      name: "Guest",
+      isGuest: true,
+    };
+
+    const user = await userRepository.create(data);
+
+    const payload: JwtPayload = {
+      userId: user.id,
+    };
+
+    const accessToken = generateAccessToken(payload);
+
+    return {
+      user,
+      tokens: {
+        accessToken,
+      },
+    };
+  }
+
   async refresh(
     refreshToken: string
   ): Promise<AuthResult> {

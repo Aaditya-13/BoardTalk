@@ -11,10 +11,10 @@ import type {
 } from "./schema.js";
 
 class CommentService {
-  async listComments(boardId: string, userId: string) {
+  async listComments(boardId: string, userId: string, shapeId?: string) {
     await collaboratorService.assertBoardAccess(boardId, userId);
 
-    return commentRepository.findManyByBoardId(boardId);
+    return commentRepository.findManyByBoardId(boardId, shapeId);
   }
 
   async createComment(
@@ -29,6 +29,7 @@ class CommentService {
       author: { connect: { id: userId } },
       content: dto.content,
       position: dto.position ?? Prisma.JsonNull,
+      shapeId: dto.shapeId ?? null,
     });
   }
 

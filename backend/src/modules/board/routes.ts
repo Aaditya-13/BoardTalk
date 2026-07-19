@@ -24,6 +24,8 @@ router.patch(
 	boardController.updateBoard
 );
 
+router.post("/:boardId/star", boardController.toggleStar);
+
 router.delete("/:boardId", boardController.deleteBoard);
 
 export default router;

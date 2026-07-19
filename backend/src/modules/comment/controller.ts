@@ -4,9 +4,11 @@ import { commentService } from "./service.js";
 
 class CommentController {
   async listComments(req: Request, res: Response) {
+    const shapeId = req.query.shapeId as string | undefined;
     const comments = await commentService.listComments(
       req.params.boardId as string,
-      req.user!.id
+      req.user!.id,
+      shapeId
     );
 
     return res.status(200).json({ success: true, data: comments });

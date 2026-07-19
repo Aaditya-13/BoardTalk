@@ -4,7 +4,8 @@ import { boardService } from "./service.js";
 
 class BoardController {
   async listBoards(req: Request, res: Response) {
-    const boards = await boardService.listBoards(req.user!.id);
+    const search = req.query.q as string | undefined;
+    const boards = await boardService.listBoards(req.user!.id, search);
 
     return res.status(200).json({
       success: true,
@@ -56,6 +57,17 @@ class BoardController {
     await boardService.deleteBoard(req.user!.id, boardId);
 
     return res.status(204).send();
+  }
+
+  async toggleStar(req: Request, res: Response) {
+    const boardId = req.params.boardId as string;
+
+    const isStarred = await boardService.toggleStar(req.user!.id, boardId);
+
+    return res.status(200).json({
+      success: true,
+      data: { isStarred },
+    });
   }
 }
 

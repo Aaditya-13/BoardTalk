@@ -28,6 +28,7 @@ export type BoardMinAggregateOutputType = {
   id: string | null
   title: string | null
   description: string | null
+  thumbnailUrl: string | null
   visibility: $Enums.BoardVisibility | null
   ownerId: string | null
   createdAt: Date | null
@@ -38,6 +39,7 @@ export type BoardMaxAggregateOutputType = {
   id: string | null
   title: string | null
   description: string | null
+  thumbnailUrl: string | null
   visibility: $Enums.BoardVisibility | null
   ownerId: string | null
   createdAt: Date | null
@@ -48,6 +50,7 @@ export type BoardCountAggregateOutputType = {
   id: number
   title: number
   description: number
+  thumbnailUrl: number
   visibility: number
   ownerId: number
   createdAt: number
@@ -60,6 +63,7 @@ export type BoardMinAggregateInputType = {
   id?: true
   title?: true
   description?: true
+  thumbnailUrl?: true
   visibility?: true
   ownerId?: true
   createdAt?: true
@@ -70,6 +74,7 @@ export type BoardMaxAggregateInputType = {
   id?: true
   title?: true
   description?: true
+  thumbnailUrl?: true
   visibility?: true
   ownerId?: true
   createdAt?: true
@@ -80,6 +85,7 @@ export type BoardCountAggregateInputType = {
   id?: true
   title?: true
   description?: true
+  thumbnailUrl?: true
   visibility?: true
   ownerId?: true
   createdAt?: true
@@ -163,6 +169,7 @@ export type BoardGroupByOutputType = {
   id: string
   title: string
   description: string | null
+  thumbnailUrl: string | null
   visibility: $Enums.BoardVisibility
   ownerId: string
   createdAt: Date
@@ -194,6 +201,7 @@ export type BoardWhereInput = {
   id?: Prisma.StringFilter<"Board"> | string
   title?: Prisma.StringFilter<"Board"> | string
   description?: Prisma.StringNullableFilter<"Board"> | string | null
+  thumbnailUrl?: Prisma.StringNullableFilter<"Board"> | string | null
   visibility?: Prisma.EnumBoardVisibilityFilter<"Board"> | $Enums.BoardVisibility
   ownerId?: Prisma.StringFilter<"Board"> | string
   createdAt?: Prisma.DateTimeFilter<"Board"> | Date | string
@@ -204,12 +212,14 @@ export type BoardWhereInput = {
   snapshots?: Prisma.SnapshotListRelationFilter
   comments?: Prisma.CommentListRelationFilter
   chatMessages?: Prisma.ChatMessageListRelationFilter
+  starredBy?: Prisma.StarredBoardListRelationFilter
 }
 
 export type BoardOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   title?: Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
+  thumbnailUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   visibility?: Prisma.SortOrder
   ownerId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -220,6 +230,7 @@ export type BoardOrderByWithRelationInput = {
   snapshots?: Prisma.SnapshotOrderByRelationAggregateInput
   comments?: Prisma.CommentOrderByRelationAggregateInput
   chatMessages?: Prisma.ChatMessageOrderByRelationAggregateInput
+  starredBy?: Prisma.StarredBoardOrderByRelationAggregateInput
 }
 
 export type BoardWhereUniqueInput = Prisma.AtLeast<{
@@ -229,6 +240,7 @@ export type BoardWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.BoardWhereInput | Prisma.BoardWhereInput[]
   title?: Prisma.StringFilter<"Board"> | string
   description?: Prisma.StringNullableFilter<"Board"> | string | null
+  thumbnailUrl?: Prisma.StringNullableFilter<"Board"> | string | null
   visibility?: Prisma.EnumBoardVisibilityFilter<"Board"> | $Enums.BoardVisibility
   ownerId?: Prisma.StringFilter<"Board"> | string
   createdAt?: Prisma.DateTimeFilter<"Board"> | Date | string
@@ -239,12 +251,14 @@ export type BoardWhereUniqueInput = Prisma.AtLeast<{
   snapshots?: Prisma.SnapshotListRelationFilter
   comments?: Prisma.CommentListRelationFilter
   chatMessages?: Prisma.ChatMessageListRelationFilter
+  starredBy?: Prisma.StarredBoardListRelationFilter
 }, "id">
 
 export type BoardOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   title?: Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
+  thumbnailUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   visibility?: Prisma.SortOrder
   ownerId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -261,6 +275,7 @@ export type BoardScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"Board"> | string
   title?: Prisma.StringWithAggregatesFilter<"Board"> | string
   description?: Prisma.StringNullableWithAggregatesFilter<"Board"> | string | null
+  thumbnailUrl?: Prisma.StringNullableWithAggregatesFilter<"Board"> | string | null
   visibility?: Prisma.EnumBoardVisibilityWithAggregatesFilter<"Board"> | $Enums.BoardVisibility
   ownerId?: Prisma.StringWithAggregatesFilter<"Board"> | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Board"> | Date | string
@@ -271,6 +286,7 @@ export type BoardCreateInput = {
   id?: string
   title: string
   description?: string | null
+  thumbnailUrl?: string | null
   visibility?: $Enums.BoardVisibility
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -280,12 +296,14 @@ export type BoardCreateInput = {
   snapshots?: Prisma.SnapshotCreateNestedManyWithoutBoardInput
   comments?: Prisma.CommentCreateNestedManyWithoutBoardInput
   chatMessages?: Prisma.ChatMessageCreateNestedManyWithoutBoardInput
+  starredBy?: Prisma.StarredBoardCreateNestedManyWithoutBoardInput
 }
 
 export type BoardUncheckedCreateInput = {
   id?: string
   title: string
   description?: string | null
+  thumbnailUrl?: string | null
   visibility?: $Enums.BoardVisibility
   ownerId: string
   createdAt?: Date | string
@@ -295,12 +313,14 @@ export type BoardUncheckedCreateInput = {
   snapshots?: Prisma.SnapshotUncheckedCreateNestedManyWithoutBoardInput
   comments?: Prisma.CommentUncheckedCreateNestedManyWithoutBoardInput
   chatMessages?: Prisma.ChatMessageUncheckedCreateNestedManyWithoutBoardInput
+  starredBy?: Prisma.StarredBoardUncheckedCreateNestedManyWithoutBoardInput
 }
 
 export type BoardUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   visibility?: Prisma.EnumBoardVisibilityFieldUpdateOperationsInput | $Enums.BoardVisibility
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -310,12 +330,14 @@ export type BoardUpdateInput = {
   snapshots?: Prisma.SnapshotUpdateManyWithoutBoardNestedInput
   comments?: Prisma.CommentUpdateManyWithoutBoardNestedInput
   chatMessages?: Prisma.ChatMessageUpdateManyWithoutBoardNestedInput
+  starredBy?: Prisma.StarredBoardUpdateManyWithoutBoardNestedInput
 }
 
 export type BoardUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   visibility?: Prisma.EnumBoardVisibilityFieldUpdateOperationsInput | $Enums.BoardVisibility
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -325,12 +347,14 @@ export type BoardUncheckedUpdateInput = {
   snapshots?: Prisma.SnapshotUncheckedUpdateManyWithoutBoardNestedInput
   comments?: Prisma.CommentUncheckedUpdateManyWithoutBoardNestedInput
   chatMessages?: Prisma.ChatMessageUncheckedUpdateManyWithoutBoardNestedInput
+  starredBy?: Prisma.StarredBoardUncheckedUpdateManyWithoutBoardNestedInput
 }
 
 export type BoardCreateManyInput = {
   id?: string
   title: string
   description?: string | null
+  thumbnailUrl?: string | null
   visibility?: $Enums.BoardVisibility
   ownerId: string
   createdAt?: Date | string
@@ -341,6 +365,7 @@ export type BoardUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   visibility?: Prisma.EnumBoardVisibilityFieldUpdateOperationsInput | $Enums.BoardVisibility
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -350,6 +375,7 @@ export type BoardUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   visibility?: Prisma.EnumBoardVisibilityFieldUpdateOperationsInput | $Enums.BoardVisibility
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -370,6 +396,7 @@ export type BoardCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   title?: Prisma.SortOrder
   description?: Prisma.SortOrder
+  thumbnailUrl?: Prisma.SortOrder
   visibility?: Prisma.SortOrder
   ownerId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -380,6 +407,7 @@ export type BoardMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   title?: Prisma.SortOrder
   description?: Prisma.SortOrder
+  thumbnailUrl?: Prisma.SortOrder
   visibility?: Prisma.SortOrder
   ownerId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -390,6 +418,7 @@ export type BoardMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   title?: Prisma.SortOrder
   description?: Prisma.SortOrder
+  thumbnailUrl?: Prisma.SortOrder
   visibility?: Prisma.SortOrder
   ownerId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -517,10 +546,25 @@ export type BoardUpdateOneRequiredWithoutChatMessagesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.BoardUpdateToOneWithWhereWithoutChatMessagesInput, Prisma.BoardUpdateWithoutChatMessagesInput>, Prisma.BoardUncheckedUpdateWithoutChatMessagesInput>
 }
 
+export type BoardCreateNestedOneWithoutStarredByInput = {
+  create?: Prisma.XOR<Prisma.BoardCreateWithoutStarredByInput, Prisma.BoardUncheckedCreateWithoutStarredByInput>
+  connectOrCreate?: Prisma.BoardCreateOrConnectWithoutStarredByInput
+  connect?: Prisma.BoardWhereUniqueInput
+}
+
+export type BoardUpdateOneRequiredWithoutStarredByNestedInput = {
+  create?: Prisma.XOR<Prisma.BoardCreateWithoutStarredByInput, Prisma.BoardUncheckedCreateWithoutStarredByInput>
+  connectOrCreate?: Prisma.BoardCreateOrConnectWithoutStarredByInput
+  upsert?: Prisma.BoardUpsertWithoutStarredByInput
+  connect?: Prisma.BoardWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.BoardUpdateToOneWithWhereWithoutStarredByInput, Prisma.BoardUpdateWithoutStarredByInput>, Prisma.BoardUncheckedUpdateWithoutStarredByInput>
+}
+
 export type BoardCreateWithoutOwnerInput = {
   id?: string
   title: string
   description?: string | null
+  thumbnailUrl?: string | null
   visibility?: $Enums.BoardVisibility
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -529,12 +573,14 @@ export type BoardCreateWithoutOwnerInput = {
   snapshots?: Prisma.SnapshotCreateNestedManyWithoutBoardInput
   comments?: Prisma.CommentCreateNestedManyWithoutBoardInput
   chatMessages?: Prisma.ChatMessageCreateNestedManyWithoutBoardInput
+  starredBy?: Prisma.StarredBoardCreateNestedManyWithoutBoardInput
 }
 
 export type BoardUncheckedCreateWithoutOwnerInput = {
   id?: string
   title: string
   description?: string | null
+  thumbnailUrl?: string | null
   visibility?: $Enums.BoardVisibility
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -543,6 +589,7 @@ export type BoardUncheckedCreateWithoutOwnerInput = {
   snapshots?: Prisma.SnapshotUncheckedCreateNestedManyWithoutBoardInput
   comments?: Prisma.CommentUncheckedCreateNestedManyWithoutBoardInput
   chatMessages?: Prisma.ChatMessageUncheckedCreateNestedManyWithoutBoardInput
+  starredBy?: Prisma.StarredBoardUncheckedCreateNestedManyWithoutBoardInput
 }
 
 export type BoardCreateOrConnectWithoutOwnerInput = {
@@ -578,6 +625,7 @@ export type BoardScalarWhereInput = {
   id?: Prisma.StringFilter<"Board"> | string
   title?: Prisma.StringFilter<"Board"> | string
   description?: Prisma.StringNullableFilter<"Board"> | string | null
+  thumbnailUrl?: Prisma.StringNullableFilter<"Board"> | string | null
   visibility?: Prisma.EnumBoardVisibilityFilter<"Board"> | $Enums.BoardVisibility
   ownerId?: Prisma.StringFilter<"Board"> | string
   createdAt?: Prisma.DateTimeFilter<"Board"> | Date | string
@@ -588,6 +636,7 @@ export type BoardCreateWithoutCollaboratorsInput = {
   id?: string
   title: string
   description?: string | null
+  thumbnailUrl?: string | null
   visibility?: $Enums.BoardVisibility
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -596,12 +645,14 @@ export type BoardCreateWithoutCollaboratorsInput = {
   snapshots?: Prisma.SnapshotCreateNestedManyWithoutBoardInput
   comments?: Prisma.CommentCreateNestedManyWithoutBoardInput
   chatMessages?: Prisma.ChatMessageCreateNestedManyWithoutBoardInput
+  starredBy?: Prisma.StarredBoardCreateNestedManyWithoutBoardInput
 }
 
 export type BoardUncheckedCreateWithoutCollaboratorsInput = {
   id?: string
   title: string
   description?: string | null
+  thumbnailUrl?: string | null
   visibility?: $Enums.BoardVisibility
   ownerId: string
   createdAt?: Date | string
@@ -610,6 +661,7 @@ export type BoardUncheckedCreateWithoutCollaboratorsInput = {
   snapshots?: Prisma.SnapshotUncheckedCreateNestedManyWithoutBoardInput
   comments?: Prisma.CommentUncheckedCreateNestedManyWithoutBoardInput
   chatMessages?: Prisma.ChatMessageUncheckedCreateNestedManyWithoutBoardInput
+  starredBy?: Prisma.StarredBoardUncheckedCreateNestedManyWithoutBoardInput
 }
 
 export type BoardCreateOrConnectWithoutCollaboratorsInput = {
@@ -632,6 +684,7 @@ export type BoardUpdateWithoutCollaboratorsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   visibility?: Prisma.EnumBoardVisibilityFieldUpdateOperationsInput | $Enums.BoardVisibility
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -640,12 +693,14 @@ export type BoardUpdateWithoutCollaboratorsInput = {
   snapshots?: Prisma.SnapshotUpdateManyWithoutBoardNestedInput
   comments?: Prisma.CommentUpdateManyWithoutBoardNestedInput
   chatMessages?: Prisma.ChatMessageUpdateManyWithoutBoardNestedInput
+  starredBy?: Prisma.StarredBoardUpdateManyWithoutBoardNestedInput
 }
 
 export type BoardUncheckedUpdateWithoutCollaboratorsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   visibility?: Prisma.EnumBoardVisibilityFieldUpdateOperationsInput | $Enums.BoardVisibility
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -654,12 +709,14 @@ export type BoardUncheckedUpdateWithoutCollaboratorsInput = {
   snapshots?: Prisma.SnapshotUncheckedUpdateManyWithoutBoardNestedInput
   comments?: Prisma.CommentUncheckedUpdateManyWithoutBoardNestedInput
   chatMessages?: Prisma.ChatMessageUncheckedUpdateManyWithoutBoardNestedInput
+  starredBy?: Prisma.StarredBoardUncheckedUpdateManyWithoutBoardNestedInput
 }
 
 export type BoardCreateWithoutInvitesInput = {
   id?: string
   title: string
   description?: string | null
+  thumbnailUrl?: string | null
   visibility?: $Enums.BoardVisibility
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -668,12 +725,14 @@ export type BoardCreateWithoutInvitesInput = {
   snapshots?: Prisma.SnapshotCreateNestedManyWithoutBoardInput
   comments?: Prisma.CommentCreateNestedManyWithoutBoardInput
   chatMessages?: Prisma.ChatMessageCreateNestedManyWithoutBoardInput
+  starredBy?: Prisma.StarredBoardCreateNestedManyWithoutBoardInput
 }
 
 export type BoardUncheckedCreateWithoutInvitesInput = {
   id?: string
   title: string
   description?: string | null
+  thumbnailUrl?: string | null
   visibility?: $Enums.BoardVisibility
   ownerId: string
   createdAt?: Date | string
@@ -682,6 +741,7 @@ export type BoardUncheckedCreateWithoutInvitesInput = {
   snapshots?: Prisma.SnapshotUncheckedCreateNestedManyWithoutBoardInput
   comments?: Prisma.CommentUncheckedCreateNestedManyWithoutBoardInput
   chatMessages?: Prisma.ChatMessageUncheckedCreateNestedManyWithoutBoardInput
+  starredBy?: Prisma.StarredBoardUncheckedCreateNestedManyWithoutBoardInput
 }
 
 export type BoardCreateOrConnectWithoutInvitesInput = {
@@ -704,6 +764,7 @@ export type BoardUpdateWithoutInvitesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   visibility?: Prisma.EnumBoardVisibilityFieldUpdateOperationsInput | $Enums.BoardVisibility
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -712,12 +773,14 @@ export type BoardUpdateWithoutInvitesInput = {
   snapshots?: Prisma.SnapshotUpdateManyWithoutBoardNestedInput
   comments?: Prisma.CommentUpdateManyWithoutBoardNestedInput
   chatMessages?: Prisma.ChatMessageUpdateManyWithoutBoardNestedInput
+  starredBy?: Prisma.StarredBoardUpdateManyWithoutBoardNestedInput
 }
 
 export type BoardUncheckedUpdateWithoutInvitesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   visibility?: Prisma.EnumBoardVisibilityFieldUpdateOperationsInput | $Enums.BoardVisibility
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -726,12 +789,14 @@ export type BoardUncheckedUpdateWithoutInvitesInput = {
   snapshots?: Prisma.SnapshotUncheckedUpdateManyWithoutBoardNestedInput
   comments?: Prisma.CommentUncheckedUpdateManyWithoutBoardNestedInput
   chatMessages?: Prisma.ChatMessageUncheckedUpdateManyWithoutBoardNestedInput
+  starredBy?: Prisma.StarredBoardUncheckedUpdateManyWithoutBoardNestedInput
 }
 
 export type BoardCreateWithoutSnapshotsInput = {
   id?: string
   title: string
   description?: string | null
+  thumbnailUrl?: string | null
   visibility?: $Enums.BoardVisibility
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -740,12 +805,14 @@ export type BoardCreateWithoutSnapshotsInput = {
   invites?: Prisma.InviteCreateNestedManyWithoutBoardInput
   comments?: Prisma.CommentCreateNestedManyWithoutBoardInput
   chatMessages?: Prisma.ChatMessageCreateNestedManyWithoutBoardInput
+  starredBy?: Prisma.StarredBoardCreateNestedManyWithoutBoardInput
 }
 
 export type BoardUncheckedCreateWithoutSnapshotsInput = {
   id?: string
   title: string
   description?: string | null
+  thumbnailUrl?: string | null
   visibility?: $Enums.BoardVisibility
   ownerId: string
   createdAt?: Date | string
@@ -754,6 +821,7 @@ export type BoardUncheckedCreateWithoutSnapshotsInput = {
   invites?: Prisma.InviteUncheckedCreateNestedManyWithoutBoardInput
   comments?: Prisma.CommentUncheckedCreateNestedManyWithoutBoardInput
   chatMessages?: Prisma.ChatMessageUncheckedCreateNestedManyWithoutBoardInput
+  starredBy?: Prisma.StarredBoardUncheckedCreateNestedManyWithoutBoardInput
 }
 
 export type BoardCreateOrConnectWithoutSnapshotsInput = {
@@ -776,6 +844,7 @@ export type BoardUpdateWithoutSnapshotsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   visibility?: Prisma.EnumBoardVisibilityFieldUpdateOperationsInput | $Enums.BoardVisibility
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -784,12 +853,14 @@ export type BoardUpdateWithoutSnapshotsInput = {
   invites?: Prisma.InviteUpdateManyWithoutBoardNestedInput
   comments?: Prisma.CommentUpdateManyWithoutBoardNestedInput
   chatMessages?: Prisma.ChatMessageUpdateManyWithoutBoardNestedInput
+  starredBy?: Prisma.StarredBoardUpdateManyWithoutBoardNestedInput
 }
 
 export type BoardUncheckedUpdateWithoutSnapshotsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   visibility?: Prisma.EnumBoardVisibilityFieldUpdateOperationsInput | $Enums.BoardVisibility
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -798,12 +869,14 @@ export type BoardUncheckedUpdateWithoutSnapshotsInput = {
   invites?: Prisma.InviteUncheckedUpdateManyWithoutBoardNestedInput
   comments?: Prisma.CommentUncheckedUpdateManyWithoutBoardNestedInput
   chatMessages?: Prisma.ChatMessageUncheckedUpdateManyWithoutBoardNestedInput
+  starredBy?: Prisma.StarredBoardUncheckedUpdateManyWithoutBoardNestedInput
 }
 
 export type BoardCreateWithoutCommentsInput = {
   id?: string
   title: string
   description?: string | null
+  thumbnailUrl?: string | null
   visibility?: $Enums.BoardVisibility
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -812,12 +885,14 @@ export type BoardCreateWithoutCommentsInput = {
   invites?: Prisma.InviteCreateNestedManyWithoutBoardInput
   snapshots?: Prisma.SnapshotCreateNestedManyWithoutBoardInput
   chatMessages?: Prisma.ChatMessageCreateNestedManyWithoutBoardInput
+  starredBy?: Prisma.StarredBoardCreateNestedManyWithoutBoardInput
 }
 
 export type BoardUncheckedCreateWithoutCommentsInput = {
   id?: string
   title: string
   description?: string | null
+  thumbnailUrl?: string | null
   visibility?: $Enums.BoardVisibility
   ownerId: string
   createdAt?: Date | string
@@ -826,6 +901,7 @@ export type BoardUncheckedCreateWithoutCommentsInput = {
   invites?: Prisma.InviteUncheckedCreateNestedManyWithoutBoardInput
   snapshots?: Prisma.SnapshotUncheckedCreateNestedManyWithoutBoardInput
   chatMessages?: Prisma.ChatMessageUncheckedCreateNestedManyWithoutBoardInput
+  starredBy?: Prisma.StarredBoardUncheckedCreateNestedManyWithoutBoardInput
 }
 
 export type BoardCreateOrConnectWithoutCommentsInput = {
@@ -848,6 +924,7 @@ export type BoardUpdateWithoutCommentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   visibility?: Prisma.EnumBoardVisibilityFieldUpdateOperationsInput | $Enums.BoardVisibility
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -856,12 +933,14 @@ export type BoardUpdateWithoutCommentsInput = {
   invites?: Prisma.InviteUpdateManyWithoutBoardNestedInput
   snapshots?: Prisma.SnapshotUpdateManyWithoutBoardNestedInput
   chatMessages?: Prisma.ChatMessageUpdateManyWithoutBoardNestedInput
+  starredBy?: Prisma.StarredBoardUpdateManyWithoutBoardNestedInput
 }
 
 export type BoardUncheckedUpdateWithoutCommentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   visibility?: Prisma.EnumBoardVisibilityFieldUpdateOperationsInput | $Enums.BoardVisibility
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -870,12 +949,14 @@ export type BoardUncheckedUpdateWithoutCommentsInput = {
   invites?: Prisma.InviteUncheckedUpdateManyWithoutBoardNestedInput
   snapshots?: Prisma.SnapshotUncheckedUpdateManyWithoutBoardNestedInput
   chatMessages?: Prisma.ChatMessageUncheckedUpdateManyWithoutBoardNestedInput
+  starredBy?: Prisma.StarredBoardUncheckedUpdateManyWithoutBoardNestedInput
 }
 
 export type BoardCreateWithoutChatMessagesInput = {
   id?: string
   title: string
   description?: string | null
+  thumbnailUrl?: string | null
   visibility?: $Enums.BoardVisibility
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -884,12 +965,14 @@ export type BoardCreateWithoutChatMessagesInput = {
   invites?: Prisma.InviteCreateNestedManyWithoutBoardInput
   snapshots?: Prisma.SnapshotCreateNestedManyWithoutBoardInput
   comments?: Prisma.CommentCreateNestedManyWithoutBoardInput
+  starredBy?: Prisma.StarredBoardCreateNestedManyWithoutBoardInput
 }
 
 export type BoardUncheckedCreateWithoutChatMessagesInput = {
   id?: string
   title: string
   description?: string | null
+  thumbnailUrl?: string | null
   visibility?: $Enums.BoardVisibility
   ownerId: string
   createdAt?: Date | string
@@ -898,6 +981,7 @@ export type BoardUncheckedCreateWithoutChatMessagesInput = {
   invites?: Prisma.InviteUncheckedCreateNestedManyWithoutBoardInput
   snapshots?: Prisma.SnapshotUncheckedCreateNestedManyWithoutBoardInput
   comments?: Prisma.CommentUncheckedCreateNestedManyWithoutBoardInput
+  starredBy?: Prisma.StarredBoardUncheckedCreateNestedManyWithoutBoardInput
 }
 
 export type BoardCreateOrConnectWithoutChatMessagesInput = {
@@ -920,6 +1004,7 @@ export type BoardUpdateWithoutChatMessagesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   visibility?: Prisma.EnumBoardVisibilityFieldUpdateOperationsInput | $Enums.BoardVisibility
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -928,12 +1013,14 @@ export type BoardUpdateWithoutChatMessagesInput = {
   invites?: Prisma.InviteUpdateManyWithoutBoardNestedInput
   snapshots?: Prisma.SnapshotUpdateManyWithoutBoardNestedInput
   comments?: Prisma.CommentUpdateManyWithoutBoardNestedInput
+  starredBy?: Prisma.StarredBoardUpdateManyWithoutBoardNestedInput
 }
 
 export type BoardUncheckedUpdateWithoutChatMessagesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   visibility?: Prisma.EnumBoardVisibilityFieldUpdateOperationsInput | $Enums.BoardVisibility
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -942,24 +1029,66 @@ export type BoardUncheckedUpdateWithoutChatMessagesInput = {
   invites?: Prisma.InviteUncheckedUpdateManyWithoutBoardNestedInput
   snapshots?: Prisma.SnapshotUncheckedUpdateManyWithoutBoardNestedInput
   comments?: Prisma.CommentUncheckedUpdateManyWithoutBoardNestedInput
+  starredBy?: Prisma.StarredBoardUncheckedUpdateManyWithoutBoardNestedInput
 }
 
-export type BoardCreateManyOwnerInput = {
+export type BoardCreateWithoutStarredByInput = {
   id?: string
   title: string
   description?: string | null
+  thumbnailUrl?: string | null
   visibility?: $Enums.BoardVisibility
   createdAt?: Date | string
   updatedAt?: Date | string
+  owner: Prisma.UserCreateNestedOneWithoutOwnedBoardsInput
+  collaborators?: Prisma.CollaboratorCreateNestedManyWithoutBoardInput
+  invites?: Prisma.InviteCreateNestedManyWithoutBoardInput
+  snapshots?: Prisma.SnapshotCreateNestedManyWithoutBoardInput
+  comments?: Prisma.CommentCreateNestedManyWithoutBoardInput
+  chatMessages?: Prisma.ChatMessageCreateNestedManyWithoutBoardInput
 }
 
-export type BoardUpdateWithoutOwnerInput = {
+export type BoardUncheckedCreateWithoutStarredByInput = {
+  id?: string
+  title: string
+  description?: string | null
+  thumbnailUrl?: string | null
+  visibility?: $Enums.BoardVisibility
+  ownerId: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  collaborators?: Prisma.CollaboratorUncheckedCreateNestedManyWithoutBoardInput
+  invites?: Prisma.InviteUncheckedCreateNestedManyWithoutBoardInput
+  snapshots?: Prisma.SnapshotUncheckedCreateNestedManyWithoutBoardInput
+  comments?: Prisma.CommentUncheckedCreateNestedManyWithoutBoardInput
+  chatMessages?: Prisma.ChatMessageUncheckedCreateNestedManyWithoutBoardInput
+}
+
+export type BoardCreateOrConnectWithoutStarredByInput = {
+  where: Prisma.BoardWhereUniqueInput
+  create: Prisma.XOR<Prisma.BoardCreateWithoutStarredByInput, Prisma.BoardUncheckedCreateWithoutStarredByInput>
+}
+
+export type BoardUpsertWithoutStarredByInput = {
+  update: Prisma.XOR<Prisma.BoardUpdateWithoutStarredByInput, Prisma.BoardUncheckedUpdateWithoutStarredByInput>
+  create: Prisma.XOR<Prisma.BoardCreateWithoutStarredByInput, Prisma.BoardUncheckedCreateWithoutStarredByInput>
+  where?: Prisma.BoardWhereInput
+}
+
+export type BoardUpdateToOneWithWhereWithoutStarredByInput = {
+  where?: Prisma.BoardWhereInput
+  data: Prisma.XOR<Prisma.BoardUpdateWithoutStarredByInput, Prisma.BoardUncheckedUpdateWithoutStarredByInput>
+}
+
+export type BoardUpdateWithoutStarredByInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   visibility?: Prisma.EnumBoardVisibilityFieldUpdateOperationsInput | $Enums.BoardVisibility
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  owner?: Prisma.UserUpdateOneRequiredWithoutOwnedBoardsNestedInput
   collaborators?: Prisma.CollaboratorUpdateManyWithoutBoardNestedInput
   invites?: Prisma.InviteUpdateManyWithoutBoardNestedInput
   snapshots?: Prisma.SnapshotUpdateManyWithoutBoardNestedInput
@@ -967,11 +1096,13 @@ export type BoardUpdateWithoutOwnerInput = {
   chatMessages?: Prisma.ChatMessageUpdateManyWithoutBoardNestedInput
 }
 
-export type BoardUncheckedUpdateWithoutOwnerInput = {
+export type BoardUncheckedUpdateWithoutStarredByInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   visibility?: Prisma.EnumBoardVisibilityFieldUpdateOperationsInput | $Enums.BoardVisibility
+  ownerId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   collaborators?: Prisma.CollaboratorUncheckedUpdateManyWithoutBoardNestedInput
@@ -981,10 +1112,53 @@ export type BoardUncheckedUpdateWithoutOwnerInput = {
   chatMessages?: Prisma.ChatMessageUncheckedUpdateManyWithoutBoardNestedInput
 }
 
+export type BoardCreateManyOwnerInput = {
+  id?: string
+  title: string
+  description?: string | null
+  thumbnailUrl?: string | null
+  visibility?: $Enums.BoardVisibility
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type BoardUpdateWithoutOwnerInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  visibility?: Prisma.EnumBoardVisibilityFieldUpdateOperationsInput | $Enums.BoardVisibility
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  collaborators?: Prisma.CollaboratorUpdateManyWithoutBoardNestedInput
+  invites?: Prisma.InviteUpdateManyWithoutBoardNestedInput
+  snapshots?: Prisma.SnapshotUpdateManyWithoutBoardNestedInput
+  comments?: Prisma.CommentUpdateManyWithoutBoardNestedInput
+  chatMessages?: Prisma.ChatMessageUpdateManyWithoutBoardNestedInput
+  starredBy?: Prisma.StarredBoardUpdateManyWithoutBoardNestedInput
+}
+
+export type BoardUncheckedUpdateWithoutOwnerInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  visibility?: Prisma.EnumBoardVisibilityFieldUpdateOperationsInput | $Enums.BoardVisibility
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  collaborators?: Prisma.CollaboratorUncheckedUpdateManyWithoutBoardNestedInput
+  invites?: Prisma.InviteUncheckedUpdateManyWithoutBoardNestedInput
+  snapshots?: Prisma.SnapshotUncheckedUpdateManyWithoutBoardNestedInput
+  comments?: Prisma.CommentUncheckedUpdateManyWithoutBoardNestedInput
+  chatMessages?: Prisma.ChatMessageUncheckedUpdateManyWithoutBoardNestedInput
+  starredBy?: Prisma.StarredBoardUncheckedUpdateManyWithoutBoardNestedInput
+}
+
 export type BoardUncheckedUpdateManyWithoutOwnerInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   visibility?: Prisma.EnumBoardVisibilityFieldUpdateOperationsInput | $Enums.BoardVisibility
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1001,6 +1175,7 @@ export type BoardCountOutputType = {
   snapshots: number
   comments: number
   chatMessages: number
+  starredBy: number
 }
 
 export type BoardCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1009,6 +1184,7 @@ export type BoardCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.
   snapshots?: boolean | BoardCountOutputTypeCountSnapshotsArgs
   comments?: boolean | BoardCountOutputTypeCountCommentsArgs
   chatMessages?: boolean | BoardCountOutputTypeCountChatMessagesArgs
+  starredBy?: boolean | BoardCountOutputTypeCountStarredByArgs
 }
 
 /**
@@ -1056,11 +1232,19 @@ export type BoardCountOutputTypeCountChatMessagesArgs<ExtArgs extends runtime.Ty
   where?: Prisma.ChatMessageWhereInput
 }
 
+/**
+ * BoardCountOutputType without action
+ */
+export type BoardCountOutputTypeCountStarredByArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.StarredBoardWhereInput
+}
+
 
 export type BoardSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   title?: boolean
   description?: boolean
+  thumbnailUrl?: boolean
   visibility?: boolean
   ownerId?: boolean
   createdAt?: boolean
@@ -1071,6 +1255,7 @@ export type BoardSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   snapshots?: boolean | Prisma.Board$snapshotsArgs<ExtArgs>
   comments?: boolean | Prisma.Board$commentsArgs<ExtArgs>
   chatMessages?: boolean | Prisma.Board$chatMessagesArgs<ExtArgs>
+  starredBy?: boolean | Prisma.Board$starredByArgs<ExtArgs>
   _count?: boolean | Prisma.BoardCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["board"]>
 
@@ -1078,6 +1263,7 @@ export type BoardSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   id?: boolean
   title?: boolean
   description?: boolean
+  thumbnailUrl?: boolean
   visibility?: boolean
   ownerId?: boolean
   createdAt?: boolean
@@ -1089,6 +1275,7 @@ export type BoardSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   id?: boolean
   title?: boolean
   description?: boolean
+  thumbnailUrl?: boolean
   visibility?: boolean
   ownerId?: boolean
   createdAt?: boolean
@@ -1100,13 +1287,14 @@ export type BoardSelectScalar = {
   id?: boolean
   title?: boolean
   description?: boolean
+  thumbnailUrl?: boolean
   visibility?: boolean
   ownerId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type BoardOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "description" | "visibility" | "ownerId" | "createdAt" | "updatedAt", ExtArgs["result"]["board"]>
+export type BoardOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "description" | "thumbnailUrl" | "visibility" | "ownerId" | "createdAt" | "updatedAt", ExtArgs["result"]["board"]>
 export type BoardInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   collaborators?: boolean | Prisma.Board$collaboratorsArgs<ExtArgs>
@@ -1114,6 +1302,7 @@ export type BoardInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   snapshots?: boolean | Prisma.Board$snapshotsArgs<ExtArgs>
   comments?: boolean | Prisma.Board$commentsArgs<ExtArgs>
   chatMessages?: boolean | Prisma.Board$chatMessagesArgs<ExtArgs>
+  starredBy?: boolean | Prisma.Board$starredByArgs<ExtArgs>
   _count?: boolean | Prisma.BoardCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type BoardIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1132,11 +1321,13 @@ export type $BoardPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     snapshots: Prisma.$SnapshotPayload<ExtArgs>[]
     comments: Prisma.$CommentPayload<ExtArgs>[]
     chatMessages: Prisma.$ChatMessagePayload<ExtArgs>[]
+    starredBy: Prisma.$StarredBoardPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     title: string
     description: string | null
+    thumbnailUrl: string | null
     visibility: $Enums.BoardVisibility
     ownerId: string
     createdAt: Date
@@ -1541,6 +1732,7 @@ export interface Prisma__BoardClient<T, Null = never, ExtArgs extends runtime.Ty
   snapshots<T extends Prisma.Board$snapshotsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Board$snapshotsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SnapshotPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   comments<T extends Prisma.Board$commentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Board$commentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CommentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   chatMessages<T extends Prisma.Board$chatMessagesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Board$chatMessagesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ChatMessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  starredBy<T extends Prisma.Board$starredByArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Board$starredByArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$StarredBoardPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1573,6 +1765,7 @@ export interface BoardFieldRefs {
   readonly id: Prisma.FieldRef<"Board", 'String'>
   readonly title: Prisma.FieldRef<"Board", 'String'>
   readonly description: Prisma.FieldRef<"Board", 'String'>
+  readonly thumbnailUrl: Prisma.FieldRef<"Board", 'String'>
   readonly visibility: Prisma.FieldRef<"Board", 'BoardVisibility'>
   readonly ownerId: Prisma.FieldRef<"Board", 'String'>
   readonly createdAt: Prisma.FieldRef<"Board", 'DateTime'>
@@ -2095,6 +2288,30 @@ export type Board$chatMessagesArgs<ExtArgs extends runtime.Types.Extensions.Inte
   take?: number
   skip?: number
   distinct?: Prisma.ChatMessageScalarFieldEnum | Prisma.ChatMessageScalarFieldEnum[]
+}
+
+/**
+ * Board.starredBy
+ */
+export type Board$starredByArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the StarredBoard
+   */
+  select?: Prisma.StarredBoardSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the StarredBoard
+   */
+  omit?: Prisma.StarredBoardOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.StarredBoardInclude<ExtArgs> | null
+  where?: Prisma.StarredBoardWhereInput
+  orderBy?: Prisma.StarredBoardOrderByWithRelationInput | Prisma.StarredBoardOrderByWithRelationInput[]
+  cursor?: Prisma.StarredBoardWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.StarredBoardScalarFieldEnum | Prisma.StarredBoardScalarFieldEnum[]
 }
 
 /**

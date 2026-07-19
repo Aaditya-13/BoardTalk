@@ -81,3 +81,8 @@ export type ChatMessage = Prisma.ChatMessageModel
  * 
  */
 export type RefreshToken = Prisma.RefreshTokenModel
+/**
+ * Model StarredBoard
+ * 
+ */
+export type StarredBoard = Prisma.StarredBoardModel
