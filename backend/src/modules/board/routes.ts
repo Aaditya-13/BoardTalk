@@ -13,6 +13,8 @@ const router = Router();
 router.use(authenticate);
 
 router.get("/", boardController.listBoards);
+router.get("/trash", boardController.listTrashed);
+router.get("/starred", boardController.listStarred);
 
 router.post("/", validate(createBoardSchema), boardController.createBoard);
 

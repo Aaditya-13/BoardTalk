@@ -26,6 +26,14 @@ export const BoardVisibility = {
 export type BoardVisibility = (typeof BoardVisibility)[keyof typeof BoardVisibility]
 
 
+export const InviteType = {
+  LINK: 'LINK',
+  SHORT_CODE: 'SHORT_CODE'
+} as const
+
+export type InviteType = (typeof InviteType)[keyof typeof InviteType]
+
+
 export const CollaboratorRole = {
   OWNER: 'OWNER',
   EDITOR: 'EDITOR',

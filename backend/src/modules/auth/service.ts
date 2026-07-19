@@ -4,6 +4,7 @@ import type {
 } from "../../generated/prisma/client.js";
 
 import { authRepository } from "./repository.js";
+import { prisma } from "../../lib/prisma.js";
 import type {
   AuthResult,
   JwtPayload,
@@ -99,6 +100,29 @@ await authRepository.createRefreshToken(
 
     const accessToken = generateAccessToken(payload);
 
+    return {
+      user,
+      tokens: {
+        accessToken,
+      },
+    };
+  }
+
+  async devLogin(name: string): Promise<AuthResult> {
+    const email = `${name.toLowerCase()}@example.com`;
+    let user = await prisma.user.findFirst({ where: { email } });
+    if (!user) {
+      user = await userRepository.create({
+        name,
+        email,
+        isGuest: false,
+      });
+    }
+
+    const payload: JwtPayload = { userId: user.id };
+    const accessToken = generateAccessToken(payload);
+    
+    // Dev login only returns access token for simplicity (same as guest)
     return {
       user,
       tokens: {

@@ -45,6 +45,7 @@ export type InviteMinAggregateOutputType = {
   uses: number | null
   expiresAt: Date | null
   isActive: boolean | null
+  type: $Enums.InviteType | null
   createdAt: Date | null
 }
 
@@ -57,6 +58,7 @@ export type InviteMaxAggregateOutputType = {
   uses: number | null
   expiresAt: Date | null
   isActive: boolean | null
+  type: $Enums.InviteType | null
   createdAt: Date | null
 }
 
@@ -69,6 +71,7 @@ export type InviteCountAggregateOutputType = {
   uses: number
   expiresAt: number
   isActive: number
+  type: number
   createdAt: number
   _all: number
 }
@@ -93,6 +96,7 @@ export type InviteMinAggregateInputType = {
   uses?: true
   expiresAt?: true
   isActive?: true
+  type?: true
   createdAt?: true
 }
 
@@ -105,6 +109,7 @@ export type InviteMaxAggregateInputType = {
   uses?: true
   expiresAt?: true
   isActive?: true
+  type?: true
   createdAt?: true
 }
 
@@ -117,6 +122,7 @@ export type InviteCountAggregateInputType = {
   uses?: true
   expiresAt?: true
   isActive?: true
+  type?: true
   createdAt?: true
   _all?: true
 }
@@ -216,6 +222,7 @@ export type InviteGroupByOutputType = {
   uses: number
   expiresAt: Date | null
   isActive: boolean
+  type: $Enums.InviteType
   createdAt: Date
   _count: InviteCountAggregateOutputType | null
   _avg: InviteAvgAggregateOutputType | null
@@ -251,6 +258,7 @@ export type InviteWhereInput = {
   uses?: Prisma.IntFilter<"Invite"> | number
   expiresAt?: Prisma.DateTimeNullableFilter<"Invite"> | Date | string | null
   isActive?: Prisma.BoolFilter<"Invite"> | boolean
+  type?: Prisma.EnumInviteTypeFilter<"Invite"> | $Enums.InviteType
   createdAt?: Prisma.DateTimeFilter<"Invite"> | Date | string
   board?: Prisma.XOR<Prisma.BoardScalarRelationFilter, Prisma.BoardWhereInput>
 }
@@ -264,6 +272,7 @@ export type InviteOrderByWithRelationInput = {
   uses?: Prisma.SortOrder
   expiresAt?: Prisma.SortOrderInput | Prisma.SortOrder
   isActive?: Prisma.SortOrder
+  type?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   board?: Prisma.BoardOrderByWithRelationInput
 }
@@ -280,6 +289,7 @@ export type InviteWhereUniqueInput = Prisma.AtLeast<{
   uses?: Prisma.IntFilter<"Invite"> | number
   expiresAt?: Prisma.DateTimeNullableFilter<"Invite"> | Date | string | null
   isActive?: Prisma.BoolFilter<"Invite"> | boolean
+  type?: Prisma.EnumInviteTypeFilter<"Invite"> | $Enums.InviteType
   createdAt?: Prisma.DateTimeFilter<"Invite"> | Date | string
   board?: Prisma.XOR<Prisma.BoardScalarRelationFilter, Prisma.BoardWhereInput>
 }, "id" | "token">
@@ -293,6 +303,7 @@ export type InviteOrderByWithAggregationInput = {
   uses?: Prisma.SortOrder
   expiresAt?: Prisma.SortOrderInput | Prisma.SortOrder
   isActive?: Prisma.SortOrder
+  type?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   _count?: Prisma.InviteCountOrderByAggregateInput
   _avg?: Prisma.InviteAvgOrderByAggregateInput
@@ -313,6 +324,7 @@ export type InviteScalarWhereWithAggregatesInput = {
   uses?: Prisma.IntWithAggregatesFilter<"Invite"> | number
   expiresAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Invite"> | Date | string | null
   isActive?: Prisma.BoolWithAggregatesFilter<"Invite"> | boolean
+  type?: Prisma.EnumInviteTypeWithAggregatesFilter<"Invite"> | $Enums.InviteType
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Invite"> | Date | string
 }
 
@@ -324,6 +336,7 @@ export type InviteCreateInput = {
   uses?: number
   expiresAt?: Date | string | null
   isActive?: boolean
+  type?: $Enums.InviteType
   createdAt?: Date | string
   board: Prisma.BoardCreateNestedOneWithoutInvitesInput
 }
@@ -337,6 +350,7 @@ export type InviteUncheckedCreateInput = {
   uses?: number
   expiresAt?: Date | string | null
   isActive?: boolean
+  type?: $Enums.InviteType
   createdAt?: Date | string
 }
 
@@ -348,6 +362,7 @@ export type InviteUpdateInput = {
   uses?: Prisma.IntFieldUpdateOperationsInput | number
   expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  type?: Prisma.EnumInviteTypeFieldUpdateOperationsInput | $Enums.InviteType
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   board?: Prisma.BoardUpdateOneRequiredWithoutInvitesNestedInput
 }
@@ -361,6 +376,7 @@ export type InviteUncheckedUpdateInput = {
   uses?: Prisma.IntFieldUpdateOperationsInput | number
   expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  type?: Prisma.EnumInviteTypeFieldUpdateOperationsInput | $Enums.InviteType
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -373,6 +389,7 @@ export type InviteCreateManyInput = {
   uses?: number
   expiresAt?: Date | string | null
   isActive?: boolean
+  type?: $Enums.InviteType
   createdAt?: Date | string
 }
 
@@ -384,6 +401,7 @@ export type InviteUpdateManyMutationInput = {
   uses?: Prisma.IntFieldUpdateOperationsInput | number
   expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  type?: Prisma.EnumInviteTypeFieldUpdateOperationsInput | $Enums.InviteType
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -396,6 +414,7 @@ export type InviteUncheckedUpdateManyInput = {
   uses?: Prisma.IntFieldUpdateOperationsInput | number
   expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  type?: Prisma.EnumInviteTypeFieldUpdateOperationsInput | $Enums.InviteType
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -418,6 +437,7 @@ export type InviteCountOrderByAggregateInput = {
   uses?: Prisma.SortOrder
   expiresAt?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
+  type?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -435,6 +455,7 @@ export type InviteMaxOrderByAggregateInput = {
   uses?: Prisma.SortOrder
   expiresAt?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
+  type?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -447,6 +468,7 @@ export type InviteMinOrderByAggregateInput = {
   uses?: Prisma.SortOrder
   expiresAt?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
+  type?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -513,8 +535,8 @@ export type IntFieldUpdateOperationsInput = {
   divide?: number
 }
 
-export type NullableDateTimeFieldUpdateOperationsInput = {
-  set?: Date | string | null
+export type EnumInviteTypeFieldUpdateOperationsInput = {
+  set?: $Enums.InviteType
 }
 
 export type InviteCreateWithoutBoardInput = {
@@ -525,6 +547,7 @@ export type InviteCreateWithoutBoardInput = {
   uses?: number
   expiresAt?: Date | string | null
   isActive?: boolean
+  type?: $Enums.InviteType
   createdAt?: Date | string
 }
 
@@ -536,6 +559,7 @@ export type InviteUncheckedCreateWithoutBoardInput = {
   uses?: number
   expiresAt?: Date | string | null
   isActive?: boolean
+  type?: $Enums.InviteType
   createdAt?: Date | string
 }
 
@@ -577,6 +601,7 @@ export type InviteScalarWhereInput = {
   uses?: Prisma.IntFilter<"Invite"> | number
   expiresAt?: Prisma.DateTimeNullableFilter<"Invite"> | Date | string | null
   isActive?: Prisma.BoolFilter<"Invite"> | boolean
+  type?: Prisma.EnumInviteTypeFilter<"Invite"> | $Enums.InviteType
   createdAt?: Prisma.DateTimeFilter<"Invite"> | Date | string
 }
 
@@ -588,6 +613,7 @@ export type InviteCreateManyBoardInput = {
   uses?: number
   expiresAt?: Date | string | null
   isActive?: boolean
+  type?: $Enums.InviteType
   createdAt?: Date | string
 }
 
@@ -599,6 +625,7 @@ export type InviteUpdateWithoutBoardInput = {
   uses?: Prisma.IntFieldUpdateOperationsInput | number
   expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  type?: Prisma.EnumInviteTypeFieldUpdateOperationsInput | $Enums.InviteType
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -610,6 +637,7 @@ export type InviteUncheckedUpdateWithoutBoardInput = {
   uses?: Prisma.IntFieldUpdateOperationsInput | number
   expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  type?: Prisma.EnumInviteTypeFieldUpdateOperationsInput | $Enums.InviteType
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -621,6 +649,7 @@ export type InviteUncheckedUpdateManyWithoutBoardInput = {
   uses?: Prisma.IntFieldUpdateOperationsInput | number
   expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  type?: Prisma.EnumInviteTypeFieldUpdateOperationsInput | $Enums.InviteType
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -635,6 +664,7 @@ export type InviteSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   uses?: boolean
   expiresAt?: boolean
   isActive?: boolean
+  type?: boolean
   createdAt?: boolean
   board?: boolean | Prisma.BoardDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["invite"]>
@@ -648,6 +678,7 @@ export type InviteSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extens
   uses?: boolean
   expiresAt?: boolean
   isActive?: boolean
+  type?: boolean
   createdAt?: boolean
   board?: boolean | Prisma.BoardDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["invite"]>
@@ -661,6 +692,7 @@ export type InviteSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extens
   uses?: boolean
   expiresAt?: boolean
   isActive?: boolean
+  type?: boolean
   createdAt?: boolean
   board?: boolean | Prisma.BoardDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["invite"]>
@@ -674,10 +706,11 @@ export type InviteSelectScalar = {
   uses?: boolean
   expiresAt?: boolean
   isActive?: boolean
+  type?: boolean
   createdAt?: boolean
 }
 
-export type InviteOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "boardId" | "token" | "role" | "maxUses" | "uses" | "expiresAt" | "isActive" | "createdAt", ExtArgs["result"]["invite"]>
+export type InviteOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "boardId" | "token" | "role" | "maxUses" | "uses" | "expiresAt" | "isActive" | "type" | "createdAt", ExtArgs["result"]["invite"]>
 export type InviteInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   board?: boolean | Prisma.BoardDefaultArgs<ExtArgs>
 }
@@ -702,6 +735,7 @@ export type $InvitePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     uses: number
     expiresAt: Date | null
     isActive: boolean
+    type: $Enums.InviteType
     createdAt: Date
   }, ExtArgs["result"]["invite"]>
   composites: {}
@@ -1135,6 +1169,7 @@ export interface InviteFieldRefs {
   readonly uses: Prisma.FieldRef<"Invite", 'Int'>
   readonly expiresAt: Prisma.FieldRef<"Invite", 'DateTime'>
   readonly isActive: Prisma.FieldRef<"Invite", 'Boolean'>
+  readonly type: Prisma.FieldRef<"Invite", 'InviteType'>
   readonly createdAt: Prisma.FieldRef<"Invite", 'DateTime'>
 }
     

@@ -13,6 +13,16 @@ class BoardController {
     });
   }
 
+  async listTrashed(req: Request, res: Response) {
+    const boards = await boardService.listTrashed(req.user!.id);
+    return res.status(200).json({ success: true, data: boards });
+  }
+
+  async listStarred(req: Request, res: Response) {
+    const boards = await boardService.listStarred(req.user!.id);
+    return res.status(200).json({ success: true, data: boards });
+  }
+
   async createBoard(req: Request, res: Response) {
     const board = await boardService.createBoard(req.user!.id, req.body);
 

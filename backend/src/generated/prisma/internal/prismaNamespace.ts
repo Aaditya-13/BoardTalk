@@ -1140,7 +1140,8 @@ export const BoardScalarFieldEnum = {
   visibility: 'visibility',
   ownerId: 'ownerId',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt'
 } as const
 
 export type BoardScalarFieldEnum = (typeof BoardScalarFieldEnum)[keyof typeof BoardScalarFieldEnum]
@@ -1166,6 +1167,7 @@ export const InviteScalarFieldEnum = {
   uses: 'uses',
   expiresAt: 'expiresAt',
   isActive: 'isActive',
+  type: 'type',
   createdAt: 'createdAt'
 } as const
 
@@ -1372,6 +1374,20 @@ export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'In
  * Reference to a field of type 'Int[]'
  */
 export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
+    
+
+
+/**
+ * Reference to a field of type 'InviteType'
+ */
+export type EnumInviteTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'InviteType'>
+    
+
+
+/**
+ * Reference to a field of type 'InviteType[]'
+ */
+export type ListEnumInviteTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'InviteType[]'>
     
 
 

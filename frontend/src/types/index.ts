@@ -21,4 +21,5 @@ export interface Board {
   isStarred?: boolean;
   createdAt: string;
   updatedAt: string;
+  deletedAt?: string | null;
 }

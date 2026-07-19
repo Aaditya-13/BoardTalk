@@ -29,7 +29,7 @@ const envSchema = z.object({
 
   CLIENT_URL: z.string().url(),
 
-  GEMINI_API_KEY: z.string().min(1),
+  GEMINI_API_KEY: z.string().min(1).optional(),
 });
 
 const parsed = envSchema.safeParse(process.env);

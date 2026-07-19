@@ -35,6 +35,22 @@ class BoardService {
     });
   }
 
+  async listTrashed(ownerId: string) {
+    const boards = await boardRepository.findTrashedByUser(ownerId);
+    return boards.map((board) => ({ ...board, isStarred: false }));
+  }
+
+  async listStarred(ownerId: string) {
+    const boards = await boardRepository.findStarredByUser(ownerId);
+    return boards.map((board) => {
+      const { starredBy, ...rest } = board;
+      return {
+        ...rest,
+        isStarred: true,
+      };
+    });
+  }
+
   async getBoard(ownerId: string, boardId: string): Promise<Board> {
     await collaboratorService.assertBoardAccess(boardId, ownerId);
 

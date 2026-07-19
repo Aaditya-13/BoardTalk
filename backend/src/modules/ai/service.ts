@@ -2,6 +2,7 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 
 import { env } from "../../config/env.js";
 import { collaboratorService } from "../collaborator/service.js";
+import { InternalServerError } from "../shared/errors.js";
 import { SYSTEM_PROMPT, buildUserPrompt } from "./prompt.js";
 import { parseAiResponse } from "./parser.js";
 import type { AiGenerateResult } from "./types.js";
@@ -22,6 +23,10 @@ class AiService {
     rawCommand: string
   ): Promise<AiGenerateResult> {
     await collaboratorService.assertBoardWriteAccess(boardId, userId);
+
+    if (!env.GEMINI_API_KEY) {
+      throw new InternalServerError("Gemini API key is not configured.");
+    }
 
     const userPrompt = buildUserPrompt(rawCommand);
 

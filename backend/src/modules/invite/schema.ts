@@ -1,9 +1,10 @@
 import { z } from "zod";
 
-import { CollaboratorRole } from "../../generated/prisma/client.js";
+import { CollaboratorRole, InviteType } from "../../generated/prisma/client.js";
 
 export const createInviteSchema = z.object({
   role: z.nativeEnum(CollaboratorRole),
+  type: z.nativeEnum(InviteType).optional().default("LINK"),
 
   maxUses: z
     .number()

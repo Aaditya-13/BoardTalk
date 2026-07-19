@@ -3,8 +3,9 @@ import { api } from '@/lib/api';
 import type { Board, BoardVisibility } from '@/types';
 
 // API Calls
-const fetchBoards = async (search?: string): Promise<Board[]> => {
-  const { data } = await api.get('/boards', { params: { q: search } });
+const fetchBoards = async (search?: string, filter: 'all' | 'starred' | 'trash' = 'all'): Promise<Board[]> => {
+  const endpoint = filter === 'all' ? '/boards' : `/boards/${filter}`;
+  const { data } = await api.get(endpoint, { params: { q: search } });
   return data.data;
 };
 
@@ -18,6 +19,11 @@ const createBoard = async (payload: { title: string; description?: string; visib
   return data.data;
 };
 
+const updateBoard = async ({ boardId, payload }: { boardId: string, payload: { title?: string; description?: string } }): Promise<Board> => {
+  const { data } = await api.put(`/boards/${boardId}`, payload);
+  return data.data;
+};
+
 const deleteBoard = async (boardId: string): Promise<void> => {
   await api.delete(`/boards/${boardId}`);
 };
@@ -28,10 +34,10 @@ const toggleStar = async (boardId: string): Promise<{ isStarred: boolean }> => {
 };
 
 // Hooks
-export const useBoards = (search?: string) => {
+export const useBoards = (search?: string, filter: 'all' | 'starred' | 'trash' = 'all') => {
   return useQuery({
-    queryKey: ['boards', search],
-    queryFn: () => fetchBoards(search),
+    queryKey: ['boards', filter, search],
+    queryFn: () => fetchBoards(search, filter),
   });
 };
 
@@ -59,6 +65,17 @@ export const useDeleteBoard = () => {
     mutationFn: deleteBoard,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['boards'] });
+    },
+  });
+};
+
+export const useUpdateBoard = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: updateBoard,
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({ queryKey: ['boards'] });
+      queryClient.invalidateQueries({ queryKey: ['board', variables.boardId] });
     },
   });
 };

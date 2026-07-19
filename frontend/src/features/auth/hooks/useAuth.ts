@@ -13,6 +13,16 @@ const guestLogin = async (): Promise<{ accessToken: string; user: AuthUser }> =>
   return data.data;
 };
 
+const updateProfile = async (payload: { name?: string; avatarUrl?: string }): Promise<AuthUser> => {
+  const { data } = await api.patch('/users/me', payload);
+  return data.data;
+};
+
+const devLogin = async (name: string): Promise<{ accessToken: string; user: AuthUser }> => {
+  const { data } = await api.post('/auth/dev-login', { name });
+  return data.data;
+};
+
 const logout = async (): Promise<void> => {
   await api.post('/auth/logout');
 };
@@ -36,6 +46,16 @@ export const useGuestLogin = () => {
   });
 };
 
+export const useDevLogin = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: devLogin,
+    onSuccess: (data) => {
+      queryClient.setQueryData(['currentUser'], data.user);
+    },
+  });
+};
+
 export const useLogout = () => {
   const queryClient = useQueryClient();
   return useMutation({
@@ -44,6 +64,16 @@ export const useLogout = () => {
       queryClient.setQueryData(['currentUser'], null);
       queryClient.clear();
       window.location.href = '/';
+    },
+  });
+};
+
+export const useUpdateProfile = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: updateProfile,
+    onSuccess: (updatedUser) => {
+      queryClient.setQueryData(['currentUser'], updatedUser);
     },
   });
 };

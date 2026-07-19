@@ -33,6 +33,7 @@ class BoardRepository {
           ...(search
             ? [{ title: { contains: search, mode: Prisma.QueryMode.insensitive } }]
             : []),
+          { deletedAt: null },
         ],
       },
       include: {
@@ -68,9 +69,33 @@ class BoardRepository {
     });
   }
 
+  findTrashedByUser(userId: string) {
+    return prisma.board.findMany({
+      where: {
+        ownerId: userId,
+        deletedAt: { not: null },
+      },
+      orderBy: { deletedAt: "desc" },
+    });
+  }
+
+  findStarredByUser(userId: string) {
+    return prisma.board.findMany({
+      where: {
+        starredBy: { some: { userId } },
+        deletedAt: null,
+      },
+      include: {
+        starredBy: { where: { userId } },
+      },
+      orderBy: { createdAt: "desc" },
+    });
+  }
+
   deleteById(id: string) {
-    return prisma.board.delete({
+    return prisma.board.update({
       where: { id },
+      data: { deletedAt: new Date() },
     });
   }
 

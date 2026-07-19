@@ -5,6 +5,7 @@ import { ProtectedRoute } from "@/features/auth/components/ProtectedRoute";
 import { LandingPage } from "@/features/auth/components/LandingPage";
 import { DashboardPage } from "@/features/dashboard/components/DashboardPage";
 import { BoardPage } from "@/features/board/components/BoardPage";
+import { JoinPage } from "@/features/board/components/JoinPage";
 
 export function Router() {
   return (
@@ -15,13 +16,17 @@ export function Router() {
         {/* Protected Dashboard Routes */}
         <Route element={<ProtectedRoute />}>
           <Route element={<DashboardLayout />}>
-            <Route path="/dashboard" element={<DashboardPage />} />
+            <Route path="/dashboard" element={<DashboardPage filter="all" />} />
+            <Route path="/dashboard/starred" element={<DashboardPage filter="starred" />} />
+            <Route path="/dashboard/trash" element={<DashboardPage filter="trash" />} />
           </Route>
           
           {/* Protected Board Routes */}
           <Route element={<BoardLayout />}>
             <Route path="/board/:boardId" element={<BoardPage />} />
           </Route>
+          
+          <Route path="/invite/:token" element={<JoinPage />} />
         </Route>
       </Routes>
     </BrowserRouter>

@@ -23,6 +23,23 @@ class UserController {
     });
   }
 
+  async uploadAvatar(req: Request, res: Response) {
+    if (!req.file) {
+      return res.status(400).json({ success: false, message: "No image provided" });
+    }
+
+    const avatarUrl = req.file.path;
+
+    const user = await userService.updateProfile(req.user!.id, {
+      avatarUrl,
+    });
+
+    return res.status(200).json({
+      success: true,
+      data: user,
+    });
+  }
+
   async deleteAccount(req: Request, res: Response) {
     await userService.deleteAccount(req.user!.id);
 

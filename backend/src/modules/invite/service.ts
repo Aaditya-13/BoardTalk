@@ -1,6 +1,7 @@
 import { nanoid } from "nanoid";
 
 import { prisma } from "../../lib/prisma.js";
+import { InviteType } from "../../generated/prisma/client.js";
 import { ConflictError, NotFoundError } from "../shared/errors.js";
 
 import { boardRepository } from "../board/repository.js";
@@ -27,14 +28,26 @@ class InviteService {
   ) {
     await this.assertBoardOwner(ownerId, boardId);
 
+    let token = nanoid(24);
+    if (data.type === "SHORT_CODE") {
+      // 3 uppercase letters, 3 numbers
+      const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+      const numbers = "0123456789";
+      let code = "";
+      for (let i = 0; i < 3; i++) code += letters.charAt(Math.floor(Math.random() * letters.length));
+      for (let i = 0; i < 3; i++) code += numbers.charAt(Math.floor(Math.random() * numbers.length));
+      token = code;
+    }
+
     return inviteRepository.create({
       board: {
         connect: {
           id: boardId,
         },
       },
-      token: nanoid(24),
+      token,
       role: data.role,
+      type: data.type,
       maxUses: data.maxUses ?? null,
       expiresAt: data.expiresAt ?? null,
     });

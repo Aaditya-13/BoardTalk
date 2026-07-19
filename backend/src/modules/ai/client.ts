@@ -1,15 +1,17 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
 import { env } from "../../config/env.js";
+import { InternalServerError } from "../shared/errors.js";
 
-// ---------------------------------------------------------------------------
-// Gemini client singleton.
-// Model: gemini-2.5-flash — fast, multimodal, supports system instructions.
-// ---------------------------------------------------------------------------
+export function createGeminiModel(systemInstruction?: string) {
+  if (!env.GEMINI_API_KEY) {
+    throw new InternalServerError("Gemini API key is not configured.");
+  }
 
-const genAI = new GoogleGenerativeAI(env.GEMINI_API_KEY);
+  const genAI = new GoogleGenerativeAI(env.GEMINI_API_KEY);
 
-export const geminiModel = genAI.getGenerativeModel({
-  model: "gemini-2.5-flash",
-  systemInstruction: undefined, // injected per-request in the service
-});
+  return genAI.getGenerativeModel({
+    model: "gemini-2.5-flash",
+    systemInstruction,
+  });
+}
