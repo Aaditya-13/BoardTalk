@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { api } from '@/lib/api';
-import { Board, BoardVisibility } from '@/types';
+import type { Board, BoardVisibility } from '@/types';
 
 // API Calls
 const fetchBoards = async (search?: string): Promise<Board[]> => {

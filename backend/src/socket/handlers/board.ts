@@ -189,6 +189,13 @@ export function registerBoardSocketHandlers(
     });
   });
 
+  socket.on("board:update", (payload: { boardId: string; update: any }) => {
+    socket.to(getBoardRoomName(payload.boardId)).emit("board:update", {
+      boardId: payload.boardId,
+      update: payload.update,
+    });
+  });
+
   socket.on("board:document", (payload: DocumentPayload) => {
     queueSnapshot(
       payload.boardId,

@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { api } from '@/lib/api';
-import { AuthUser } from '@/types';
+import type { AuthUser } from '@/types';
 
 // API Calls
 const fetchCurrentUser = async (): Promise<AuthUser> => {
