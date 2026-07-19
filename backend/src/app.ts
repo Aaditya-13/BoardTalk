@@ -18,6 +18,7 @@ import collaboratorRoutes from "./modules/collaborator/routes";
 import snapshotRoutes from "./modules/snapshot/routes";
 import commentRoutes from "./modules/comment/routes";
 import chatRoutes from "./modules/chat/routes";
+import aiRoutes from "./modules/ai/routes";
 import userRoutes from "./modules/user/routes";
 
 const app = express();
@@ -60,6 +61,8 @@ app.use("/api/v1/boards", snapshotRoutes);
 app.use("/api/v1/boards/:boardId/comments", commentRoutes);
 
 app.use("/api/v1/boards/:boardId/chat", chatRoutes);
+
+app.use("/api/v1/boards/:boardId/ai", aiRoutes);
 
 app.use("/api/v1/invites", publicInviteRoutes);
 

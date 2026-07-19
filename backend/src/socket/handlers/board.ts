@@ -1,7 +1,11 @@
-import type { Socket } from "socket.io";
+import { randomUUID } from "node:crypto";
+
+import type { Server as SocketIOServer, Socket } from "socket.io";
 
 import { collaboratorService } from "../../modules/collaborator/service.js";
 import { snapshotService } from "../../modules/snapshot/service.js";
+import { chatService } from "../../modules/chat/service.js";
+import { aiService } from "../../modules/ai/service.js";
 import {
   getBoardRoomName,
   joinBoardRoom,
@@ -18,6 +22,8 @@ import {
   persistSnapshot,
   queueSnapshot,
 } from "../snapshotBuffer.js";
+
+const AI_PREFIX = "/ai ";
 
 type JoinBoardPayload = {
   boardId: string;
@@ -39,7 +45,15 @@ type DocumentPayload = {
   documentJson: unknown;
 };
 
-export function registerBoardSocketHandlers(socket: Socket) {
+type ChatMessagePayload = {
+  boardId: string;
+  content: string;
+};
+
+export function registerBoardSocketHandlers(
+  io: SocketIOServer,
+  socket: Socket
+) {
   socket.on(
     "board:join",
     async (
@@ -85,6 +99,22 @@ export function registerBoardSocketHandlers(socket: Socket) {
             boardId: payload.boardId,
             snapshot: null,
           });
+        }
+
+        // Send last 50 chat messages to the joining member
+        try {
+          const history = await chatService.getHistory(
+            payload.boardId,
+            socket.data.user.id,
+            { limit: 50 }
+          );
+
+          socket.emit("chat:history", {
+            boardId: payload.boardId,
+            messages: history,
+          });
+        } catch {
+          // non-fatal — chat history is best-effort
         }
 
         socket.to(getBoardRoomName(payload.boardId)).emit("board:presence:joined", {
@@ -168,6 +198,63 @@ export function registerBoardSocketHandlers(socket: Socket) {
 
   socket.on("board:snapshot:flush", async (payload: JoinBoardPayload) => {
     await flushSnapshot(payload.boardId, socket.data.user.id, persistSnapshot);
+  });
+
+  socket.on("chat:message", async (payload: ChatMessagePayload) => {
+    try {
+      const message = await chatService.sendMessage(
+        payload.boardId,
+        socket.data.user.id,
+        payload.content
+      );
+
+      // Broadcast the persisted message to everyone in the room (including sender)
+      io.to(getBoardRoomName(payload.boardId)).emit("chat:message", {
+        boardId: payload.boardId,
+        message,
+      });
+
+      // AI command routing — only if content starts with "/ai "
+      if (payload.content.startsWith(AI_PREFIX)) {
+        const rawCommand = payload.content.slice(AI_PREFIX.length).trim();
+        const requestId = randomUUID();
+
+        // Ack immediately so the client can show a spinner
+        socket.emit("ai:generating", {
+          boardId: payload.boardId,
+          requestId,
+        });
+
+        try {
+          const result = await aiService.handleCommand(
+            payload.boardId,
+            socket.data.user.id,
+            rawCommand
+          );
+
+          socket.emit("ai:result", {
+            boardId: payload.boardId,
+            requestId,
+            elements: result.elements,
+          });
+        } catch (aiError) {
+          socket.emit("ai:error", {
+            boardId: payload.boardId,
+            requestId,
+            message:
+              aiError instanceof Error
+                ? aiError.message
+                : "AI generation failed.",
+          });
+        }
+      }
+    } catch (error) {
+      socket.emit("chat:error", {
+        boardId: payload.boardId,
+        message:
+          error instanceof Error ? error.message : "Failed to send message.",
+      });
+    }
   });
 
   socket.on("disconnecting", () => {

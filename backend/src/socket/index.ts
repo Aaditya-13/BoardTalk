@@ -17,7 +17,7 @@ export function initializeSocket(server: HttpServer): SocketIOServer {
   io.use(authenticateSocket);
 
   io.on("connection", (socket) => {
-    registerBoardSocketHandlers(socket);
+    registerBoardSocketHandlers(io, socket);
   });
 
   return io;

@@ -28,6 +28,8 @@ const envSchema = z.object({
   GITHUB_CLIENT_SECRET: z.string().min(1),
 
   CLIENT_URL: z.string().url(),
+
+  GEMINI_API_KEY: z.string().min(1),
 });
 
 const parsed = envSchema.safeParse(process.env);
