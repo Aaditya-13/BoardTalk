@@ -21,8 +21,11 @@ export function queueSnapshot(
   }
 
   const timeoutId = setTimeout(async () => {
-    await flush(boardId, userId, documentJson);
-    pendingSnapshots.delete(boardId);
+    try {
+      await flush(boardId, userId, documentJson);
+    } finally {
+      pendingSnapshots.delete(boardId);
+    }
   }, snapshotDelayMs);
 
   pendingSnapshots.set(boardId, {
@@ -47,7 +50,11 @@ export async function flushSnapshot(
   }
 
   pendingSnapshots.delete(boardId);
-  await flush(boardId, userId, pending.documentJson);
+  try {
+    await flush(boardId, userId, pending.documentJson);
+  } finally {
+    pendingSnapshots.delete(boardId);
+  }
 }
 
 export async function persistSnapshot(

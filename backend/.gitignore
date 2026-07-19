@@ -18,3 +18,4 @@ pnpm-debug.log*
 .cache/
 .turbo/
 AGENTS.md
+plan.md

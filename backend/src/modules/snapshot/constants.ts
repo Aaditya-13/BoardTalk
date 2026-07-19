@@ -1,0 +1,1 @@
+export const SNAPSHOT_RETENTION_LIMIT = 50;
