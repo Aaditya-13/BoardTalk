@@ -40,6 +40,9 @@ class BoardRepository {
         starredBy: {
           where: { userId },
         },
+        owner: {
+          select: { id: true, name: true, avatarUrl: true },
+        },
       },
       orderBy: {
         createdAt: "desc",
@@ -87,6 +90,9 @@ class BoardRepository {
       },
       include: {
         starredBy: { where: { userId } },
+        owner: {
+          select: { id: true, name: true, avatarUrl: true },
+        },
       },
       orderBy: { createdAt: "desc" },
     });

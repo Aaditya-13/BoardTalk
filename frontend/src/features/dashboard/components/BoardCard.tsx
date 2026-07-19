@@ -1,9 +1,12 @@
 import type { Board } from "@/types";
 import { formatDistanceToNow } from "date-fns";
-import { Star, MoreVertical, Pencil, Trash2, Link } from "lucide-react";
+import { Star, MoreVertical, Pencil, Trash2, Link, Copy, Share2 } from "lucide-react";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
-import { useDeleteBoard, useToggleStarBoard } from "@/features/board/hooks/useBoards";
+import { useDeleteBoard, useToggleStarBoard, useDuplicateBoard } from "@/features/board/hooks/useBoards";
 import { useNavigate } from "react-router";
+import { useCurrentUser } from "@/features/auth/hooks/useAuth";
+import { ShareBoardModal } from "@/features/board/components/ShareBoardModal";
+import { useState } from "react";
 
 interface BoardCardProps {
   board: Board;
@@ -30,7 +33,12 @@ export function BoardCard({ board }: BoardCardProps) {
   const navigate = useNavigate();
   const deleteBoard = useDeleteBoard();
   const toggleStar = useToggleStarBoard();
+  const duplicateBoard = useDuplicateBoard();
+  const { data: user } = useCurrentUser();
+  
+  const [isShareModalOpen, setIsShareModalOpen] = useState(false);
   const isStarred = board.isStarred ?? false;
+  const isShared = user && board.ownerId !== user.id;
 
   const handleDelete = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -50,6 +58,11 @@ export function BoardCard({ board }: BoardCardProps) {
     alert("Link copied to clipboard!");
   };
 
+  const handleDuplicate = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    duplicateBoard.mutate(board.id);
+  };
+
   return (
     <div 
       className="group relative flex flex-col h-[280px] bg-white dark:bg-[#1A1A1A] rounded-[2rem] border-[3px] border-black/10 dark:border-white/10 hover:border-black/30 dark:hover:border-white/30 transition-all cursor-pointer overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1"
@@ -62,6 +75,20 @@ export function BoardCard({ board }: BoardCardProps) {
       >
         <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors" />
         
+        {/* Shared Badge */}
+        {isShared && board.owner && (
+          <div className="absolute top-4 left-4 flex items-center bg-white/40 dark:bg-black/40 backdrop-blur-md px-3 py-1.5 rounded-full shadow-sm">
+            {board.owner.avatarUrl ? (
+              <img src={board.owner.avatarUrl} alt={board.owner.name} className="h-5 w-5 rounded-full mr-2 border border-white/50" />
+            ) : (
+              <div className="h-5 w-5 rounded-full mr-2 bg-gradient-to-br from-[#00D1FF] to-[#0055FF] border border-white/50 flex items-center justify-center text-[10px] font-bold text-white uppercase">
+                {board.owner.name.charAt(0)}
+              </div>
+            )}
+            <span className="text-xs font-bold text-black dark:text-white">Shared by {board.owner.name.split(' ')[0]}</span>
+          </div>
+        )}
+
         {/* Star Button */}
         <button 
           onClick={handleToggleStar}
@@ -107,7 +134,15 @@ export function BoardCard({ board }: BoardCardProps) {
                   <Pencil className="mr-2 h-4 w-4" />
                   Rename
                 </DropdownMenu.Item>
+                <DropdownMenu.Item onClick={(e) => { e.stopPropagation(); setIsShareModalOpen(true); }} className="group flex cursor-pointer items-center rounded-xl px-3 py-2 text-sm font-bold text-[#00D1FF] hover:bg-[#00D1FF]/10 outline-none transition-colors">
+                  <Share2 className="mr-2 h-4 w-4" />
+                  Share
+                </DropdownMenu.Item>
                 <div className="h-[3px] w-full bg-black/5 dark:bg-white/5 my-1 rounded-full" />
+                <DropdownMenu.Item onClick={handleDuplicate} className="group flex cursor-pointer items-center rounded-xl px-3 py-2 text-sm font-bold text-black dark:text-white hover:bg-black/5 dark:hover:bg-white/5 outline-none transition-colors">
+                  <Copy className="mr-2 h-4 w-4" />
+                  Duplicate
+                </DropdownMenu.Item>
                 <DropdownMenu.Item onClick={handleDelete} className="group flex cursor-pointer items-center rounded-xl px-3 py-2 text-sm font-bold text-[#FF5F56] hover:bg-[#FF5F56]/10 outline-none transition-colors">
                   <Trash2 className="mr-2 h-4 w-4" />
                   Delete Board
@@ -117,6 +152,12 @@ export function BoardCard({ board }: BoardCardProps) {
           </DropdownMenu.Root>
         </div>
       </div>
+
+      <ShareBoardModal 
+        boardId={board.id}
+        open={isShareModalOpen}
+        onOpenChange={setIsShareModalOpen}
+      />
     </div>
   );
 }

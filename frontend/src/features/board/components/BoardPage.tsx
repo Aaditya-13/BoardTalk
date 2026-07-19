@@ -72,8 +72,16 @@ export function BoardPage() {
   const storeWithStatus = useBoardSync(boardId!);
   const { activePanel, setActivePanel, isSidebarOpen } = useUIStore();
   const { theme, setTheme } = useTheme();
-  const [canvasBgIndex, setCanvasBgIndex] = useState(1); // Default to offwhite
+  const [canvasBgIndex, setCanvasBgIndex] = useState(1);
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
+  const updateBoard = useUpdateBoard();
+
+  useEffect(() => {
+    if (board?.canvasColor) {
+      const idx = CANVAS_COLORS.findIndex(c => c.name === board.canvasColor);
+      if (idx !== -1) setCanvasBgIndex(idx);
+    }
+  }, [board?.canvasColor]);
 
   // Call usePresence to sync cursors
   usePresence(boardId!, storeWithStatus.status === 'synced-remote' ? storeWithStatus.store : undefined);
@@ -149,7 +157,10 @@ export function BoardPage() {
           {CANVAS_COLORS.map((c, i) => (
             <button
               key={c.name}
-              onClick={() => setCanvasBgIndex(i)}
+              onClick={() => {
+                setCanvasBgIndex(i);
+                updateBoard.mutate({ boardId: boardId!, payload: { canvasColor: c.name } });
+              }}
               className={cn(
                 "w-6 h-6 rounded-md border border-black/10 transition-all",
                 canvasBgIndex === i && "ring-2 ring-blue-500 ring-offset-2 dark:ring-offset-zinc-900 scale-110"

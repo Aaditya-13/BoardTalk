@@ -17,6 +17,7 @@ export const createBoardSchema = z.object({
     .optional(),
 
   visibility: z.nativeEnum(BoardVisibility).optional(),
+  canvasColor: z.string().nullable().optional(),
 });
 
 export const updateBoardSchema = z
@@ -36,12 +37,14 @@ export const updateBoardSchema = z
       .optional(),
 
     visibility: z.nativeEnum(BoardVisibility).optional(),
+    canvasColor: z.string().nullable().optional(),
   })
   .refine(
     (data) =>
       data.title !== undefined ||
       data.description !== undefined ||
-      data.visibility !== undefined,
+      data.visibility !== undefined ||
+      data.canvasColor !== undefined,
     {
       message: "At least one board field must be provided.",
     }

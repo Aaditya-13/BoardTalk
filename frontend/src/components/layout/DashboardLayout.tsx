@@ -117,7 +117,8 @@ export function DashboardLayout() {
             </Button>
             <Button 
               variant="ghost" 
-              className="justify-start px-4 h-12 rounded-xl font-bold text-black/60 dark:text-white/60 hover:text-black dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5"
+              onClick={() => navigate('/dashboard/shared')}
+              className={`justify-start px-4 h-12 rounded-xl font-bold transition-all ${location.pathname === '/dashboard/shared' ? 'bg-black/5 dark:bg-white/10 text-black dark:text-white' : 'text-black/60 dark:text-white/60 hover:text-black dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5'}`}
             >
               <Users className="mr-3 h-5 w-5" />
               Shared with me

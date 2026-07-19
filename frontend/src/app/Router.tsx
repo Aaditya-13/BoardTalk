@@ -17,6 +17,7 @@ export function Router() {
         <Route element={<ProtectedRoute />}>
           <Route element={<DashboardLayout />}>
             <Route path="/dashboard" element={<DashboardPage filter="all" />} />
+            <Route path="/dashboard/shared" element={<DashboardPage filter="shared" />} />
             <Route path="/dashboard/starred" element={<DashboardPage filter="starred" />} />
             <Route path="/dashboard/trash" element={<DashboardPage filter="trash" />} />
           </Route>

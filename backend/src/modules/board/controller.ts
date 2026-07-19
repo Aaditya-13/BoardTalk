@@ -79,6 +79,17 @@ class BoardController {
       data: { isStarred },
     });
   }
+
+  async duplicateBoard(req: Request, res: Response) {
+    const boardId = req.params.boardId as string;
+
+    const board = await boardService.duplicateBoard(req.user!.id, boardId);
+
+    return res.status(201).json({
+      success: true,
+      data: board,
+    });
+  }
 }
 
 export const boardController = new BoardController();

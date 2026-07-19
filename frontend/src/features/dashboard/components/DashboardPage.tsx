@@ -5,14 +5,23 @@ import { CreateBoardModal } from "./CreateBoardModal";
 import { JoinBoardModal } from "./JoinBoardModal";
 import { Plus, Search, Loader2, LogIn } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useCurrentUser } from "@/features/auth/hooks/useAuth";
 
-export function DashboardPage({ filter = 'all' }: { filter?: 'all' | 'starred' | 'trash' }) {
+export function DashboardPage({ filter = 'all' }: { filter?: 'all' | 'shared' | 'starred' | 'trash' }) {
   const [searchQuery, setSearchQuery] = useState("");
-  const { data: boards, isLoading } = useBoards(searchQuery, filter);
+  // Pass 'all' to useBoards if filter is 'shared', because backend doesn't have a specific /shared route yet
+  const { data: fetchedBoards, isLoading } = useBoards(searchQuery, filter === 'shared' ? 'all' : filter);
+  const { data: user } = useCurrentUser();
+  
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isJoinModalOpen, setIsJoinModalOpen] = useState(false);
   
+  const boards = filter === 'shared' && user
+    ? fetchedBoards?.filter((b) => b.ownerId !== user.id)
+    : fetchedBoards;
+  
   const getTitle = () => {
+    if (filter === 'shared') return 'Shared with me';
     if (filter === 'starred') return 'Starred Boards';
     if (filter === 'trash') return 'Trash';
     return 'All Boards';

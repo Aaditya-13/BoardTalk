@@ -33,6 +33,16 @@ class CollaboratorRepository {
       where: {
         boardId,
       },
+      include: {
+        user: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+            avatarUrl: true,
+          }
+        }
+      },
       orderBy: {
         joinedAt: "asc",
       },

@@ -99,6 +99,7 @@ export const BoardScalarFieldEnum = {
   description: 'description',
   thumbnailUrl: 'thumbnailUrl',
   visibility: 'visibility',
+  canvasColor: 'canvasColor',
   ownerId: 'ownerId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',

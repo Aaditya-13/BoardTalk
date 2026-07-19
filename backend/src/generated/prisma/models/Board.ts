@@ -30,6 +30,7 @@ export type BoardMinAggregateOutputType = {
   description: string | null
   thumbnailUrl: string | null
   visibility: $Enums.BoardVisibility | null
+  canvasColor: string | null
   ownerId: string | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -42,6 +43,7 @@ export type BoardMaxAggregateOutputType = {
   description: string | null
   thumbnailUrl: string | null
   visibility: $Enums.BoardVisibility | null
+  canvasColor: string | null
   ownerId: string | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -54,6 +56,7 @@ export type BoardCountAggregateOutputType = {
   description: number
   thumbnailUrl: number
   visibility: number
+  canvasColor: number
   ownerId: number
   createdAt: number
   updatedAt: number
@@ -68,6 +71,7 @@ export type BoardMinAggregateInputType = {
   description?: true
   thumbnailUrl?: true
   visibility?: true
+  canvasColor?: true
   ownerId?: true
   createdAt?: true
   updatedAt?: true
@@ -80,6 +84,7 @@ export type BoardMaxAggregateInputType = {
   description?: true
   thumbnailUrl?: true
   visibility?: true
+  canvasColor?: true
   ownerId?: true
   createdAt?: true
   updatedAt?: true
@@ -92,6 +97,7 @@ export type BoardCountAggregateInputType = {
   description?: true
   thumbnailUrl?: true
   visibility?: true
+  canvasColor?: true
   ownerId?: true
   createdAt?: true
   updatedAt?: true
@@ -177,6 +183,7 @@ export type BoardGroupByOutputType = {
   description: string | null
   thumbnailUrl: string | null
   visibility: $Enums.BoardVisibility
+  canvasColor: string | null
   ownerId: string
   createdAt: Date
   updatedAt: Date
@@ -210,6 +217,7 @@ export type BoardWhereInput = {
   description?: Prisma.StringNullableFilter<"Board"> | string | null
   thumbnailUrl?: Prisma.StringNullableFilter<"Board"> | string | null
   visibility?: Prisma.EnumBoardVisibilityFilter<"Board"> | $Enums.BoardVisibility
+  canvasColor?: Prisma.StringNullableFilter<"Board"> | string | null
   ownerId?: Prisma.StringFilter<"Board"> | string
   createdAt?: Prisma.DateTimeFilter<"Board"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Board"> | Date | string
@@ -229,6 +237,7 @@ export type BoardOrderByWithRelationInput = {
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   thumbnailUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   visibility?: Prisma.SortOrder
+  canvasColor?: Prisma.SortOrderInput | Prisma.SortOrder
   ownerId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -251,6 +260,7 @@ export type BoardWhereUniqueInput = Prisma.AtLeast<{
   description?: Prisma.StringNullableFilter<"Board"> | string | null
   thumbnailUrl?: Prisma.StringNullableFilter<"Board"> | string | null
   visibility?: Prisma.EnumBoardVisibilityFilter<"Board"> | $Enums.BoardVisibility
+  canvasColor?: Prisma.StringNullableFilter<"Board"> | string | null
   ownerId?: Prisma.StringFilter<"Board"> | string
   createdAt?: Prisma.DateTimeFilter<"Board"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Board"> | Date | string
@@ -270,6 +280,7 @@ export type BoardOrderByWithAggregationInput = {
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   thumbnailUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   visibility?: Prisma.SortOrder
+  canvasColor?: Prisma.SortOrderInput | Prisma.SortOrder
   ownerId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -288,6 +299,7 @@ export type BoardScalarWhereWithAggregatesInput = {
   description?: Prisma.StringNullableWithAggregatesFilter<"Board"> | string | null
   thumbnailUrl?: Prisma.StringNullableWithAggregatesFilter<"Board"> | string | null
   visibility?: Prisma.EnumBoardVisibilityWithAggregatesFilter<"Board"> | $Enums.BoardVisibility
+  canvasColor?: Prisma.StringNullableWithAggregatesFilter<"Board"> | string | null
   ownerId?: Prisma.StringWithAggregatesFilter<"Board"> | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Board"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Board"> | Date | string
@@ -300,6 +312,7 @@ export type BoardCreateInput = {
   description?: string | null
   thumbnailUrl?: string | null
   visibility?: $Enums.BoardVisibility
+  canvasColor?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
@@ -318,6 +331,7 @@ export type BoardUncheckedCreateInput = {
   description?: string | null
   thumbnailUrl?: string | null
   visibility?: $Enums.BoardVisibility
+  canvasColor?: string | null
   ownerId: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -336,6 +350,7 @@ export type BoardUpdateInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   visibility?: Prisma.EnumBoardVisibilityFieldUpdateOperationsInput | $Enums.BoardVisibility
+  canvasColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -354,6 +369,7 @@ export type BoardUncheckedUpdateInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   visibility?: Prisma.EnumBoardVisibilityFieldUpdateOperationsInput | $Enums.BoardVisibility
+  canvasColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -372,6 +388,7 @@ export type BoardCreateManyInput = {
   description?: string | null
   thumbnailUrl?: string | null
   visibility?: $Enums.BoardVisibility
+  canvasColor?: string | null
   ownerId: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -384,6 +401,7 @@ export type BoardUpdateManyMutationInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   visibility?: Prisma.EnumBoardVisibilityFieldUpdateOperationsInput | $Enums.BoardVisibility
+  canvasColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -395,6 +413,7 @@ export type BoardUncheckedUpdateManyInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   visibility?: Prisma.EnumBoardVisibilityFieldUpdateOperationsInput | $Enums.BoardVisibility
+  canvasColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -417,6 +436,7 @@ export type BoardCountOrderByAggregateInput = {
   description?: Prisma.SortOrder
   thumbnailUrl?: Prisma.SortOrder
   visibility?: Prisma.SortOrder
+  canvasColor?: Prisma.SortOrder
   ownerId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -429,6 +449,7 @@ export type BoardMaxOrderByAggregateInput = {
   description?: Prisma.SortOrder
   thumbnailUrl?: Prisma.SortOrder
   visibility?: Prisma.SortOrder
+  canvasColor?: Prisma.SortOrder
   ownerId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -441,6 +462,7 @@ export type BoardMinOrderByAggregateInput = {
   description?: Prisma.SortOrder
   thumbnailUrl?: Prisma.SortOrder
   visibility?: Prisma.SortOrder
+  canvasColor?: Prisma.SortOrder
   ownerId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -592,6 +614,7 @@ export type BoardCreateWithoutOwnerInput = {
   description?: string | null
   thumbnailUrl?: string | null
   visibility?: $Enums.BoardVisibility
+  canvasColor?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
@@ -609,6 +632,7 @@ export type BoardUncheckedCreateWithoutOwnerInput = {
   description?: string | null
   thumbnailUrl?: string | null
   visibility?: $Enums.BoardVisibility
+  canvasColor?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
@@ -655,6 +679,7 @@ export type BoardScalarWhereInput = {
   description?: Prisma.StringNullableFilter<"Board"> | string | null
   thumbnailUrl?: Prisma.StringNullableFilter<"Board"> | string | null
   visibility?: Prisma.EnumBoardVisibilityFilter<"Board"> | $Enums.BoardVisibility
+  canvasColor?: Prisma.StringNullableFilter<"Board"> | string | null
   ownerId?: Prisma.StringFilter<"Board"> | string
   createdAt?: Prisma.DateTimeFilter<"Board"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Board"> | Date | string
@@ -667,6 +692,7 @@ export type BoardCreateWithoutCollaboratorsInput = {
   description?: string | null
   thumbnailUrl?: string | null
   visibility?: $Enums.BoardVisibility
+  canvasColor?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
@@ -684,6 +710,7 @@ export type BoardUncheckedCreateWithoutCollaboratorsInput = {
   description?: string | null
   thumbnailUrl?: string | null
   visibility?: $Enums.BoardVisibility
+  canvasColor?: string | null
   ownerId: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -717,6 +744,7 @@ export type BoardUpdateWithoutCollaboratorsInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   visibility?: Prisma.EnumBoardVisibilityFieldUpdateOperationsInput | $Enums.BoardVisibility
+  canvasColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -734,6 +762,7 @@ export type BoardUncheckedUpdateWithoutCollaboratorsInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   visibility?: Prisma.EnumBoardVisibilityFieldUpdateOperationsInput | $Enums.BoardVisibility
+  canvasColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -751,6 +780,7 @@ export type BoardCreateWithoutInvitesInput = {
   description?: string | null
   thumbnailUrl?: string | null
   visibility?: $Enums.BoardVisibility
+  canvasColor?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
@@ -768,6 +798,7 @@ export type BoardUncheckedCreateWithoutInvitesInput = {
   description?: string | null
   thumbnailUrl?: string | null
   visibility?: $Enums.BoardVisibility
+  canvasColor?: string | null
   ownerId: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -801,6 +832,7 @@ export type BoardUpdateWithoutInvitesInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   visibility?: Prisma.EnumBoardVisibilityFieldUpdateOperationsInput | $Enums.BoardVisibility
+  canvasColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -818,6 +850,7 @@ export type BoardUncheckedUpdateWithoutInvitesInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   visibility?: Prisma.EnumBoardVisibilityFieldUpdateOperationsInput | $Enums.BoardVisibility
+  canvasColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -835,6 +868,7 @@ export type BoardCreateWithoutSnapshotsInput = {
   description?: string | null
   thumbnailUrl?: string | null
   visibility?: $Enums.BoardVisibility
+  canvasColor?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
@@ -852,6 +886,7 @@ export type BoardUncheckedCreateWithoutSnapshotsInput = {
   description?: string | null
   thumbnailUrl?: string | null
   visibility?: $Enums.BoardVisibility
+  canvasColor?: string | null
   ownerId: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -885,6 +920,7 @@ export type BoardUpdateWithoutSnapshotsInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   visibility?: Prisma.EnumBoardVisibilityFieldUpdateOperationsInput | $Enums.BoardVisibility
+  canvasColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -902,6 +938,7 @@ export type BoardUncheckedUpdateWithoutSnapshotsInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   visibility?: Prisma.EnumBoardVisibilityFieldUpdateOperationsInput | $Enums.BoardVisibility
+  canvasColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -919,6 +956,7 @@ export type BoardCreateWithoutCommentsInput = {
   description?: string | null
   thumbnailUrl?: string | null
   visibility?: $Enums.BoardVisibility
+  canvasColor?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
@@ -936,6 +974,7 @@ export type BoardUncheckedCreateWithoutCommentsInput = {
   description?: string | null
   thumbnailUrl?: string | null
   visibility?: $Enums.BoardVisibility
+  canvasColor?: string | null
   ownerId: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -969,6 +1008,7 @@ export type BoardUpdateWithoutCommentsInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   visibility?: Prisma.EnumBoardVisibilityFieldUpdateOperationsInput | $Enums.BoardVisibility
+  canvasColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -986,6 +1026,7 @@ export type BoardUncheckedUpdateWithoutCommentsInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   visibility?: Prisma.EnumBoardVisibilityFieldUpdateOperationsInput | $Enums.BoardVisibility
+  canvasColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1003,6 +1044,7 @@ export type BoardCreateWithoutChatMessagesInput = {
   description?: string | null
   thumbnailUrl?: string | null
   visibility?: $Enums.BoardVisibility
+  canvasColor?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
@@ -1020,6 +1062,7 @@ export type BoardUncheckedCreateWithoutChatMessagesInput = {
   description?: string | null
   thumbnailUrl?: string | null
   visibility?: $Enums.BoardVisibility
+  canvasColor?: string | null
   ownerId: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1053,6 +1096,7 @@ export type BoardUpdateWithoutChatMessagesInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   visibility?: Prisma.EnumBoardVisibilityFieldUpdateOperationsInput | $Enums.BoardVisibility
+  canvasColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1070,6 +1114,7 @@ export type BoardUncheckedUpdateWithoutChatMessagesInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   visibility?: Prisma.EnumBoardVisibilityFieldUpdateOperationsInput | $Enums.BoardVisibility
+  canvasColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1087,6 +1132,7 @@ export type BoardCreateWithoutStarredByInput = {
   description?: string | null
   thumbnailUrl?: string | null
   visibility?: $Enums.BoardVisibility
+  canvasColor?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
@@ -1104,6 +1150,7 @@ export type BoardUncheckedCreateWithoutStarredByInput = {
   description?: string | null
   thumbnailUrl?: string | null
   visibility?: $Enums.BoardVisibility
+  canvasColor?: string | null
   ownerId: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1137,6 +1184,7 @@ export type BoardUpdateWithoutStarredByInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   visibility?: Prisma.EnumBoardVisibilityFieldUpdateOperationsInput | $Enums.BoardVisibility
+  canvasColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1154,6 +1202,7 @@ export type BoardUncheckedUpdateWithoutStarredByInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   visibility?: Prisma.EnumBoardVisibilityFieldUpdateOperationsInput | $Enums.BoardVisibility
+  canvasColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1171,6 +1220,7 @@ export type BoardCreateManyOwnerInput = {
   description?: string | null
   thumbnailUrl?: string | null
   visibility?: $Enums.BoardVisibility
+  canvasColor?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
@@ -1182,6 +1232,7 @@ export type BoardUpdateWithoutOwnerInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   visibility?: Prisma.EnumBoardVisibilityFieldUpdateOperationsInput | $Enums.BoardVisibility
+  canvasColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1199,6 +1250,7 @@ export type BoardUncheckedUpdateWithoutOwnerInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   visibility?: Prisma.EnumBoardVisibilityFieldUpdateOperationsInput | $Enums.BoardVisibility
+  canvasColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1216,6 +1268,7 @@ export type BoardUncheckedUpdateManyWithoutOwnerInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   visibility?: Prisma.EnumBoardVisibilityFieldUpdateOperationsInput | $Enums.BoardVisibility
+  canvasColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1303,6 +1356,7 @@ export type BoardSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   description?: boolean
   thumbnailUrl?: boolean
   visibility?: boolean
+  canvasColor?: boolean
   ownerId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -1323,6 +1377,7 @@ export type BoardSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   description?: boolean
   thumbnailUrl?: boolean
   visibility?: boolean
+  canvasColor?: boolean
   ownerId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -1336,6 +1391,7 @@ export type BoardSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   description?: boolean
   thumbnailUrl?: boolean
   visibility?: boolean
+  canvasColor?: boolean
   ownerId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -1349,13 +1405,14 @@ export type BoardSelectScalar = {
   description?: boolean
   thumbnailUrl?: boolean
   visibility?: boolean
+  canvasColor?: boolean
   ownerId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   deletedAt?: boolean
 }
 
-export type BoardOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "description" | "thumbnailUrl" | "visibility" | "ownerId" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["board"]>
+export type BoardOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "description" | "thumbnailUrl" | "visibility" | "canvasColor" | "ownerId" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["board"]>
 export type BoardInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   collaborators?: boolean | Prisma.Board$collaboratorsArgs<ExtArgs>
@@ -1390,6 +1447,7 @@ export type $BoardPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     description: string | null
     thumbnailUrl: string | null
     visibility: $Enums.BoardVisibility
+    canvasColor: string | null
     ownerId: string
     createdAt: Date
     updatedAt: Date
@@ -1829,6 +1887,7 @@ export interface BoardFieldRefs {
   readonly description: Prisma.FieldRef<"Board", 'String'>
   readonly thumbnailUrl: Prisma.FieldRef<"Board", 'String'>
   readonly visibility: Prisma.FieldRef<"Board", 'BoardVisibility'>
+  readonly canvasColor: Prisma.FieldRef<"Board", 'String'>
   readonly ownerId: Prisma.FieldRef<"Board", 'String'>
   readonly createdAt: Prisma.FieldRef<"Board", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Board", 'DateTime'>

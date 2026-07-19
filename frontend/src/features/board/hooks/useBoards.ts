@@ -19,8 +19,8 @@ const createBoard = async (payload: { title: string; description?: string; visib
   return data.data;
 };
 
-const updateBoard = async ({ boardId, payload }: { boardId: string, payload: { title?: string; description?: string } }): Promise<Board> => {
-  const { data } = await api.put(`/boards/${boardId}`, payload);
+const updateBoard = async ({ boardId, payload }: { boardId: string, payload: { title?: string; description?: string; canvasColor?: string | null } }): Promise<Board> => {
+  const { data } = await api.patch(`/boards/${boardId}`, payload);
   return data.data;
 };
 
@@ -30,6 +30,11 @@ const deleteBoard = async (boardId: string): Promise<void> => {
 
 const toggleStar = async (boardId: string): Promise<{ isStarred: boolean }> => {
   const { data } = await api.post(`/boards/${boardId}/star`);
+  return data.data;
+};
+
+const duplicateBoard = async (boardId: string): Promise<Board> => {
+  const { data } = await api.post(`/boards/${boardId}/copy`);
   return data.data;
 };
 
@@ -84,6 +89,16 @@ export const useToggleStarBoard = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: toggleStar,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['boards'] });
+    },
+  });
+};
+
+export const useDuplicateBoard = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: duplicateBoard,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['boards'] });
     },

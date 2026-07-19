@@ -27,6 +27,7 @@ router.patch(
 );
 
 router.post("/:boardId/star", boardController.toggleStar);
+router.post("/:boardId/copy", boardController.duplicateBoard);
 
 router.delete("/:boardId", boardController.deleteBoard);
 

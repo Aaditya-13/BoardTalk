@@ -4,6 +4,7 @@ import type {
 } from "../../generated/prisma/client.js";
 
 import { collaboratorService } from "../collaborator/service.js";
+import { snapshotRepository } from "../snapshot/repository.js";
 import { NotFoundError } from "../shared/errors.js";
 
 import { boardRepository } from "./repository.js";
@@ -84,6 +85,10 @@ class BoardService {
       updateData.visibility = data.visibility;
     }
 
+    if (data.canvasColor !== undefined) {
+      updateData.canvasColor = data.canvasColor;
+    }
+
     return boardRepository.updateById(boardId, updateData);
   }
 
@@ -96,6 +101,42 @@ class BoardService {
   async toggleStar(ownerId: string, boardId: string): Promise<boolean> {
     await collaboratorService.assertBoardAccess(boardId, ownerId);
     return boardRepository.toggleStar(boardId, ownerId);
+  }
+
+  async duplicateBoard(ownerId: string, boardId: string): Promise<Board> {
+    // 1. Fetch original board
+    const originalBoard = await this.getBoard(ownerId, boardId);
+
+    // 2. Create new board
+    const newBoard = await boardRepository.create({
+      title: `${originalBoard.title} (Copy)`,
+      description: originalBoard.description,
+      visibility: "PRIVATE",
+      canvasColor: originalBoard.canvasColor,
+      owner: {
+        connect: {
+          id: ownerId,
+        },
+      },
+    });
+
+    // 3. Fetch latest snapshot of original board
+    const latestSnapshot = await snapshotRepository.findLatestByBoardId(boardId);
+
+    // 4. Duplicate snapshot to new board if it exists
+    if (latestSnapshot && latestSnapshot.documentJson) {
+      await snapshotRepository.create({
+        board: {
+          connect: {
+            id: newBoard.id,
+          },
+        },
+        version: 1,
+        documentJson: latestSnapshot.documentJson,
+      });
+    }
+
+    return newBoard;
   }
 }
 
