@@ -4,9 +4,7 @@ import { BoardLayout } from "@/components/layout/BoardLayout";
 import { ProtectedRoute } from "@/features/auth/components/ProtectedRoute";
 import { LandingPage } from "@/features/auth/components/LandingPage";
 import { DashboardPage } from "@/features/dashboard/components/DashboardPage";
-
-// Placeholder for Board Page
-const BoardPage = () => <div className="flex-1 w-full h-full bg-muted/20 flex items-center justify-center text-muted-foreground">Canvas Area</div>;
+import { BoardPage } from "@/features/board/components/BoardPage";
 
 export function Router() {
   return (

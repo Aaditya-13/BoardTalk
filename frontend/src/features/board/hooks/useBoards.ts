@@ -8,6 +8,11 @@ const fetchBoards = async (search?: string): Promise<Board[]> => {
   return data.data;
 };
 
+const fetchBoard = async (boardId: string): Promise<Board> => {
+  const { data } = await api.get(`/boards/${boardId}`);
+  return data.data;
+};
+
 const createBoard = async (payload: { title: string; description?: string; visibility?: BoardVisibility }): Promise<Board> => {
   const { data } = await api.post('/boards', payload);
   return data.data;
@@ -27,6 +32,14 @@ export const useBoards = (search?: string) => {
   return useQuery({
     queryKey: ['boards', search],
     queryFn: () => fetchBoards(search),
+  });
+};
+
+export const useBoard = (boardId: string) => {
+  return useQuery({
+    queryKey: ['board', boardId],
+    queryFn: () => fetchBoard(boardId),
+    enabled: !!boardId,
   });
 };
 
