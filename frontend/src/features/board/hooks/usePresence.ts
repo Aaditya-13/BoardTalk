@@ -23,6 +23,7 @@ export function usePresence(boardId: string, store?: TLStore) {
     // Receive presence snapshot on join
     const handlePresenceSnapshot = (payload: { boardId: string; members: RoomMember[] }) => {
       if (payload.boardId === boardId) {
+        console.log('Presence initialized');
         const membersRecord = payload.members.reduce((acc, member) => {
           acc[member.userId] = member;
           return acc;

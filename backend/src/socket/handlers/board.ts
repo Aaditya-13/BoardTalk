@@ -1,4 +1,5 @@
 import { randomUUID } from "node:crypto";
+import { logger } from "../../lib/logger.js";
 
 import type { Server as SocketIOServer, Socket } from "socket.io";
 
@@ -21,7 +22,7 @@ import {
   persistSnapshot,
   queueSnapshot,
 } from "../snapshotBuffer.js";
-import { applyYjsUpdate, getSyncStep2, clearDocIfEmpty } from "../yjs.js";
+import { applyYjsUpdate, getSyncStep2, clearDocIfEmpty, hasActiveDoc } from "../yjs.js";
 
 const AI_PREFIX = "/ai ";
 
@@ -54,7 +55,7 @@ export function registerBoardSocketHandlers(
       payload: JoinBoardPayload,
       acknowledge?: (response: {
         success: boolean;
-        data?: { boardId: string; role: string };
+        data?: { boardId: string; role: string; isMemoryActive?: boolean };
         message?: string;
       }) => void
     ) => {
@@ -72,6 +73,7 @@ export function registerBoardSocketHandlers(
 
         socket.join(getBoardRoomName(payload.boardId));
         joinBoardRoom(payload.boardId, socket.id);
+        logger.info(`Room joined: ${payload.boardId} by ${socket.data.user.id}`);
 
         socket.emit("board:presence:snapshot", {
           boardId: payload.boardId,
@@ -127,6 +129,7 @@ export function registerBoardSocketHandlers(
           data: {
             boardId: payload.boardId,
             role,
+            isMemoryActive: hasActiveDoc(payload.boardId)
           },
         });
       } catch (error) {
@@ -173,7 +176,7 @@ export function registerBoardSocketHandlers(
   });
 
   socket.on("board:yjs:sync-step-1", (payload: { boardId: string; stateVector: ArrayBuffer | Uint8Array }) => {
-    const update = getSyncStep2(payload.boardId, Buffer.from(payload.stateVector));
+    const update = getSyncStep2(payload.boardId, Buffer.from(payload.stateVector as ArrayBuffer));
     socket.emit("board:yjs:sync-step-2", {
       boardId: payload.boardId,
       update: update,
@@ -181,7 +184,7 @@ export function registerBoardSocketHandlers(
   });
 
   socket.on("board:yjs:update", (payload: { boardId: string; update: ArrayBuffer | Uint8Array }) => {
-    applyYjsUpdate(payload.boardId, Buffer.from(payload.update));
+    applyYjsUpdate(payload.boardId, Buffer.from(payload.update as ArrayBuffer));
     socket.to(getBoardRoomName(payload.boardId)).emit("board:yjs:update", {
       boardId: payload.boardId,
       update: payload.update,

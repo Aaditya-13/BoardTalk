@@ -348,6 +348,7 @@ export function BoardPage() {
           boardId={boardId!}
           presenceMembers={presenceMembers}
           currentUserId={myId}
+          store={storeWithStatus.store}
         />
       </div>
 

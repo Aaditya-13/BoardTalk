@@ -5,6 +5,13 @@ import { logger } from "../lib/logger.js";
 const activeDocs = new Map<string, Y.Doc>();
 
 /**
+ * Check if a Y.Doc is already active in memory.
+ */
+export function hasActiveDoc(boardId: string): boolean {
+  return activeDocs.has(boardId);
+}
+
+/**
  * Get or create a Y.Doc for a given board ID.
  */
 export function getOrCreateDoc(boardId: string): Y.Doc {
@@ -25,7 +32,7 @@ export function applyYjsUpdate(boardId: string, update: Uint8Array | Buffer) {
     // Y.applyUpdate expects Uint8Array. Buffer extends Uint8Array in Node.
     Y.applyUpdate(doc, new Uint8Array(update));
   } catch (error) {
-    logger.error(`[YJS] Failed to apply update for board ${boardId}:`, error);
+    logger.error(error, `[YJS] Failed to apply update for board ${boardId}`);
   }
 }
 

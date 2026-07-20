@@ -3,7 +3,7 @@ import { socket } from '@/lib/socket';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Send, Sparkles, Loader2, AlertCircle } from 'lucide-react';
-import { useBoardSync } from '@/features/board/hooks/useBoardSync';
+import { type TLStore } from 'tldraw';
 
 interface AIRequest {
   id: string;
@@ -12,15 +12,10 @@ interface AIRequest {
   error?: string;
 }
 
-export function AISidebar({ boardId }: { boardId: string }) {
+export function AISidebar({ boardId, store }: { boardId: string; store: TLStore }) {
   const [requests, setRequests] = useState<AIRequest[]>([]);
   const [input, setInput] = useState('');
   const scrollRef = useRef<HTMLDivElement>(null);
-  
-  // Need to get the store to apply generated elements, but actually the AI service in backend
-  // modifies the board itself or sends the elements back in ai:result.
-  // Wait, backend `ai:result` sends `elements`. We should insert them.
-  const storeWithStatus = useBoardSync(boardId);
 
   useEffect(() => {
     const handleGenerating = (payload: { boardId: string; requestId: string }) => {
@@ -34,58 +29,56 @@ export function AISidebar({ boardId }: { boardId: string }) {
         setRequests((prev) => prev.map(r => r.id === payload.requestId ? { ...r, status: 'success' } : r));
         
         // Add elements to canvas
-        if (storeWithStatus.status === 'synced-remote') {
-          const tlShapes = payload.elements.map((el, i) => {
-            const shapeId = `shape:${el.id}`;
-            const base = {
-              id: shapeId,
-              typeName: 'shape',
-              x: el.x,
-              y: el.y,
-              rotation: 0,
-              isLocked: false,
-              opacity: el.style?.opacity ?? 1,
-              meta: {},
-              parentId: 'page:page',
-              index: 'a' + i,
+        const tlShapes = payload.elements.map((el, i) => {
+          const shapeId = `shape:${el.id}`;
+          const base = {
+            id: shapeId,
+            typeName: 'shape',
+            x: el.x,
+            y: el.y,
+            rotation: 0,
+            isLocked: false,
+            opacity: el.style?.opacity ?? 1,
+            meta: {},
+            parentId: 'page:page',
+            index: 'a' + i,
+          };
+
+          if (el.type === 'rectangle' || el.type === 'ellipse') {
+            return {
+              ...base,
+              type: 'geo',
+              props: { geo: el.type, w: el.width, h: el.height, color: 'black', text: el.label || '' }
             };
+          } else if (el.type === 'text') {
+            return {
+              ...base,
+              type: 'text',
+              props: { text: el.label || '', color: 'black' }
+            };
+          } else if (el.type === 'sticky') {
+            return {
+              ...base,
+              type: 'note',
+              props: { text: el.label || '', color: 'yellow' }
+            };
+          } else if (el.type === 'frame') {
+            return {
+              ...base,
+              type: 'frame',
+              props: { w: el.width, h: el.height, name: el.label || '' }
+            };
+          } else if (el.type === 'arrow') {
+            return {
+              ...base,
+              type: 'arrow',
+              props: { start: { x: 0, y: 0 }, end: { x: el.width, y: el.height }, text: el.label || '' }
+            };
+          }
+          return null;
+        }).filter(Boolean);
 
-            if (el.type === 'rectangle' || el.type === 'ellipse') {
-              return {
-                ...base,
-                type: 'geo',
-                props: { geo: el.type, w: el.width, h: el.height, color: 'black', text: el.label || '' }
-              };
-            } else if (el.type === 'text') {
-              return {
-                ...base,
-                type: 'text',
-                props: { text: el.label || '', color: 'black' }
-              };
-            } else if (el.type === 'sticky') {
-              return {
-                ...base,
-                type: 'note',
-                props: { text: el.label || '', color: 'yellow' }
-              };
-            } else if (el.type === 'frame') {
-              return {
-                ...base,
-                type: 'frame',
-                props: { w: el.width, h: el.height, name: el.label || '' }
-              };
-            } else if (el.type === 'arrow') {
-              return {
-                ...base,
-                type: 'arrow',
-                props: { start: { x: 0, y: 0 }, end: { x: el.width, y: el.height }, text: el.label || '' }
-              };
-            }
-            return null;
-          }).filter(Boolean);
-
-          storeWithStatus.store.put(tlShapes as any);
-        }
+        store.put(tlShapes as any);
       }
     };
 
@@ -104,7 +97,7 @@ export function AISidebar({ boardId }: { boardId: string }) {
       socket.off('ai:result', handleResult);
       socket.off('ai:error', handleError);
     };
-  }, [boardId, storeWithStatus]);
+  }, [boardId, store]);
 
   useEffect(() => {
     if (scrollRef.current) {

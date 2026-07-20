@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { createTLStore, defaultShapeUtils } from 'tldraw';
+import { createTLStore, defaultShapeUtils, loadSnapshot, getSnapshot, throttle } from 'tldraw';
 import type { TLRecord, TLStoreWithStatus } from 'tldraw';
 import { socket, connectSocket } from '@/lib/socket';
 import * as Y from 'yjs';
@@ -74,6 +74,24 @@ export function useYjsStore(boardId: string) {
       }
     });
 
+    // Periodically flush full snapshot to backend
+    const flushSnapshot = throttle(() => {
+      try {
+        const documentJson = getSnapshot(store);
+        socket.emit('board:document', { boardId, documentJson });
+      } catch (error: any) {
+        if (error.message !== 'Session state is not ready yet') {
+          console.error('Failed to flush snapshot:', error);
+        }
+      }
+    }, 5000);
+
+    const flushUnlisten = store.listen((update) => {
+      if (update.source === 'user') {
+        flushSnapshot();
+      }
+    });
+
     function isShareable(record: any) {
       return ['shape', 'binding', 'asset', 'page', 'document'].includes(record?.typeName);
     }
@@ -92,36 +110,98 @@ export function useYjsStore(boardId: string) {
     });
 
     // Sync Protocol Step 2: Receive missing updates from server
-    socket.on('board:yjs:sync-step-2', (payload: { boardId: string; update: ArrayBuffer }) => {
+    const handleSyncStep2 = (payload: { boardId: string; update: ArrayBuffer }) => {
       if (payload.boardId === boardId) {
         Y.applyUpdate(yDoc, new Uint8Array(payload.update));
+        console.log('Document synchronized');
         setStoreWithStatus(prev => {
           const role = 'role' in prev ? prev.role : undefined;
           return { status: 'synced-remote', connectionStatus: 'online', store, role };
         });
       }
-    });
+    };
+    socket.on('board:yjs:sync-step-2', handleSyncStep2);
 
-    // Request snapshot or peer sync
-    socket.emit('board:join', { boardId }, (response: any) => {
-      if (!response?.success) {
-        setStoreWithStatus({ status: 'error', error: new Error('Failed to join board') });
-      } else {
-        if (response.data?.role) {
-          setStoreWithStatus(prev => ({ ...prev, role: response.data.role }));
+    const joinBoard = () => {
+      console.log('Join requested');
+
+      const snapshotPromise = new Promise<any>((resolve) => {
+        socket.once('board:snapshot:latest', resolve);
+      });
+
+      socket.emit('board:join', { boardId }, async (response: any) => {
+        console.log('Join acknowledged');
+        if (!response?.success) {
+          setStoreWithStatus({ status: 'error', error: new Error('Failed to join board') });
+        } else {
+          if (response.data?.role) {
+            setStoreWithStatus(prev => ({ ...prev, role: response.data.role }));
+          }
+
+          const isMemoryActive = response.data?.isMemoryActive;
+
+          if (isMemoryActive) {
+            // Server already has Y.Doc in memory. Skip snapshot, just sync Yjs.
+            socket.emit('board:yjs:sync-step-1', { 
+              boardId, 
+              stateVector: Y.encodeStateVector(yDoc) 
+            });
+          } else {
+            // Server Y.Doc is empty. We must load the database snapshot and push it.
+            const payload = await snapshotPromise;
+            
+            if (payload.boardId === boardId && payload.snapshot?.documentJson) {
+              try {
+                loadSnapshot(store, payload.snapshot.documentJson);
+                console.log('Y.Doc loaded');
+                
+                // Push loaded records into Yjs map
+                yDoc.transact(() => {
+                  const records = store.allRecords();
+                  for (const record of records) {
+                    if (isShareable(record)) {
+                      yMap.set(record.id, record);
+                    }
+                  }
+                });
+              } catch (e) {
+                console.error('Failed to load snapshot:', e);
+              }
+            }
+
+            // After loading snapshot (or if there is none), sync with server
+            socket.emit('board:yjs:sync-step-1', { 
+              boardId, 
+              stateVector: Y.encodeStateVector(yDoc) 
+            });
+          }
         }
-        // Sync Protocol Step 1: Send our state vector to server
-        socket.emit('board:yjs:sync-step-1', { 
-          boardId, 
-          stateVector: Y.encodeStateVector(yDoc) 
-        });
-      }
-    });
+      });
+    };
+
+    const onConnect = () => {
+      console.log('Socket connected');
+      joinBoard();
+    };
+
+    const onDisconnect = () => {
+      console.log('Socket disconnected');
+    };
+
+    socket.on('connect', onConnect);
+    socket.on('disconnect', onDisconnect);
+
+    if (socket.connected) {
+      onConnect();
+    }
 
     return () => {
       unlisten();
+      flushUnlisten();
       socket.off('board:yjs:update', handleYjsUpdate);
-      socket.off('board:yjs:sync-step-2');
+      socket.off('board:yjs:sync-step-2', handleSyncStep2);
+      socket.off('connect', onConnect);
+      socket.off('disconnect', onDisconnect);
       socket.emit('board:leave', { boardId });
       yDoc.destroy();
     };
