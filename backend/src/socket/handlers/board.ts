@@ -97,22 +97,6 @@ export function registerBoardSocketHandlers(
           });
         }
 
-        // Send last 50 chat messages to the joining member
-        try {
-          const history = await chatService.getHistory(
-            payload.boardId,
-            socket.data.user.id,
-            { limit: 50 }
-          );
-
-          socket.emit("chat:history", {
-            boardId: payload.boardId,
-            messages: history,
-          });
-        } catch {
-          // non-fatal — chat history is best-effort
-        }
-
         socket.to(getBoardRoomName(payload.boardId)).emit("board:presence:joined", {
           boardId: payload.boardId,
           member: {
@@ -202,6 +186,19 @@ export function registerBoardSocketHandlers(
 
   socket.on("board:snapshot:flush", async (payload: JoinBoardPayload) => {
     await flushSnapshot(payload.boardId, socket.data.user.id, persistSnapshot);
+  });
+
+  socket.on("chat:history:request", async (payload: { boardId: string }) => {
+    try {
+      const history = await chatService.getHistory(
+        payload.boardId,
+        socket.data.user.id,
+        { limit: 50 }
+      );
+      socket.emit("chat:history", { boardId: payload.boardId, messages: history });
+    } catch {
+      // non-fatal
+    }
   });
 
   socket.on("chat:message", async (payload: ChatMessagePayload) => {

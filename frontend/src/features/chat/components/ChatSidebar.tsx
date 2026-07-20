@@ -39,6 +39,8 @@ export function ChatSidebar({ boardId }: { boardId: string }) {
 
     socket.on('chat:history', handleHistory);
     socket.on('chat:message', handleNewMessage);
+    
+    socket.emit('chat:history:request', { boardId });
 
     return () => {
       socket.off('chat:history', handleHistory);
