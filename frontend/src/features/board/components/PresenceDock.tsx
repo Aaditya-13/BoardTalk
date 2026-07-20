@@ -15,7 +15,14 @@ interface PresenceDockProps {
 
 export function PresenceDock({ members, currentUserId, onAvatarClick }: PresenceDockProps) {
   const activeUsers = useMemo(() => {
-    return Object.values(members).filter((m) => m.userId !== currentUserId);
+    // Sort so current user is always first (or last)
+    const all = Object.values(members);
+    all.sort((a, b) => {
+      if (a.userId === currentUserId) return -1;
+      if (b.userId === currentUserId) return 1;
+      return 0;
+    });
+    return all;
   }, [members, currentUserId]);
 
   if (activeUsers.length === 0) return null;

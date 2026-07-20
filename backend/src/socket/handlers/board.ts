@@ -14,14 +14,14 @@ import {
 import {
   removePresence,
   upsertPresence,
-  updateCursor,
-  updateSelection,
+  updateEphemeralState,
 } from "../presence.js";
 import {
   flushSnapshot,
   persistSnapshot,
   queueSnapshot,
 } from "../snapshotBuffer.js";
+import { applyYjsUpdate, getSyncStep2, clearDocIfEmpty } from "../yjs.js";
 
 const AI_PREFIX = "/ai ";
 
@@ -29,15 +29,9 @@ type JoinBoardPayload = {
   boardId: string;
 };
 
-type CursorPayload = {
+type EphemeralPayload = {
   boardId: string;
-  x: number;
-  y: number;
-};
-
-type SelectionPayload = {
-  boardId: string;
-  ids: string[];
+  state: any;
 };
 
 type DocumentPayload = {
@@ -158,32 +152,14 @@ export function registerBoardSocketHandlers(
     });
   });
 
-  socket.on("board:cursor", (payload: CursorPayload) => {
-    const member = updateCursor(payload.boardId, socket.data.user.id, {
-      x: payload.x,
-      y: payload.y,
-    });
+  socket.on("board:ephemeral", (payload: EphemeralPayload) => {
+    const member = updateEphemeralState(payload.boardId, socket.data.user.id, payload.state);
 
     if (!member) {
       return;
     }
 
-    socket.to(getBoardRoomName(payload.boardId)).emit("board:cursor", {
-      boardId: payload.boardId,
-      member,
-    });
-  });
-
-  socket.on("board:selection", (payload: SelectionPayload) => {
-    const member = updateSelection(payload.boardId, socket.data.user.id, {
-      ids: payload.ids,
-    });
-
-    if (!member) {
-      return;
-    }
-
-    socket.to(getBoardRoomName(payload.boardId)).emit("board:selection", {
+    socket.to(getBoardRoomName(payload.boardId)).emit("board:ephemeral", {
       boardId: payload.boardId,
       member,
     });
@@ -191,6 +167,22 @@ export function registerBoardSocketHandlers(
 
   socket.on("board:update", (payload: { boardId: string; update: any }) => {
     socket.to(getBoardRoomName(payload.boardId)).emit("board:update", {
+      boardId: payload.boardId,
+      update: payload.update,
+    });
+  });
+
+  socket.on("board:yjs:sync-step-1", (payload: { boardId: string; stateVector: ArrayBuffer | Uint8Array }) => {
+    const update = getSyncStep2(payload.boardId, Buffer.from(payload.stateVector));
+    socket.emit("board:yjs:sync-step-2", {
+      boardId: payload.boardId,
+      update: update,
+    });
+  });
+
+  socket.on("board:yjs:update", (payload: { boardId: string; update: ArrayBuffer | Uint8Array }) => {
+    applyYjsUpdate(payload.boardId, Buffer.from(payload.update));
+    socket.to(getBoardRoomName(payload.boardId)).emit("board:yjs:update", {
       boardId: payload.boardId,
       update: payload.update,
     });

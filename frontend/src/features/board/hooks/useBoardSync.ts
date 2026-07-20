@@ -83,15 +83,36 @@ export function useBoardSync(boardId: string) {
 
     socket.on('board:update', handleRemoteUpdate);
 
+    const isShareable = (record: any) => {
+      const typeName = record?.typeName;
+      return ['shape', 'binding', 'asset', 'page', 'document'].includes(typeName);
+    };
+
+    const filterChanges = (records: Record<string, any>) => {
+      const filtered: Record<string, any> = {};
+      for (const [id, value] of Object.entries(records)) {
+        const recordToCheck = Array.isArray(value) ? value[1] : value;
+        if (isShareable(recordToCheck)) {
+          filtered[id] = value;
+        }
+      }
+      return Object.keys(filtered).length > 0 ? filtered : undefined;
+    };
+
     // Listen to local changes and broadcast them
     unlisten = store.listen((update) => {
-      if (update.source !== 'user') return; // Only broadcast user's own changes
+      if (update.source !== 'user') return; 
       
-      const changes = update.changes;
-      socket.emit('board:update', {
-        boardId,
-        update: changes,
-      });
+      const added = update.changes.added ? filterChanges(update.changes.added) : undefined;
+      const updated = update.changes.updated ? filterChanges(update.changes.updated) : undefined;
+      const removed = update.changes.removed ? filterChanges(update.changes.removed) : undefined;
+
+      if (added || updated || removed) {
+        socket.emit('board:update', {
+          boardId,
+          update: { added, updated, removed },
+        });
+      }
     });
 
     // Periodically flush full snapshot to backend

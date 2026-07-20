@@ -32,9 +32,59 @@ export function AISidebar({ boardId }: { boardId: string }) {
     const handleResult = (payload: { boardId: string; requestId: string; elements: any[] }) => {
       if (payload.boardId === boardId) {
         setRequests((prev) => prev.map(r => r.id === payload.requestId ? { ...r, status: 'success' } : r));
+        
         // Add elements to canvas
         if (storeWithStatus.status === 'synced-remote') {
-          storeWithStatus.store.put(payload.elements);
+          const tlShapes = payload.elements.map((el, i) => {
+            const shapeId = `shape:${el.id}`;
+            const base = {
+              id: shapeId,
+              typeName: 'shape',
+              x: el.x,
+              y: el.y,
+              rotation: 0,
+              isLocked: false,
+              opacity: el.style?.opacity ?? 1,
+              meta: {},
+              parentId: 'page:page',
+              index: 'a' + i,
+            };
+
+            if (el.type === 'rectangle' || el.type === 'ellipse') {
+              return {
+                ...base,
+                type: 'geo',
+                props: { geo: el.type, w: el.width, h: el.height, color: 'black', text: el.label || '' }
+              };
+            } else if (el.type === 'text') {
+              return {
+                ...base,
+                type: 'text',
+                props: { text: el.label || '', color: 'black' }
+              };
+            } else if (el.type === 'sticky') {
+              return {
+                ...base,
+                type: 'note',
+                props: { text: el.label || '', color: 'yellow' }
+              };
+            } else if (el.type === 'frame') {
+              return {
+                ...base,
+                type: 'frame',
+                props: { w: el.width, h: el.height, name: el.label || '' }
+              };
+            } else if (el.type === 'arrow') {
+              return {
+                ...base,
+                type: 'arrow',
+                props: { start: { x: 0, y: 0 }, end: { x: el.width, y: el.height }, text: el.label || '' }
+              };
+            }
+            return null;
+          }).filter(Boolean);
+
+          storeWithStatus.store.put(tlShapes as any);
         }
       }
     };

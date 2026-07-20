@@ -1,8 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router';
 import { useBoard, useUpdateBoard } from '../hooks/useBoards';
-import { useBoardSync } from '../hooks/useBoardSync';
+import { useYjsStore } from '../hooks/useYjsStore';
 import { usePresence } from '../hooks/usePresence';
+import { useCurrentUser } from '@/features/auth/hooks/useAuth';
 import { BoardSidebar } from './BoardSidebar';
 import { ShareBoardModal } from './ShareBoardModal';
 import { PresenceDock } from './PresenceDock';
@@ -256,7 +257,7 @@ const components = {
 export function BoardPage() {
   const { boardId } = useParams<{ boardId: string }>();
   const { data: board, isLoading: isBoardLoading, isError } = useBoard(boardId!);
-  const storeWithStatus = useBoardSync(boardId!);
+  const storeWithStatus = useYjsStore(boardId!);
   const { setTheme } = useTheme();
   const [canvasBgIndex, setCanvasBgIndex] = useState(1);
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
@@ -277,10 +278,30 @@ export function BoardPage() {
     }
   }, [board?.canvasColor]);
 
+  const { data: user } = useCurrentUser();
   const presenceMembers = usePresence(
     boardId!,
     storeWithStatus.status === 'synced-remote' ? storeWithStatus.store : undefined
   );
+
+  const currentBg = board ? CANVAS_COLORS[canvasBgIndex].value : '#FFFFFF';
+
+  // Custom solid background (rendered inside Tldraw)
+  const CustomBackground = useCallback(() => (
+    <div
+      className="bt-board-canvas"
+      style={{
+        position: 'absolute',
+        inset: 0,
+        backgroundColor: currentBg,
+      }}
+    />
+  ), [currentBg]);
+
+  const tldrawComponents = useMemo(() => ({
+    ...components,
+    Background: CustomBackground
+  }), [CustomBackground]);
 
   if (isBoardLoading || storeWithStatus.status === 'loading') {
     return <div className="flex-1 w-full h-screen flex items-center justify-center bg-background"><Loader2 className="h-8 w-8 animate-spin text-primary" /></div>;
@@ -296,22 +317,8 @@ export function BoardPage() {
     );
   }
 
-
-  const currentBg = CANVAS_COLORS[canvasBgIndex].value;
   const role = 'role' in storeWithStatus ? storeWithStatus.role : undefined;
-  const myId = storeWithStatus.status === 'synced-remote' ? (storeWithStatus.store as any).userId : undefined;
-
-  // Custom solid background (rendered inside Tldraw)
-  const CustomBackground = () => (
-    <div
-      className="bt-board-canvas"
-      style={{
-        position: 'absolute',
-        inset: 0,
-        backgroundColor: currentBg,
-      }}
-    />
-  );
+  const myId = user?.id;
 
   return (
     <div className="flex flex-col h-screen w-full overflow-hidden bg-background">
@@ -320,7 +327,7 @@ export function BoardPage() {
         <Tldraw
           autoFocus
           store={storeWithStatus.store}
-          components={{ ...components, Background: CustomBackground }}
+          components={tldrawComponents}
         >
           {storeWithStatus.status === 'synced-remote' && (
             <TopHeader
@@ -344,11 +351,13 @@ export function BoardPage() {
         />
       </div>
 
-      <ShareBoardModal
-        boardId={boardId!}
-        open={isShareModalOpen}
-        onOpenChange={setIsShareModalOpen}
-      />
+      {isShareModalOpen && (
+        <ShareBoardModal
+          boardId={boardId!}
+          open={isShareModalOpen}
+          onOpenChange={setIsShareModalOpen}
+        />
+      )}
     </div>
   );
 }

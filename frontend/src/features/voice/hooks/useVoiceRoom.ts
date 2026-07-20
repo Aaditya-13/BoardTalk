@@ -65,23 +65,13 @@ export function useVoiceRoom(boardId: string) {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       localStream.current = stream;
       
-      socket.emit('voice:join', { boardId }, (response: any) => {
-        if (response?.success && response.data?.users) {
-          // Initiator logic: we joined, so we offer to everyone already in the room
-          const usersInRoom: string[] = response.data.users.filter((id: string) => id !== user?.id);
-          setPeers(usersInRoom);
-          usersInRoom.forEach((peerId) => {
-            createPeer(peerId, true);
-          });
-          setInVoice(true);
-        }
-      });
+      socket.emit('voice:join', { boardId });
     } catch (err) {
       console.error('Failed to join voice:', err);
     }
   };
 
-  const leaveVoice = () => {
+  const leaveVoice = useCallback(() => {
     socket.emit('voice:leave', { boardId });
     setInVoice(false);
     setPeers([]);
@@ -95,8 +85,14 @@ export function useVoiceRoom(boardId: string) {
     // Close all connections
     peerConnections.current.forEach((pc) => pc.close());
     peerConnections.current.clear();
+
+    // Stop remote audio elements
+    remoteAudioRefs.current.forEach((audio) => {
+      audio.pause();
+      audio.removeAttribute('srcObject');
+    });
     remoteAudioRefs.current.clear();
-  };
+  }, [boardId]);
 
   const toggleMute = () => {
     if (localStream.current) {
@@ -111,10 +107,18 @@ export function useVoiceRoom(boardId: string) {
   useEffect(() => {
     if (!user) return;
 
-    const handleUserJoined = (payload: { boardId: string; userId: string }) => {
-      if (payload.boardId === boardId && payload.userId !== user.id) {
-        setPeers((prev) => [...prev, payload.userId]);
-        // The newly joined user will send the offer, we just wait for it.
+    const handleUserJoined = (payload: { boardId: string; userId: string; participants: Array<{ userId: string }> }) => {
+      if (payload.boardId === boardId) {
+        if (payload.userId === user.id) {
+          const usersInRoom = payload.participants.map(p => p.userId).filter(id => id !== user.id);
+          setPeers(usersInRoom);
+          usersInRoom.forEach((peerId) => {
+            createPeer(peerId, true);
+          });
+          setInVoice(true);
+        } else {
+          setPeers((prev) => [...prev, payload.userId]);
+        }
       }
     };
 
@@ -187,8 +191,10 @@ export function useVoiceRoom(boardId: string) {
 
   // Clean up on unmount
   useEffect(() => {
-    return () => leaveVoice();
-  }, []);
+    return () => {
+      leaveVoice();
+    };
+  }, [leaveVoice]);
 
   return {
     inVoice,

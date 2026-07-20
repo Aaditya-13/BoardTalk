@@ -8,17 +8,7 @@ export interface BoardPresenceMember {
   name: string;
   avatarUrl: string | null;
   role: CollaboratorRole;
-  cursor?: CursorState;
-  selection?: SelectionState;
-}
-
-export interface CursorState {
-  x: number;
-  y: number;
-}
-
-export interface SelectionState {
-  ids: string[];
+  ephemeralState?: any;
 }
 
 const boardPresence = new Map<string, Map<string, BoardPresenceMember>>();
@@ -64,10 +54,10 @@ export function removePresence(boardId: string, userId: string): BoardPresenceMe
   return Array.from(members.values());
 }
 
-export function updateCursor(
+export function updateEphemeralState(
   boardId: string,
   userId: string,
-  cursor: CursorState
+  state: any
 ): BoardPresenceMember | null {
   const members = boardPresence.get(boardId);
 
@@ -81,30 +71,7 @@ export function updateCursor(
     return null;
   }
 
-  member.cursor = cursor;
-  members.set(userId, member);
-
-  return member;
-}
-
-export function updateSelection(
-  boardId: string,
-  userId: string,
-  selection: SelectionState
-): BoardPresenceMember | null {
-  const members = boardPresence.get(boardId);
-
-  if (!members) {
-    return null;
-  }
-
-  const member = members.get(userId);
-
-  if (!member) {
-    return null;
-  }
-
-  member.selection = selection;
+  member.ephemeralState = state;
   members.set(userId, member);
 
   return member;

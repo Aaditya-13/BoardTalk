@@ -9,10 +9,10 @@ import { cn } from '@/utils/cn';
 interface ChatMessage {
   id: string;
   boardId: string;
-  userId: string;
   content: string;
   createdAt: string;
-  user: {
+  author: {
+    id: string;
     name: string;
     avatarUrl: string | null;
   };
@@ -66,20 +66,20 @@ export function ChatSidebar({ boardId }: { boardId: string }) {
           <div className="text-center text-muted-foreground mt-10">No messages yet. Say hello!</div>
         ) : (
           messages.map((msg) => {
-            const isMe = msg.userId === currentUser?.id;
+            const isMe = msg.author?.id === currentUser?.id;
             return (
               <div key={msg.id} className={cn("flex flex-col", isMe ? "items-end" : "items-start")}>
                 <div className="flex items-center gap-2 mb-1">
                   {!isMe && (
                     <div className="h-6 w-6 rounded-full bg-primary/20 flex items-center justify-center text-[10px] font-bold overflow-hidden">
-                      {msg.user?.avatarUrl ? (
-                        <img src={msg.user.avatarUrl} alt="avatar" />
+                      {msg.author?.avatarUrl ? (
+                        <img src={msg.author.avatarUrl} alt="avatar" />
                       ) : (
                         <User className="h-4 w-4" />
                       )}
                     </div>
                   )}
-                  <span className="text-xs text-muted-foreground">{msg.user?.name || 'Unknown'}</span>
+                  <span className="text-xs text-muted-foreground">{msg.author?.name || 'Unknown'}</span>
                 </div>
                 <div
                   className={cn(

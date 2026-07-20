@@ -24,7 +24,7 @@ export function JoinPage() {
         navigate('/dashboard');
         alert("Failed to join workspace. Link may be invalid or expired.");
       });
-  }, [token, navigate]);
+  }, [token, navigate, acceptInvite]);
 
   return (
     <div className="flex w-full h-screen items-center justify-center bg-white dark:bg-[#121212]">

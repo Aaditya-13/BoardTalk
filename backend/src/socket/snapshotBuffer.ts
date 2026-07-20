@@ -62,5 +62,13 @@ export async function persistSnapshot(
   userId: string,
   documentJson: unknown
 ) {
-  await snapshotService.saveSnapshot(boardId, userId, documentJson as never);
+  try {
+    await snapshotService.saveSnapshot(boardId, userId, documentJson as never);
+  } catch (error: any) {
+    if (error?.code === 'P2002') {
+      console.warn(`[Snapshot] Ignored unique constraint violation for board ${boardId} - snapshot was likely saved concurrently.`);
+    } else {
+      console.error(`[Snapshot] Error saving snapshot for board ${boardId}:`, error);
+    }
+  }
 }
