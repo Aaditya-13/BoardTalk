@@ -50,7 +50,7 @@ export function registerVoiceSocketHandlers(io: Server, socket: Socket) {
 
   socket.on(
     "voice:offer",
-    (payload: { boardId: string; targetUserId: string; sdp: any }) => {
+    (payload: { boardId: string; targetUserId: string; offer: any }) => {
       const targetSocketId = getParticipantSocketId(
         payload.boardId,
         payload.targetUserId
@@ -59,7 +59,7 @@ export function registerVoiceSocketHandlers(io: Server, socket: Socket) {
         io.to(targetSocketId).emit("voice:offer", {
           boardId: payload.boardId,
           fromUserId: socket.data.user.id,
-          sdp: payload.sdp,
+          offer: payload.offer,
         });
       }
     }
@@ -67,7 +67,7 @@ export function registerVoiceSocketHandlers(io: Server, socket: Socket) {
 
   socket.on(
     "voice:answer",
-    (payload: { boardId: string; targetUserId: string; sdp: any }) => {
+    (payload: { boardId: string; targetUserId: string; answer: any }) => {
       const targetSocketId = getParticipantSocketId(
         payload.boardId,
         payload.targetUserId
@@ -76,7 +76,7 @@ export function registerVoiceSocketHandlers(io: Server, socket: Socket) {
         io.to(targetSocketId).emit("voice:answer", {
           boardId: payload.boardId,
           fromUserId: socket.data.user.id,
-          sdp: payload.sdp,
+          answer: payload.answer,
         });
       }
     }

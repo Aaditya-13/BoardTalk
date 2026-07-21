@@ -7,10 +7,77 @@ export function useVoiceRoom(boardId: string) {
   const [inVoice, setInVoice] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
   const [peers, setPeers] = useState<string[]>([]); // User IDs in voice
+  const [speakingPeers, setSpeakingPeers] = useState<Set<string>>(new Set());
   
   const localStream = useRef<MediaStream | null>(null);
   const peerConnections = useRef<Map<string, RTCPeerConnection>>(new Map());
   const remoteAudioRefs = useRef<Map<string, HTMLAudioElement>>(new Map());
+  
+  const audioContextRef = useRef<AudioContext | null>(null);
+  const monitorFrames = useRef<Map<string, number>>(new Map());
+
+  const startMonitoring = useCallback((peerId: string, stream: MediaStream) => {
+    if (!audioContextRef.current) {
+      audioContextRef.current = new AudioContext();
+    }
+    
+    if (audioContextRef.current.state === 'suspended') {
+      audioContextRef.current.resume();
+    }
+
+    const audioCtx = audioContextRef.current;
+    const audioTrack = stream.getAudioTracks()[0];
+    if (!audioTrack) return;
+    
+    const mediaStream = new MediaStream([audioTrack]);
+    const source = audioCtx.createMediaStreamSource(mediaStream);
+    const analyser = audioCtx.createAnalyser();
+    
+    analyser.fftSize = 256;
+    source.connect(analyser);
+
+    const dataArray = new Uint8Array(analyser.frequencyBinCount);
+    
+    const checkVolume = () => {
+      analyser.getByteFrequencyData(dataArray);
+      let sum = 0;
+      for (let i = 0; i < dataArray.length; i++) {
+        sum += dataArray[i];
+      }
+      const average = sum / dataArray.length;
+      
+      const isSpeaking = average > 10;
+      
+      setSpeakingPeers((prev) => {
+        const next = new Set(prev);
+        if (isSpeaking && !next.has(peerId)) {
+          next.add(peerId);
+          return next;
+        } else if (!isSpeaking && next.has(peerId)) {
+          next.delete(peerId);
+          return next;
+        }
+        return prev;
+      });
+
+      monitorFrames.current.set(peerId, requestAnimationFrame(checkVolume));
+    };
+    
+    checkVolume();
+  }, []);
+
+  const stopMonitoring = useCallback((peerId: string) => {
+    const frame = monitorFrames.current.get(peerId);
+    if (frame) {
+      cancelAnimationFrame(frame);
+      monitorFrames.current.delete(peerId);
+    }
+    setSpeakingPeers((prev) => {
+      const next = new Set(prev);
+      next.delete(peerId);
+      return next;
+    });
+  }, []);
 
   // Helper to create a new RTCPeerConnection
   const createPeer = useCallback((peerId: string, initiator: boolean) => {
@@ -43,6 +110,8 @@ export function useVoiceRoom(boardId: string) {
         remoteAudioRefs.current.set(peerId, audio);
       }
       audio.srcObject = event.streams[0];
+      
+      startMonitoring(peerId, event.streams[0]);
     };
 
     if (initiator) {
@@ -58,12 +127,14 @@ export function useVoiceRoom(boardId: string) {
 
     peerConnections.current.set(peerId, pc);
     return pc;
-  }, [boardId]);
+  }, [boardId, startMonitoring]);
 
   const joinVoice = async () => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       localStream.current = stream;
+      
+      if (user) startMonitoring(user.id, stream);
       
       socket.emit('voice:join', { boardId });
     } catch (err) {
@@ -81,6 +152,16 @@ export function useVoiceRoom(boardId: string) {
       localStream.current.getTracks().forEach((t) => t.stop());
       localStream.current = null;
     }
+    
+    if (user) stopMonitoring(user.id);
+    monitorFrames.current.forEach(frame => cancelAnimationFrame(frame));
+    monitorFrames.current.clear();
+    setSpeakingPeers(new Set());
+    
+    if (audioContextRef.current) {
+      audioContextRef.current.close();
+      audioContextRef.current = null;
+    }
 
     // Close all connections
     peerConnections.current.forEach((pc) => pc.close());
@@ -92,7 +173,7 @@ export function useVoiceRoom(boardId: string) {
       audio.removeAttribute('srcObject');
     });
     remoteAudioRefs.current.clear();
-  }, [boardId]);
+  }, [boardId, user, stopMonitoring]);
 
   const toggleMute = () => {
     if (localStream.current) {
@@ -125,6 +206,8 @@ export function useVoiceRoom(boardId: string) {
     const handleUserLeft = (payload: { boardId: string; userId: string }) => {
       if (payload.boardId === boardId) {
         setPeers((prev) => prev.filter((id) => id !== payload.userId));
+        stopMonitoring(payload.userId);
+        
         const pc = peerConnections.current.get(payload.userId);
         if (pc) {
           pc.close();
@@ -187,7 +270,7 @@ export function useVoiceRoom(boardId: string) {
       socket.off('voice:answer', handleAnswer);
       socket.off('voice:ice-candidate', handleIceCandidate);
     };
-  }, [boardId, user, inVoice, createPeer]);
+  }, [boardId, user, inVoice, createPeer, stopMonitoring]);
 
   // Clean up on unmount
   useEffect(() => {
@@ -200,6 +283,7 @@ export function useVoiceRoom(boardId: string) {
     inVoice,
     isMuted,
     peers,
+    speakingPeers,
     joinVoice,
     leaveVoice,
     toggleMute,

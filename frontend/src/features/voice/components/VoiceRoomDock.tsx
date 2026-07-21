@@ -15,10 +15,11 @@ interface VoiceRoomDockProps {
   presenceMembers: Record<string, RoomMember>;
 }
 
-function MemberAvatar({ member, isMuted = false, isLocal = false }: {
+function MemberAvatar({ member, isMuted = false, isLocal = false, isSpeaking = false }: {
   member: { userId: string; name: string; avatarUrl: string | null };
   isMuted?: boolean;
   isLocal?: boolean;
+  isSpeaking?: boolean;
 }) {
   let hash = 0;
   for (let i = 0; i < member.userId.length; i++) {
@@ -29,8 +30,8 @@ function MemberAvatar({ member, isMuted = false, isLocal = false }: {
   return (
     <div className="relative shrink-0">
       <div
-        className="w-8 h-8 rounded-full overflow-hidden border-2 shadow-sm"
-        style={{ borderColor: isLocal ? '#7c5cfc' : color }}
+        className={cn("w-8 h-8 rounded-full overflow-hidden border-2 shadow-sm transition-all duration-200", isSpeaking ? "ring-2 ring-emerald-500 ring-offset-1 border-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.8)] scale-105" : "")}
+        style={{ borderColor: isSpeaking ? undefined : (isLocal ? '#7c5cfc' : color) }}
       >
         {member.avatarUrl ? (
           <img src={member.avatarUrl} alt={member.name} className="w-full h-full object-cover" />
@@ -54,7 +55,7 @@ function MemberAvatar({ member, isMuted = false, isLocal = false }: {
 
 export function VoiceRoomDock({ boardId, presenceMembers }: VoiceRoomDockProps) {
   const { data: user } = useCurrentUser();
-  const { inVoice, isMuted, peers, joinVoice, leaveVoice, toggleMute } = useVoiceRoom(boardId);
+  const { inVoice, isMuted, peers, speakingPeers, joinVoice, leaveVoice, toggleMute } = useVoiceRoom(boardId);
 
   const voiceMembers = peers.map((id) => presenceMembers[id]).filter(Boolean);
 
@@ -122,14 +123,26 @@ export function VoiceRoomDock({ boardId, presenceMembers }: VoiceRoomDockProps) 
       <div className="flex items-center gap-1.5 flex-wrap">
         {user && (
           <div className="flex items-center gap-1.5">
-            <MemberAvatar member={{ userId: user.id, name: user.name, avatarUrl: user.avatarUrl }} isMuted={isMuted} isLocal />
+            <MemberAvatar
+              member={{
+                userId: user.id,
+                name: user.name,
+                avatarUrl: user.avatarUrl,
+              }}
+              isMuted={isMuted}
+              isLocal
+              isSpeaking={speakingPeers.has(user.id)}
+            />
             <span className="text-xs text-muted-foreground">You</span>
           </div>
         )}
-        {voiceMembers.map((m) => (
-          <div key={m.userId} className="flex items-center gap-1">
-            <MemberAvatar member={m} />
-            <span className="text-xs text-muted-foreground truncate max-w-[72px]">{m.name}</span>
+        {voiceMembers.map((member) => (
+          <div
+            key={member.userId}
+            className="flex items-center gap-1"
+          >
+            <MemberAvatar member={member} isSpeaking={speakingPeers.has(member.userId)} />
+            <span className="text-xs text-muted-foreground truncate max-w-[72px]">{member.name}</span>
           </div>
         ))}
         {voiceMembers.length === 0 && (
