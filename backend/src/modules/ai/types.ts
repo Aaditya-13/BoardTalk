@@ -6,9 +6,11 @@ export type BoardElementType =
   | "sticky"
   | "frame";
 
+export type TldrawColor = "black" | "blue" | "green" | "yellow" | "light-blue" | "light-green" | "light-red" | "light-violet" | "orange" | "red" | "violet" | "grey" | "white";
+
 export interface BoardElementStyle {
-  fill?: string;
-  stroke?: string;
+  fill?: TldrawColor;
+  stroke?: TldrawColor;
   fontSize?: number;
   fontWeight?: "normal" | "bold";
   opacity?: number;

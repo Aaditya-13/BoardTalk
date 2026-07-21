@@ -15,6 +15,7 @@ import {
   DefaultToolbar,
   useEditor,
   useValue,
+  type Editor
 } from 'tldraw';
 import 'tldraw/tldraw.css';
 import { useUIStore } from '@/stores/uiStore';
@@ -261,6 +262,7 @@ export function BoardPage() {
   const { setTheme } = useTheme();
   const [canvasBgIndex, setCanvasBgIndex] = useState(1);
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
+  const [editor, setEditor] = useState<Editor | null>(null);
 
   // Auto-toggle theme based on canvas color selection
   useEffect(() => {
@@ -328,6 +330,7 @@ export function BoardPage() {
           autoFocus
           store={storeWithStatus.store}
           components={tldrawComponents}
+          onMount={setEditor}
         >
           {storeWithStatus.status === 'synced-remote' && (
             <TopHeader
@@ -349,6 +352,7 @@ export function BoardPage() {
           presenceMembers={presenceMembers}
           currentUserId={myId}
           store={storeWithStatus.store}
+          editor={editor}
         />
       </div>
 

@@ -5,9 +5,11 @@ import { z } from "zod";
 // Used by the parser to validate Gemini output before it reaches the client.
 // ---------------------------------------------------------------------------
 
+const tldrawColorSchema = z.enum(["black", "blue", "green", "yellow", "light-blue", "light-green", "light-red", "light-violet", "orange", "red", "violet", "grey", "white"]);
+
 export const boardElementStyleSchema = z.object({
-  fill: z.string().optional(),
-  stroke: z.string().optional(),
+  fill: tldrawColorSchema.optional(),
+  stroke: tldrawColorSchema.optional(),
   fontSize: z.number().positive().optional(),
   fontWeight: z.enum(["normal", "bold"]).optional(),
   opacity: z.number().min(0).max(1).optional(),

@@ -215,45 +215,46 @@ export function registerBoardSocketHandlers(
         message,
       });
 
-      // AI command routing — only if content starts with "/ai "
-      if (payload.content.startsWith(AI_PREFIX)) {
-        const rawCommand = payload.content.slice(AI_PREFIX.length).trim();
-        const requestId = randomUUID();
-
-        // Ack immediately so the client can show a spinner
-        socket.emit("ai:generating", {
-          boardId: payload.boardId,
-          requestId,
-        });
-
-        try {
-          const result = await aiService.handleCommand(
-            payload.boardId,
-            socket.data.user.id,
-            rawCommand
-          );
-
-          socket.emit("ai:result", {
-            boardId: payload.boardId,
-            requestId,
-            elements: result.elements,
-          });
-        } catch (aiError) {
-          socket.emit("ai:error", {
-            boardId: payload.boardId,
-            requestId,
-            message:
-              aiError instanceof Error
-                ? aiError.message
-                : "AI generation failed.",
-          });
-        }
-      }
     } catch (error) {
       socket.emit("chat:error", {
         boardId: payload.boardId,
         message:
           error instanceof Error ? error.message : "Failed to send message.",
+      });
+    }
+  });
+
+  socket.on("ai:generate", async (payload: { boardId: string; requestId: string; prompt: string; viewport?: any; existingElements?: any[] }) => {
+    const { requestId } = payload;
+
+    socket.emit("ai:generating", {
+      boardId: payload.boardId,
+      requestId,
+    });
+
+    try {
+      const result = await aiService.handleCommand(
+        payload.boardId,
+        socket.data.user.id,
+        payload.prompt,
+        payload.viewport,
+        payload.existingElements
+      );
+
+      socket.emit("ai:result", {
+        boardId: payload.boardId,
+        requestId,
+        elements: result.elements,
+      });
+    } catch (aiError) {
+      console.error("[AI ERROR]:", aiError);
+      socket.emit("ai:error", {
+        boardId: payload.boardId,
+        requestId,
+        message:
+          aiError instanceof Error
+            ? aiError.message
+            : "AI generation failed.",
       });
     }
   });

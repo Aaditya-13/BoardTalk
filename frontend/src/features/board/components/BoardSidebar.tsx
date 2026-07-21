@@ -5,7 +5,7 @@ import { VoiceRoomDock } from '@/features/voice/components/VoiceRoomDock';
 import { MessageSquare, Sparkles, Users, MessageCircle, X } from 'lucide-react';
 import { cn } from '@/utils/cn';
 
-import { type TLStore } from 'tldraw';
+import { type TLStore, type Editor } from 'tldraw';
 
 interface RoomMember {
   userId: string;
@@ -19,6 +19,7 @@ interface BoardSidebarProps {
   presenceMembers: Record<string, RoomMember>;
   currentUserId?: string;
   store: TLStore;
+  editor: Editor | null;
 }
 
 interface TabConfig {
@@ -84,7 +85,7 @@ function CommentsStub() {
   );
 }
 
-export function BoardSidebar({ boardId, presenceMembers, currentUserId, store }: BoardSidebarProps) {
+export function BoardSidebar({ boardId, presenceMembers, currentUserId, store, editor }: BoardSidebarProps) {
   const { isSidebarOpen, activeSidebarTab, setActiveSidebarTab, setActivePanel } = useUIStore();
 
   const handleTabClick = (tab: SidebarTab) => {
@@ -130,7 +131,7 @@ export function BoardSidebar({ boardId, presenceMembers, currentUserId, store }:
           </div>
         )}
         {activeSidebarTab === 'chat' && <ChatSidebar boardId={boardId} />}
-        {activeSidebarTab === 'ai' && <AISidebar boardId={boardId} store={store} />}
+        {activeSidebarTab === 'ai' && <AISidebar boardId={boardId} store={store} editor={editor} />}
         {activeSidebarTab === 'comments' && <CommentsStub />}
       </div>
     </aside>

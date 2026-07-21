@@ -3,7 +3,7 @@ import { socket } from '@/lib/socket';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Send, Sparkles, Loader2, AlertCircle } from 'lucide-react';
-import { type TLStore } from 'tldraw';
+import { type TLStore, type Editor, toRichText } from 'tldraw';
 
 interface AIRequest {
   id: string;
@@ -12,10 +12,17 @@ interface AIRequest {
   error?: string;
 }
 
-export function AISidebar({ boardId, store }: { boardId: string; store: TLStore }) {
+export function AISidebar({ boardId, store, editor }: { boardId: string; store: TLStore; editor: Editor | null }) {
   const [requests, setRequests] = useState<AIRequest[]>([]);
   const [input, setInput] = useState('');
   const scrollRef = useRef<HTMLDivElement>(null);
+
+  const getValidColor = (colorStr?: string) => {
+    const validColors = ["black", "grey", "light-violet", "violet", "blue", "light-blue", "yellow", "orange", "green", "light-green", "light-red", "red", "white"];
+    if (!colorStr) return 'black';
+    const lower = colorStr.toLowerCase();
+    return validColors.includes(lower) ? lower : 'black';
+  };
 
   useEffect(() => {
     const handleGenerating = (payload: { boardId: string; requestId: string }) => {
@@ -44,23 +51,23 @@ export function AISidebar({ boardId, store }: { boardId: string; store: TLStore 
             index: 'a' + i,
           };
 
-          if (el.type === 'rectangle' || el.type === 'ellipse') {
+          if (el.type === 'rectangle' || el.type === 'ellipse' || el.type === 'diamond') {
             return {
               ...base,
               type: 'geo',
-              props: { geo: el.type, w: el.width, h: el.height, color: 'black', text: el.label || '' }
+              props: { geo: el.type, w: el.width, h: el.height, color: getValidColor(el.style?.stroke || el.style?.fill), richText: toRichText(el.label || '') }
             };
           } else if (el.type === 'text') {
             return {
               ...base,
               type: 'text',
-              props: { text: el.label || '', color: 'black' }
+              props: { richText: toRichText(el.label || ''), color: getValidColor(el.style?.fill || el.style?.stroke) }
             };
           } else if (el.type === 'sticky') {
             return {
               ...base,
               type: 'note',
-              props: { text: el.label || '', color: 'yellow' }
+              props: { richText: toRichText(el.label || ''), color: getValidColor(el.style?.fill || 'yellow') }
             };
           } else if (el.type === 'frame') {
             return {
@@ -72,13 +79,19 @@ export function AISidebar({ boardId, store }: { boardId: string; store: TLStore 
             return {
               ...base,
               type: 'arrow',
-              props: { start: { x: 0, y: 0 }, end: { x: el.width, y: el.height }, text: el.label || '' }
+              props: { start: { x: 0, y: 0 }, end: { x: el.width, y: el.height }, richText: toRichText(el.label || ''), color: getValidColor(el.style?.stroke || el.style?.fill) }
             };
           }
           return null;
         }).filter(Boolean);
 
-        store.put(tlShapes as any);
+        if (editor) {
+          editor.markHistoryStoppingPoint('ai-generation');
+          editor.createShapes(tlShapes as any);
+        } else {
+          // Fallback if editor hasn't mounted yet
+          store.put(tlShapes as any);
+        }
       }
     };
 
@@ -110,12 +123,26 @@ export function AISidebar({ boardId, store }: { boardId: string; store: TLStore 
     if (!input.trim()) return;
     
     const prompt = input.trim();
-    // Assuming backend uses a pseudo-requestId derived from chat or we can just track the prompt optimistically
-    // We'll create an optimistic request. When ai:generating arrives, it has the real requestId.
-    // For simplicity, we just send it via chat:message with /ai prefix.
-    socket.emit('chat:message', { boardId, content: `/ai ${prompt}` });
     
-    setRequests((prev) => [...prev, { id: Date.now().toString(), prompt, status: 'generating' }]);
+    const camera = store.get('camera:page:page' as any) as any;
+    const viewport = camera ? { x: camera.x, y: camera.y, w: 1000, h: 800 } : undefined;
+    
+    // Grab some context (up to 20 shapes) to send to Gemini
+    const existingElements = Array.from(store.allRecords())
+      .filter((r: any) => r.typeName === 'shape')
+      .slice(0, 20);
+
+    const requestId = crypto.randomUUID();
+
+    socket.emit('ai:generate', { 
+      boardId, 
+      requestId,
+      prompt,
+      viewport,
+      existingElements
+    });
+    
+    setRequests((prev) => [...prev, { id: requestId, prompt, status: 'generating' }]);
     setInput('');
   };
 

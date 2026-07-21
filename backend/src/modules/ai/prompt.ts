@@ -18,8 +18,8 @@ interface BoardElement {
   height: number;      // must be > 0
   label?: string;      // text label or content
   style?: {
-    fill?: string;     // hex color e.g. "#3B82F6"
-    stroke?: string;   // hex color
+    fill?: "black" | "blue" | "green" | "yellow" | "light-blue" | "light-green" | "light-red" | "light-violet" | "orange" | "red" | "violet" | "grey" | "white";
+    stroke?: "black" | "blue" | "green" | "yellow" | "light-blue" | "light-green" | "light-red" | "light-violet" | "orange" | "red" | "violet" | "grey" | "white";
     fontSize?: number;
     fontWeight?: "normal" | "bold";
     opacity?: number;  // 0.0 – 1.0
@@ -28,30 +28,42 @@ interface BoardElement {
 }
 
 Rules:
-- Canvas coordinate space: x ∈ [0, 3000], y ∈ [0, 2000].
+- Generate coordinates specifically centered around the provided Viewport. Do NOT default to (0,0) if the viewport is far away.
+- Avoid drawing on top of the Existing Context elements if provided, unless instructed to modify or connect them.
 - Keep total element count under 40.
 - Prefer clean, grid-aligned layouts with consistent spacing.
 - Use meaningful labels that reflect the described UI or diagram.
 - Do NOT include an "id" field — it will be assigned by the server.
-- Use vibrant but tasteful hex colors.
-- Available types: rectangle, ellipse, text, arrow, sticky, frame.`;
+- STRICTLY use ONLY the allowed colors for fill and stroke. Do NOT use hex codes.`;
 
 /**
- * Build the user-turn prompt from the raw command (with "/ai " prefix stripped).
+ * Build the user-turn prompt from the raw command and context.
  */
-export function buildUserPrompt(rawCommand: string): string {
-  return `Generate a canvas layout for: ${rawCommand}`;
+export function buildUserPrompt(
+  rawCommand: string,
+  viewport?: { x: number; y: number; w: number; h: number },
+  existingElements?: any[]
+): string {
+  return JSON.stringify({
+    task: rawCommand,
+    viewport: viewport || { x: 0, y: 0, w: 1000, h: 800 },
+    existingContext: existingElements || []
+  }, null, 2);
 }
 
 /**
  * Returns the system + user prompt pair ready to send to Gemini.
  */
-export function refinePrompt(rawCommand: string): {
+export function refinePrompt(
+  rawCommand: string,
+  viewport?: { x: number; y: number; w: number; h: number },
+  existingElements?: any[]
+): {
   system: string;
   user: string;
 } {
   return {
     system: SYSTEM_PROMPT,
-    user: buildUserPrompt(rawCommand),
+    user: buildUserPrompt(rawCommand, viewport, existingElements),
   };
 }

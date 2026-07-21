@@ -7,9 +7,9 @@ import type { BoardElement } from "./types.js";
 // ---------------------------------------------------------------------------
 // Canvas bounds for coordinate clamping
 // ---------------------------------------------------------------------------
-const CANVAS_MAX_X = 3000;
-const CANVAS_MAX_Y = 2000;
-const CANVAS_MIN = 0;
+const CANVAS_MAX_X = 100000;
+const CANVAS_MAX_Y = 100000;
+const CANVAS_MIN = -100000;
 
 function clamp(value: number, min: number, max: number): number {
   return Math.max(min, Math.min(max, value));

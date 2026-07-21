@@ -1,4 +1,4 @@
-import { GoogleGenerativeAI } from "@google/generative-ai";
+import { GoogleGenAI } from "@google/genai";
 
 import { env } from "../../config/env.js";
 import { collaboratorService } from "../collaborator/service.js";
@@ -20,7 +20,9 @@ class AiService {
   async handleCommand(
     boardId: string,
     userId: string,
-    rawCommand: string
+    rawCommand: string,
+    viewport?: { x: number; y: number; w: number; h: number },
+    existingElements?: any[]
   ): Promise<AiGenerateResult> {
     await collaboratorService.assertBoardWriteAccess(boardId, userId);
 
@@ -28,18 +30,21 @@ class AiService {
       throw new InternalServerError("Gemini API key is not configured.");
     }
 
-    const userPrompt = buildUserPrompt(rawCommand);
+    const userPrompt = buildUserPrompt(rawCommand, viewport, existingElements);
 
-    // Initialise the model with the static system instruction per-request
-    // so the prompt module stays decoupled from the client singleton.
-    const genAI = new GoogleGenerativeAI(env.GEMINI_API_KEY);
-    const model = genAI.getGenerativeModel({
-      model: "gemini-2.5-flash",
-      systemInstruction: SYSTEM_PROMPT,
+    // Initialize the new GoogleGenAI client
+    const ai = new GoogleGenAI({ apiKey: env.GEMINI_API_KEY });
+
+    const response = await ai.models.generateContent({
+      model: "gemini-3.5-flash-lite",
+      contents: userPrompt,
+      config: {
+        systemInstruction: SYSTEM_PROMPT,
+        responseMimeType: "application/json",
+      }
     });
 
-    const result = await model.generateContent(userPrompt);
-    const responseText = result.response.text();
+    const responseText = response.text || "[]";
 
     const elements = parseAiResponse(responseText);
 
