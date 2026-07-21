@@ -264,3 +264,24 @@ body:has(.bt-main-menu-trigger [data-state="open"]) .bt-style-panel-wrapper {
     height: 34px !important;
   }
 }
+
+/* ─── Premium Scrollbar ─── */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.12);
+  border-radius: 10px;
+  transition: all 0.2s ease;
+}
+.dark .custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+}
+.custom-scrollbar:hover::-webkit-scrollbar-thumb,
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(139, 92, 246, 0.6); /* Brand Primary */
+}
