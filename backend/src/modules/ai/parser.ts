@@ -26,18 +26,29 @@ function clamp(value: number, min: number, max: number): number {
  *  5. Clamp coordinates to canvas bounds
  */
 export function parseAiResponse(raw: string): BoardElement[] {
-  // --- 1. Strip code fences if Gemini wrapped the output ---
-  const stripped = raw
-    .trim()
-    .replace(/^```(?:json)?\s*/i, "")
-    .replace(/\s*```\s*$/, "")
-    .trim();
+  // --- 1. Extract JSON array from anywhere in the string ---
+  let jsonString = raw;
+  const arrayMatch = raw.match(/\[\s*\{[\s\S]*\}\s*\]/);
+  if (arrayMatch) {
+    jsonString = arrayMatch[0];
+  } else {
+    // Maybe it returned an object like { "elements": [ ... ] }
+    const objMatch = raw.match(/\{\s*"elements"\s*:\s*\[[\s\S]*\]\s*\}/);
+    if (objMatch) {
+      jsonString = objMatch[0];
+    }
+  }
 
   // --- 2. Parse JSON ---
-  let parsed: unknown;
+  let parsed: any;
   try {
-    parsed = JSON.parse(stripped);
-  } catch {
+    parsed = JSON.parse(jsonString);
+    // If it's a wrapper object, extract the array
+    if (parsed && typeof parsed === 'object' && !Array.isArray(parsed) && parsed.elements) {
+      parsed = parsed.elements;
+    }
+  } catch (err) {
+    console.error("[AI Parse Error] Raw text was:", raw);
     throw new BadRequestError(
       "AI returned invalid JSON. Please try a different command."
     );
@@ -47,6 +58,7 @@ export function parseAiResponse(raw: string): BoardElement[] {
   const result = boardElementArraySchema.safeParse(parsed);
 
   if (!result.success) {
+    console.warn("[AI Zod Error]:", JSON.stringify(result.error.issues, null, 2));
     throw new BadRequestError(
       "AI response did not match the expected element schema. Please try again."
     );

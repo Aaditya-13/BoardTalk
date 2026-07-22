@@ -2,7 +2,8 @@ import { GoogleGenAI } from "@google/genai";
 
 import { env } from "../../config/env.js";
 import { collaboratorService } from "../collaborator/service.js";
-import { InternalServerError } from "../shared/errors.js";
+import { InternalServerError, PaymentRequiredError } from "../shared/errors.js";
+import { userRepository } from "../user/repository.js";
 import { SYSTEM_PROMPT, buildUserPrompt } from "./prompt.js";
 import { parseAiResponse } from "./parser.js";
 import type { AiGenerateResult } from "./types.js";
@@ -30,6 +31,15 @@ class AiService {
       throw new InternalServerError("Gemini API key is not configured.");
     }
 
+    const user = await userRepository.findById(userId);
+    if (!user) {
+      throw new InternalServerError("User not found.");
+    }
+
+    if (user.isGuest && user.aiPromptsUsed >= 3) {
+      throw new PaymentRequiredError("limit_reached");
+    }
+
     const userPrompt = buildUserPrompt(rawCommand, viewport, existingElements);
 
     // Initialize the new GoogleGenAI client
@@ -47,6 +57,10 @@ class AiService {
     const responseText = response.text || "[]";
 
     const elements = parseAiResponse(responseText);
+
+    if (user.isGuest) {
+      await userRepository.incrementAiPrompts(userId);
+    }
 
     return {
       elements,

@@ -43,6 +43,17 @@ class UserRepository {
     });
   }
 
+  incrementAiPrompts(id: string) {
+    return prisma.user.update({
+      where: { id },
+      data: {
+        aiPromptsUsed: {
+          increment: 1,
+        },
+      },
+    });
+  }
+
   delete(id: string) {
     return prisma.user.delete({
       where: { id },

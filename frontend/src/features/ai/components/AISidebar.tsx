@@ -36,7 +36,7 @@ export function AISidebar({ boardId, store, editor }: { boardId: string; store: 
         setRequests((prev) => prev.map(r => r.id === payload.requestId ? { ...r, status: 'success' } : r));
         
         // Add elements to canvas
-        const tlShapes = payload.elements.map((el, i) => {
+        const tlShapes = payload.elements.map((el) => {
           const shapeId = `shape:${el.id}`;
           const base = {
             id: shapeId,
@@ -48,7 +48,6 @@ export function AISidebar({ boardId, store, editor }: { boardId: string; store: 
             opacity: el.style?.opacity ?? 1,
             meta: {},
             parentId: 'page:page',
-            index: 'a' + i,
           };
 
           if (el.type === 'rectangle' || el.type === 'ellipse' || el.type === 'diamond') {
@@ -88,9 +87,6 @@ export function AISidebar({ boardId, store, editor }: { boardId: string; store: 
         if (editor) {
           editor.markHistoryStoppingPoint('ai-generation');
           editor.createShapes(tlShapes as any);
-        } else {
-          // Fallback if editor hasn't mounted yet
-          store.put(tlShapes as any);
         }
       }
     };
@@ -181,10 +177,22 @@ export function AISidebar({ boardId, store, editor }: { boardId: string; store: 
               )}
               
               {req.status === 'error' && (
-                <div className="flex items-center gap-2 text-xs text-destructive">
-                  <AlertCircle className="h-3 w-3" />
-                  {req.error || 'Failed to generate'}
-                </div>
+                req.error === 'limit_reached' ? (
+                  <div className="flex flex-col gap-2 p-3 bg-primary/10 rounded-lg border border-primary/20 text-sm">
+                    <p className="font-semibold text-primary">Free Limit Reached 🚀</p>
+                    <p className="text-muted-foreground text-xs leading-relaxed">
+                      You've reached your free AI limit! To see advanced features, complex layouts, and more in action, please sign in or check out the demo.
+                    </p>
+                    <a href="#" className="text-primary hover:underline font-medium text-xs">
+                      Watch Demo Video →
+                    </a>
+                  </div>
+                ) : (
+                  <div className="flex items-center gap-2 text-xs text-destructive">
+                    <AlertCircle className="h-3 w-3" />
+                    {req.error || 'Failed to generate'}
+                  </div>
+                )
               )}
             </div>
           ))
