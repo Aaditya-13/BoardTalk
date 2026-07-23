@@ -331,6 +331,7 @@ export function BoardPage() {
           store={storeWithStatus.store}
           components={tldrawComponents}
           onMount={setEditor}
+          licenseKey={import.meta.env.VITE_TLDRAW_LICENSE_KEY}
         >
           {storeWithStatus.status === 'synced-remote' && (
             <TopHeader

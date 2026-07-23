@@ -246,7 +246,10 @@ export function LandingPage() {
             </div>
             {/* Tldraw Canvas */}
             <div className="h-[500px] md:h-[700px] w-full relative bg-[#FDFBF7] dark:bg-zinc-900">
-              <Tldraw autoFocus={false} />
+              <Tldraw 
+                autoFocus={false} 
+                licenseKey={import.meta.env.VITE_TLDRAW_LICENSE_KEY}
+              />
             </div>
 
             {/* Dev Login Section */}
