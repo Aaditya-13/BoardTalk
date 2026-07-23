@@ -5,6 +5,7 @@ import cors from "cors";
 import helmet from "helmet";
 import passport from "passport";
 import pinoHttp from "pino-http";
+import rateLimit from "express-rate-limit";
 
 import { env } from "./config/env";
 import "./config/passport";
@@ -48,7 +49,24 @@ app.use(express.json());
 
 app.use(express.urlencoded({ extended: true }));
 
-app.use("/api/v1/auth", authRoutes);
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 20, // Limit each IP to 20 requests per `window` (here, per 15 minutes)
+  message: "Too many authentication requests, please try again later.",
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+const apiLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 1000, // Limit each IP to 1000 requests per `window`
+  message: "Too many requests, please try again later.",
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+app.use("/api/v1/", apiLimiter);
+app.use("/api/v1/auth", authLimiter, authRoutes);
 
 app.use("/api/v1/boards", boardRoutes);
 

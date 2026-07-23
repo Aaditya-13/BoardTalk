@@ -121,7 +121,39 @@ export function AISidebar({ boardId, store, editor }: { boardId: string; store: 
     const prompt = input.trim();
     
     const camera = store.get('camera:page:page' as any) as any;
-    const viewport = camera ? { x: camera.x, y: camera.y, w: 1000, h: 800 } : undefined;
+    let targetY = camera ? camera.y : 0;
+    const targetX = camera ? camera.x : 0;
+
+    if (editor && camera) {
+      const v = editor.getViewportPageBounds();
+      const shapesInView = editor.getCurrentPageShapes().filter(s => {
+        const b = editor.getShapePageBounds(s);
+        if (!b) return false;
+        // Simple AABB intersection
+        return !(b.maxX < v.minX || b.minX > v.maxX || b.maxY < v.minY || b.minY > v.maxY);
+      });
+
+      if (shapesInView.length > 0) {
+        let maxY = -Infinity;
+        shapesInView.forEach(s => {
+          const b = editor.getShapePageBounds(s);
+          if (b) maxY = Math.max(maxY, b.maxY);
+        });
+
+        if (maxY !== -Infinity) {
+          targetY = maxY + 100;
+          
+          // Pan the camera smoothly to the new generation zone
+          editor.setCamera({
+            x: camera.x,
+            y: targetY - (v.h / 4), // Center slightly above so it draws in the middle
+            z: camera.z
+          }, { animation: { duration: 500 } });
+        }
+      }
+    }
+
+    const viewport = { x: targetX, y: targetY, w: 1000, h: 800 };
     
     // Grab some context (up to 20 shapes) to send to Gemini
     const existingElements = Array.from(store.allRecords())
