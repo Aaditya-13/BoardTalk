@@ -345,6 +345,13 @@ export function BoardPage() {
             />
           )}
           <ThemeAndRoleSync role={role} />
+          
+          {/* Tldraw Watermark */}
+          <div className="absolute bottom-4 right-4 z-[500] pointer-events-auto">
+            <a href="https://tldraw.com" target="_blank" rel="noopener noreferrer" className="text-[10px] font-bold text-muted-foreground hover:text-foreground transition-colors bg-background/50 px-2 py-1 rounded-md backdrop-blur-sm border border-border/50">
+              Powered by tldraw
+            </a>
+          </div>
         </Tldraw>
 
         {/* ── Right Floating Sidebar (Chat, AI, People) ── */}

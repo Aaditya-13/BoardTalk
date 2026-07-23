@@ -246,10 +246,18 @@ export function LandingPage() {
             </div>
             {/* Tldraw Canvas */}
             <div className="h-[500px] md:h-[700px] w-full relative bg-[#FDFBF7] dark:bg-zinc-900">
-              <Tldraw 
-                autoFocus={false} 
+              <Tldraw
+                autoFocus={false}
                 licenseKey={import.meta.env.VITE_TLDRAW_LICENSE_KEY}
-              />
+              >
+
+                {/* Tldraw Watermark */}
+                <div className="absolute bottom-4 right-4 z-[500] pointer-events-auto">
+                  <a href="https://tldraw.com" target="_blank" rel="noopener noreferrer" className="text-[10px] font-bold text-muted-foreground hover:text-foreground transition-colors bg-background/50 px-2 py-1 rounded-md backdrop-blur-sm border border-border/50">
+                    Powered by tldraw
+                  </a>
+                </div>
+              </Tldraw>
             </div>
 
             {/* Dev Login Section */}
@@ -322,7 +330,9 @@ export function LandingPage() {
             </div>
             <span className="font-extrabold text-2xl">BoardTalk</span>
           </div>
-          <p className="text-black/40 dark:text-white/40 font-bold mb-8">© {new Date().getFullYear()} BoardTalk Inc. Crafted with ❤️.</p>
+          <p className="text-black/40 dark:text-white/40 font-bold mb-8">
+            © {new Date().getFullYear()} BoardTalk Inc. Crafted with ❤️. Powered by <a href="https://tldraw.com" target="_blank" rel="noopener noreferrer" className="underline hover:text-black dark:hover:text-white transition-colors">tldraw</a>.
+          </p>
           <div className="flex justify-center gap-8 text-sm font-bold text-black/50 dark:text-white/50">
             <Link to="/privacy" className="hover:text-black dark:hover:text-white transition-colors">Privacy Policy</Link>
             <Link to="/terms" className="hover:text-black dark:hover:text-white transition-colors">Terms of Service</Link>
