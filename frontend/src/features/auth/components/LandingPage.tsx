@@ -79,7 +79,7 @@ const StickyNote = ({ color, rotate, top, left, delay, children }: any) => (
 );
 
 export function LandingPage() {
-  const { data: user, isLoading } = useCurrentUser();
+  const { data: user } = useCurrentUser();
   const guestLogin = useGuestLogin();
   // const devLogin = useDevLogin();
   const navigate = useNavigate();
