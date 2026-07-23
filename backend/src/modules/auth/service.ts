@@ -108,28 +108,28 @@ await authRepository.createRefreshToken(
     };
   }
 
-  async devLogin(name: string): Promise<AuthResult> {
-    const email = `${name.toLowerCase()}@example.com`;
-    let user = await prisma.user.findFirst({ where: { email } });
-    if (!user) {
-      user = await userRepository.create({
-        name,
-        email,
-        isGuest: false,
-      });
-    }
-
-    const payload: JwtPayload = { userId: user.id };
-    const accessToken = generateAccessToken(payload);
-    
-    // Dev login only returns access token for simplicity (same as guest)
-    return {
-      user,
-      tokens: {
-        accessToken,
-      },
-    };
-  }
+  // async devLogin(name: string): Promise<AuthResult> {
+  //   const email = `${name.toLowerCase()}@example.com`;
+  //   let user = await prisma.user.findFirst({ where: { email } });
+  //   if (!user) {
+  //     user = await userRepository.create({
+  //       name,
+  //       email,
+  //       isGuest: false,
+  //     });
+  //   }
+  //
+  //   const payload: JwtPayload = { userId: user.id };
+  //   const accessToken = generateAccessToken(payload);
+  //   
+  //   // Dev login only returns access token for simplicity (same as guest)
+  //   return {
+  //     user,
+  //     tokens: {
+  //       accessToken,
+  //     },
+  //   };
+  // }
 
   async refresh(
     refreshToken: string

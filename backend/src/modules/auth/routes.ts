@@ -41,7 +41,7 @@ router.get(
 
 router.post("/guest", authController.guestLogin);
 
-router.post("/dev-login", authController.devLogin);
+// router.post("/dev-login", authController.devLogin);
 
 router.post("/refresh", authController.refresh);
 

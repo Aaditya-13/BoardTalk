@@ -30,10 +30,10 @@ const uploadAvatar = async (file: File): Promise<AuthUser> => {
   return data.data;
 };
 
-const devLogin = async (name: string): Promise<{ accessToken: string; user: AuthUser }> => {
-  const { data } = await api.post('/auth/dev-login', { name });
-  return data.data;
-};
+// const devLogin = async (name: string): Promise<{ accessToken: string; user: AuthUser }> => {
+//   const { data } = await api.post('/auth/dev-login', { name });
+//   return data.data;
+// };
 
 const logout = async (): Promise<void> => {
   await api.post('/auth/logout');
@@ -58,15 +58,15 @@ export const useGuestLogin = () => {
   });
 };
 
-export const useDevLogin = () => {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: devLogin,
-    onSuccess: (data) => {
-      queryClient.setQueryData(['currentUser'], data.user);
-    },
-  });
-};
+// export const useDevLogin = () => {
+//   const queryClient = useQueryClient();
+//   return useMutation({
+//     mutationFn: devLogin,
+//     onSuccess: (data) => {
+//       queryClient.setQueryData(['currentUser'], data.user);
+//     },
+//   });
+// };
 
 export const useLogout = () => {
   const queryClient = useQueryClient();

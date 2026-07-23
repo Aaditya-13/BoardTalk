@@ -73,24 +73,24 @@ class AuthController {
     });
   }
 
-  async devLogin(req: Request, res: Response) {
-    const { name } = req.body;
-    if (!name) {
-      throw new BadRequestError("Name is required for dev login");
-    }
-
-    const result = await authService.devLogin(name);
-
-    setAuthCookies(res, result.tokens);
-
-    res.status(200).json({
-      success: true,
-      data: {
-        user: result.user,
-        accessToken: result.tokens.accessToken,
-      },
-    });
-  }
+  // async devLogin(req: Request, res: Response) {
+  //   const { name } = req.body;
+  //   if (!name) {
+  //     throw new BadRequestError("Name is required for dev login");
+  //   }
+  //
+  //   const result = await authService.devLogin(name);
+  //
+  //   setAuthCookies(res, result.tokens);
+  //
+  //   res.status(200).json({
+  //     success: true,
+  //     data: {
+  //       user: result.user,
+  //       accessToken: result.tokens.accessToken,
+  //     },
+  //   });
+  // }
 
   async logout(
     req: Request,

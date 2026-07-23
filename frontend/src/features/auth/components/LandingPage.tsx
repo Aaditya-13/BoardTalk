@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
-import { useGuestLogin, useCurrentUser, useDevLogin } from "../hooks/useAuth";
+import { useGuestLogin, useCurrentUser } from "../hooks/useAuth";
+// import { useDevLogin } from "../hooks/useAuth";
 import { useNavigate, Navigate } from "react-router";
 import { Loader2, ArrowRight, Sparkles, Wand2, Users, Mic, Zap, MessageSquare, Shield, Sun, Moon } from "lucide-react";
 import { Tldraw } from 'tldraw';
@@ -80,7 +81,7 @@ const StickyNote = ({ color, rotate, top, left, delay, children }: any) => (
 export function LandingPage() {
   const { data: user, isLoading } = useCurrentUser();
   const guestLogin = useGuestLogin();
-  const devLogin = useDevLogin();
+  // const devLogin = useDevLogin();
   const navigate = useNavigate();
   const { theme, setTheme } = useTheme();
 
@@ -102,11 +103,11 @@ export function LandingPage() {
     });
   };
 
-  const handleDevLogin = (name: string) => {
-    devLogin.mutate(name, {
-      onSuccess: () => navigate("/dashboard"),
-    });
-  };
+  // const handleDevLogin = (name: string) => {
+  //   devLogin.mutate(name, {
+  //     onSuccess: () => navigate("/dashboard"),
+  //   });
+  // };;
 
   const handleGoogleLogin = () => {
     window.location.href = '/api/v1/auth/google';
@@ -205,7 +206,7 @@ export function LandingPage() {
                 {guestLogin.isPending ? (
                   <Loader2 className="mr-2 h-6 w-6 animate-spin" />
                 ) : null}
-                Go to Dashboard 🚀
+                Try Demo 🚀
                 <ArrowRight className="ml-2 h-6 w-6 transition-transform group-hover:translate-x-1" />
               </Button>
             </div>
@@ -244,7 +245,7 @@ export function LandingPage() {
             </div>
 
             {/* Dev Login Section */}
-            <div className="pt-8 border-t-[3px] border-black/5 dark:border-white/5">
+            {/* <div className="pt-8 border-t-[3px] border-black/5 dark:border-white/5">
               <p className="text-sm font-bold text-black/40 dark:text-white/40 mb-4 uppercase tracking-widest">Test Accounts (Dev Mode)</p>
               <div className="flex flex-wrap justify-center gap-3">
                 {['Alice', 'Bob', 'Charlie'].map((name) => (
@@ -264,7 +265,7 @@ export function LandingPage() {
                   </Button>
                 ))}
               </div>
-            </div>
+            </div> */}
 
           </div>
         </motion.div>
