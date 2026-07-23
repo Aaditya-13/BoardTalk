@@ -1,32 +1,39 @@
-# React + TypeScript + Vite
+# BoardTalk Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+The client-side application for BoardTalk, built with React, Vite, and Tailwind CSS. It leverages the Tldraw library for the interactive canvas experience and Socket.io for real-time collaboration.
 
-Currently, two official plugins are available:
+## 🛠 Tech Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **Framework:** React 18
+- **Build Tool:** Vite
+- **Styling:** Tailwind CSS + UI components via `lucide-react`
+- **Canvas:** Tldraw
+- **Real-time:** Socket.io-client
+- **State Management:** React Query, Zustand
+- **Routing:** React Router
 
-## React Compiler
+## 🚀 Development Setup
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+1. **Install Dependencies:**
+   ```bash
+   npm install
+   ```
 
-## Expanding the Oxlint configuration
+2. **Environment Variables:**
+   Copy the example environment file:
+   ```bash
+   cp .env.example .env
+   ```
+   Ensure your variables point to your local or remote backend:
+   ```env
+   VITE_API_URL=http://localhost:5000/api/v1
+   VITE_WS_URL=http://localhost:5000
+   ```
 
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
+3. **Start the Development Server:**
+   ```bash
+   npm run dev
+   ```
+   The application will start on `http://localhost:5173`.
 
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
-```
-
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+*Note: Detailed component architecture and UI workflow designs will be documented here later.*
