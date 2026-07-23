@@ -8,13 +8,13 @@
  *
  * 🟢 You can import this file directly.
  */
-export type * from './models/User.js'
-export type * from './models/Board.js'
-export type * from './models/Collaborator.js'
-export type * from './models/Invite.js'
-export type * from './models/Snapshot.js'
-export type * from './models/Comment.js'
-export type * from './models/ChatMessage.js'
-export type * from './models/RefreshToken.js'
-export type * from './models/StarredBoard.js'
-export type * from './commonInputTypes.js'
+export type * from './models/User'
+export type * from './models/Board'
+export type * from './models/Collaborator'
+export type * from './models/Invite'
+export type * from './models/Snapshot'
+export type * from './models/Comment'
+export type * from './models/ChatMessage'
+export type * from './models/RefreshToken'
+export type * from './models/StarredBoard'
+export type * from './commonInputTypes'
