@@ -12,7 +12,7 @@ export function setAuthCookies(
   res.cookie("accessToken", tokens.accessToken, {
     httpOnly: true,
     secure: isProduction,
-    sameSite: "lax",
+    sameSite: isProduction ? "none" : "lax",
     maxAge: 15 * 60 * 1000, // 15 minutes
   });
 
@@ -20,14 +20,19 @@ export function setAuthCookies(
     res.cookie("refreshToken", tokens.refreshToken, {
       httpOnly: true,
       secure: isProduction,
-      sameSite: "lax",
+      sameSite: isProduction ? "none" : "lax",
       maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
     });
   }
 }
 
 export function clearAuthCookies(res: Response): void {
-  res.clearCookie("accessToken");
+  const options = {
+    httpOnly: true,
+    secure: isProduction,
+    sameSite: isProduction ? "none" as const : "lax" as const,
+  };
 
-  res.clearCookie("refreshToken");
+  res.clearCookie("accessToken", options);
+  res.clearCookie("refreshToken", options);
 }
