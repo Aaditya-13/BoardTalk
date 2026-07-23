@@ -342,4 +342,6 @@ export function LandingPage() {
       </footer>
     </div>
   );
+
 }
+
