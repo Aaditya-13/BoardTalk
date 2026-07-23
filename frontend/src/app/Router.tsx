@@ -6,12 +6,15 @@ import { LandingPage } from "@/features/auth/components/LandingPage";
 import { DashboardPage } from "@/features/dashboard/components/DashboardPage";
 import { BoardPage } from "@/features/board/components/BoardPage";
 import { JoinPage } from "@/features/board/components/JoinPage";
+import { LegalPage } from "@/features/misc/components/LegalPage";
 
 export function Router() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<LandingPage />} />
+        <Route path="/privacy" element={<LegalPage type="privacy" />} />
+        <Route path="/terms" element={<LegalPage type="terms" />} />
         
         {/* Protected Dashboard Routes */}
         <Route element={<ProtectedRoute />}>

@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { useGuestLogin, useCurrentUser } from "../hooks/useAuth";
 // import { useDevLogin } from "../hooks/useAuth";
-import { useNavigate, Navigate } from "react-router";
+import { useNavigate, Navigate, Link } from "react-router";
 import { Loader2, ArrowRight, Sparkles, Wand2, Users, Mic, Zap, MessageSquare, Shield, Sun, Moon } from "lucide-react";
 import { Tldraw } from 'tldraw';
 import 'tldraw/tldraw.css';
@@ -316,9 +316,9 @@ export function LandingPage() {
           </div>
           <p className="text-black/40 dark:text-white/40 font-bold mb-8">© {new Date().getFullYear()} BoardTalk Inc. Crafted with ❤️.</p>
           <div className="flex justify-center gap-8 text-sm font-bold text-black/50 dark:text-white/50">
-            <a href="#" className="hover:text-black dark:hover:text-white transition-colors">Privacy Policy</a>
-            <a href="#" className="hover:text-black dark:hover:text-white transition-colors">Terms of Service</a>
-            <a href="#" className="hover:text-black dark:hover:text-white transition-colors">Twitter</a>
+            <Link to="/privacy" className="hover:text-black dark:hover:text-white transition-colors">Privacy Policy</Link>
+            <Link to="/terms" className="hover:text-black dark:hover:text-white transition-colors">Terms of Service</Link>
+            <a href="https://github.com/Aaditya-13" target="_blank" rel="noopener noreferrer" className="hover:text-black dark:hover:text-white transition-colors">GitHub</a>
           </div>
         </div>
       </footer>
