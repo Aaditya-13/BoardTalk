@@ -85,13 +85,16 @@ export function LandingPage() {
   const navigate = useNavigate();
   const { theme, setTheme } = useTheme();
 
-  if (isLoading) {
-    return (
-      <div className="flex h-screen w-full items-center justify-center bg-[#FDFBF7] dark:bg-[#121212]">
-        <Loader2 className="h-8 w-8 animate-spin text-black dark:text-white" />
-      </div>
-    );
-  }
+  //   if (isLoading) {
+  //   return (
+  //     <div className="flex h-screen w-full items-center justify-center bg-[#FDFBF7] dark:bg-[#121212]">
+  //       <Loader2 className="h-8 w-8 animate-spin text-black dark:text-white" />
+  //     </div>
+  //   );
+  // }
+
+  // Commented the isLoading blocker!
+  // If they are actually logged in, they'll just get redirected a few seconds later.
 
   if (user) {
     return <Navigate to="/dashboard" replace />;
@@ -110,11 +113,13 @@ export function LandingPage() {
   // };;
 
   const handleGoogleLogin = () => {
-    window.location.href = '/api/v1/auth/google';
+    const baseUrl = import.meta.env.VITE_API_URL || '/api/v1';
+    window.location.href = `${baseUrl}/auth/google`;
   };
 
   const handleGithubLogin = () => {
-    window.location.href = '/api/v1/auth/github';
+    const baseUrl = import.meta.env.VITE_API_URL || '/api/v1';
+    window.location.href = `${baseUrl}/auth/github`;
   };
 
   const toggleTheme = () => {
