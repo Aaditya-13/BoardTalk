@@ -28,7 +28,7 @@ export function ShareBoardModal({ boardId, open, onOpenChange }: ShareBoardModal
   
   const [showQR, setShowQR] = useState(false);
   const [copiedToken, setCopiedToken] = useState<string | null>(null);
-  const [selectedRole, setSelectedRole] = useState<'EDITOR' | 'VIEWER' | 'COMMENTER'>('EDITOR');
+  const [selectedRole, setSelectedRole] = useState<'EDITOR' | 'VIEWER'>('EDITOR');
 
   const isOwner = user && board && board.ownerId === user.id;
 
@@ -104,7 +104,6 @@ export function ShareBoardModal({ boardId, open, onOpenChange }: ShareBoardModal
                   className="bg-transparent font-extrabold text-sm text-black dark:text-white outline-none focus:ring-0"
                 >
                   <option value="EDITOR">Edit</option>
-                  <option value="COMMENTER">Comment</option>
                   <option value="VIEWER">View</option>
                 </select>
               </div>
@@ -255,7 +254,6 @@ export function ShareBoardModal({ boardId, open, onOpenChange }: ShareBoardModal
                       >
                         <option value="OWNER">Owner</option>
                         <option value="EDITOR">Editor</option>
-                        <option value="COMMENTER">Commenter</option>
                         <option value="VIEWER">Viewer</option>
                       </select>
 

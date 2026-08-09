@@ -14,7 +14,7 @@ class AiService {
    *  1. Assert that the user has write access (OWNER or EDITOR only).
    *  2. Strip the "/ai " prefix from the raw command.
    *  3. Build the refined prompt.
-   *  4. Call Gemini Flash 2.5.
+   *  4. Call Gemini Flash 3.6.
    *  5. Parse and validate the response.
    *  6. Return { elements, prompt, rawCommand }.
    */
@@ -46,7 +46,7 @@ class AiService {
     const ai = new GoogleGenAI({ apiKey: env.GEMINI_API_KEY });
 
     const response = await ai.models.generateContent({
-      model: "gemini-3.5-flash-lite",
+      model: "gemini-3.6-flash",
       contents: userPrompt,
       config: {
         systemInstruction: SYSTEM_PROMPT,

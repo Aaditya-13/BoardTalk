@@ -258,7 +258,6 @@ export type UserWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   ownedBoards?: Prisma.BoardListRelationFilter
   collaborations?: Prisma.CollaboratorListRelationFilter
-  comments?: Prisma.CommentListRelationFilter
   chatMessages?: Prisma.ChatMessageListRelationFilter
   refreshTokens?: Prisma.RefreshTokenListRelationFilter
   starredBoards?: Prisma.StarredBoardListRelationFilter
@@ -277,7 +276,6 @@ export type UserOrderByWithRelationInput = {
   updatedAt?: Prisma.SortOrder
   ownedBoards?: Prisma.BoardOrderByRelationAggregateInput
   collaborations?: Prisma.CollaboratorOrderByRelationAggregateInput
-  comments?: Prisma.CommentOrderByRelationAggregateInput
   chatMessages?: Prisma.ChatMessageOrderByRelationAggregateInput
   refreshTokens?: Prisma.RefreshTokenOrderByRelationAggregateInput
   starredBoards?: Prisma.StarredBoardOrderByRelationAggregateInput
@@ -300,7 +298,6 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   ownedBoards?: Prisma.BoardListRelationFilter
   collaborations?: Prisma.CollaboratorListRelationFilter
-  comments?: Prisma.CommentListRelationFilter
   chatMessages?: Prisma.ChatMessageListRelationFilter
   refreshTokens?: Prisma.RefreshTokenListRelationFilter
   starredBoards?: Prisma.StarredBoardListRelationFilter
@@ -353,7 +350,6 @@ export type UserCreateInput = {
   updatedAt?: Date | string
   ownedBoards?: Prisma.BoardCreateNestedManyWithoutOwnerInput
   collaborations?: Prisma.CollaboratorCreateNestedManyWithoutUserInput
-  comments?: Prisma.CommentCreateNestedManyWithoutAuthorInput
   chatMessages?: Prisma.ChatMessageCreateNestedManyWithoutAuthorInput
   refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
   starredBoards?: Prisma.StarredBoardCreateNestedManyWithoutUserInput
@@ -372,7 +368,6 @@ export type UserUncheckedCreateInput = {
   updatedAt?: Date | string
   ownedBoards?: Prisma.BoardUncheckedCreateNestedManyWithoutOwnerInput
   collaborations?: Prisma.CollaboratorUncheckedCreateNestedManyWithoutUserInput
-  comments?: Prisma.CommentUncheckedCreateNestedManyWithoutAuthorInput
   chatMessages?: Prisma.ChatMessageUncheckedCreateNestedManyWithoutAuthorInput
   refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
   starredBoards?: Prisma.StarredBoardUncheckedCreateNestedManyWithoutUserInput
@@ -391,7 +386,6 @@ export type UserUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   ownedBoards?: Prisma.BoardUpdateManyWithoutOwnerNestedInput
   collaborations?: Prisma.CollaboratorUpdateManyWithoutUserNestedInput
-  comments?: Prisma.CommentUpdateManyWithoutAuthorNestedInput
   chatMessages?: Prisma.ChatMessageUpdateManyWithoutAuthorNestedInput
   refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
   starredBoards?: Prisma.StarredBoardUpdateManyWithoutUserNestedInput
@@ -410,7 +404,6 @@ export type UserUncheckedUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   ownedBoards?: Prisma.BoardUncheckedUpdateManyWithoutOwnerNestedInput
   collaborations?: Prisma.CollaboratorUncheckedUpdateManyWithoutUserNestedInput
-  comments?: Prisma.CommentUncheckedUpdateManyWithoutAuthorNestedInput
   chatMessages?: Prisma.ChatMessageUncheckedUpdateManyWithoutAuthorNestedInput
   refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
   starredBoards?: Prisma.StarredBoardUncheckedUpdateManyWithoutUserNestedInput
@@ -568,20 +561,6 @@ export type UserUpdateOneRequiredWithoutCollaborationsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutCollaborationsInput, Prisma.UserUpdateWithoutCollaborationsInput>, Prisma.UserUncheckedUpdateWithoutCollaborationsInput>
 }
 
-export type UserCreateNestedOneWithoutCommentsInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutCommentsInput, Prisma.UserUncheckedCreateWithoutCommentsInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCommentsInput
-  connect?: Prisma.UserWhereUniqueInput
-}
-
-export type UserUpdateOneRequiredWithoutCommentsNestedInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutCommentsInput, Prisma.UserUncheckedCreateWithoutCommentsInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCommentsInput
-  upsert?: Prisma.UserUpsertWithoutCommentsInput
-  connect?: Prisma.UserWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutCommentsInput, Prisma.UserUpdateWithoutCommentsInput>, Prisma.UserUncheckedUpdateWithoutCommentsInput>
-}
-
 export type UserCreateNestedOneWithoutChatMessagesInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutChatMessagesInput, Prisma.UserUncheckedCreateWithoutChatMessagesInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutChatMessagesInput
@@ -636,7 +615,6 @@ export type UserCreateWithoutOwnedBoardsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   collaborations?: Prisma.CollaboratorCreateNestedManyWithoutUserInput
-  comments?: Prisma.CommentCreateNestedManyWithoutAuthorInput
   chatMessages?: Prisma.ChatMessageCreateNestedManyWithoutAuthorInput
   refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
   starredBoards?: Prisma.StarredBoardCreateNestedManyWithoutUserInput
@@ -654,7 +632,6 @@ export type UserUncheckedCreateWithoutOwnedBoardsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   collaborations?: Prisma.CollaboratorUncheckedCreateNestedManyWithoutUserInput
-  comments?: Prisma.CommentUncheckedCreateNestedManyWithoutAuthorInput
   chatMessages?: Prisma.ChatMessageUncheckedCreateNestedManyWithoutAuthorInput
   refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
   starredBoards?: Prisma.StarredBoardUncheckedCreateNestedManyWithoutUserInput
@@ -688,7 +665,6 @@ export type UserUpdateWithoutOwnedBoardsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   collaborations?: Prisma.CollaboratorUpdateManyWithoutUserNestedInput
-  comments?: Prisma.CommentUpdateManyWithoutAuthorNestedInput
   chatMessages?: Prisma.ChatMessageUpdateManyWithoutAuthorNestedInput
   refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
   starredBoards?: Prisma.StarredBoardUpdateManyWithoutUserNestedInput
@@ -706,7 +682,6 @@ export type UserUncheckedUpdateWithoutOwnedBoardsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   collaborations?: Prisma.CollaboratorUncheckedUpdateManyWithoutUserNestedInput
-  comments?: Prisma.CommentUncheckedUpdateManyWithoutAuthorNestedInput
   chatMessages?: Prisma.ChatMessageUncheckedUpdateManyWithoutAuthorNestedInput
   refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
   starredBoards?: Prisma.StarredBoardUncheckedUpdateManyWithoutUserNestedInput
@@ -724,7 +699,6 @@ export type UserCreateWithoutCollaborationsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   ownedBoards?: Prisma.BoardCreateNestedManyWithoutOwnerInput
-  comments?: Prisma.CommentCreateNestedManyWithoutAuthorInput
   chatMessages?: Prisma.ChatMessageCreateNestedManyWithoutAuthorInput
   refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
   starredBoards?: Prisma.StarredBoardCreateNestedManyWithoutUserInput
@@ -742,7 +716,6 @@ export type UserUncheckedCreateWithoutCollaborationsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   ownedBoards?: Prisma.BoardUncheckedCreateNestedManyWithoutOwnerInput
-  comments?: Prisma.CommentUncheckedCreateNestedManyWithoutAuthorInput
   chatMessages?: Prisma.ChatMessageUncheckedCreateNestedManyWithoutAuthorInput
   refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
   starredBoards?: Prisma.StarredBoardUncheckedCreateNestedManyWithoutUserInput
@@ -776,7 +749,6 @@ export type UserUpdateWithoutCollaborationsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   ownedBoards?: Prisma.BoardUpdateManyWithoutOwnerNestedInput
-  comments?: Prisma.CommentUpdateManyWithoutAuthorNestedInput
   chatMessages?: Prisma.ChatMessageUpdateManyWithoutAuthorNestedInput
   refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
   starredBoards?: Prisma.StarredBoardUpdateManyWithoutUserNestedInput
@@ -794,95 +766,6 @@ export type UserUncheckedUpdateWithoutCollaborationsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   ownedBoards?: Prisma.BoardUncheckedUpdateManyWithoutOwnerNestedInput
-  comments?: Prisma.CommentUncheckedUpdateManyWithoutAuthorNestedInput
-  chatMessages?: Prisma.ChatMessageUncheckedUpdateManyWithoutAuthorNestedInput
-  refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
-  starredBoards?: Prisma.StarredBoardUncheckedUpdateManyWithoutUserNestedInput
-}
-
-export type UserCreateWithoutCommentsInput = {
-  id?: string
-  isGuest?: boolean
-  aiPromptsUsed?: number
-  email?: string | null
-  name: string
-  avatarUrl?: string | null
-  provider?: $Enums.AuthProvider | null
-  providerId?: string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  ownedBoards?: Prisma.BoardCreateNestedManyWithoutOwnerInput
-  collaborations?: Prisma.CollaboratorCreateNestedManyWithoutUserInput
-  chatMessages?: Prisma.ChatMessageCreateNestedManyWithoutAuthorInput
-  refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
-  starredBoards?: Prisma.StarredBoardCreateNestedManyWithoutUserInput
-}
-
-export type UserUncheckedCreateWithoutCommentsInput = {
-  id?: string
-  isGuest?: boolean
-  aiPromptsUsed?: number
-  email?: string | null
-  name: string
-  avatarUrl?: string | null
-  provider?: $Enums.AuthProvider | null
-  providerId?: string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  ownedBoards?: Prisma.BoardUncheckedCreateNestedManyWithoutOwnerInput
-  collaborations?: Prisma.CollaboratorUncheckedCreateNestedManyWithoutUserInput
-  chatMessages?: Prisma.ChatMessageUncheckedCreateNestedManyWithoutAuthorInput
-  refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
-  starredBoards?: Prisma.StarredBoardUncheckedCreateNestedManyWithoutUserInput
-}
-
-export type UserCreateOrConnectWithoutCommentsInput = {
-  where: Prisma.UserWhereUniqueInput
-  create: Prisma.XOR<Prisma.UserCreateWithoutCommentsInput, Prisma.UserUncheckedCreateWithoutCommentsInput>
-}
-
-export type UserUpsertWithoutCommentsInput = {
-  update: Prisma.XOR<Prisma.UserUpdateWithoutCommentsInput, Prisma.UserUncheckedUpdateWithoutCommentsInput>
-  create: Prisma.XOR<Prisma.UserCreateWithoutCommentsInput, Prisma.UserUncheckedCreateWithoutCommentsInput>
-  where?: Prisma.UserWhereInput
-}
-
-export type UserUpdateToOneWithWhereWithoutCommentsInput = {
-  where?: Prisma.UserWhereInput
-  data: Prisma.XOR<Prisma.UserUpdateWithoutCommentsInput, Prisma.UserUncheckedUpdateWithoutCommentsInput>
-}
-
-export type UserUpdateWithoutCommentsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  isGuest?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  aiPromptsUsed?: Prisma.IntFieldUpdateOperationsInput | number
-  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  provider?: Prisma.NullableEnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider | null
-  providerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  ownedBoards?: Prisma.BoardUpdateManyWithoutOwnerNestedInput
-  collaborations?: Prisma.CollaboratorUpdateManyWithoutUserNestedInput
-  chatMessages?: Prisma.ChatMessageUpdateManyWithoutAuthorNestedInput
-  refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
-  starredBoards?: Prisma.StarredBoardUpdateManyWithoutUserNestedInput
-}
-
-export type UserUncheckedUpdateWithoutCommentsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  isGuest?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  aiPromptsUsed?: Prisma.IntFieldUpdateOperationsInput | number
-  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  provider?: Prisma.NullableEnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider | null
-  providerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  ownedBoards?: Prisma.BoardUncheckedUpdateManyWithoutOwnerNestedInput
-  collaborations?: Prisma.CollaboratorUncheckedUpdateManyWithoutUserNestedInput
   chatMessages?: Prisma.ChatMessageUncheckedUpdateManyWithoutAuthorNestedInput
   refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
   starredBoards?: Prisma.StarredBoardUncheckedUpdateManyWithoutUserNestedInput
@@ -901,7 +784,6 @@ export type UserCreateWithoutChatMessagesInput = {
   updatedAt?: Date | string
   ownedBoards?: Prisma.BoardCreateNestedManyWithoutOwnerInput
   collaborations?: Prisma.CollaboratorCreateNestedManyWithoutUserInput
-  comments?: Prisma.CommentCreateNestedManyWithoutAuthorInput
   refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
   starredBoards?: Prisma.StarredBoardCreateNestedManyWithoutUserInput
 }
@@ -919,7 +801,6 @@ export type UserUncheckedCreateWithoutChatMessagesInput = {
   updatedAt?: Date | string
   ownedBoards?: Prisma.BoardUncheckedCreateNestedManyWithoutOwnerInput
   collaborations?: Prisma.CollaboratorUncheckedCreateNestedManyWithoutUserInput
-  comments?: Prisma.CommentUncheckedCreateNestedManyWithoutAuthorInput
   refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
   starredBoards?: Prisma.StarredBoardUncheckedCreateNestedManyWithoutUserInput
 }
@@ -953,7 +834,6 @@ export type UserUpdateWithoutChatMessagesInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   ownedBoards?: Prisma.BoardUpdateManyWithoutOwnerNestedInput
   collaborations?: Prisma.CollaboratorUpdateManyWithoutUserNestedInput
-  comments?: Prisma.CommentUpdateManyWithoutAuthorNestedInput
   refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
   starredBoards?: Prisma.StarredBoardUpdateManyWithoutUserNestedInput
 }
@@ -971,7 +851,6 @@ export type UserUncheckedUpdateWithoutChatMessagesInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   ownedBoards?: Prisma.BoardUncheckedUpdateManyWithoutOwnerNestedInput
   collaborations?: Prisma.CollaboratorUncheckedUpdateManyWithoutUserNestedInput
-  comments?: Prisma.CommentUncheckedUpdateManyWithoutAuthorNestedInput
   refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
   starredBoards?: Prisma.StarredBoardUncheckedUpdateManyWithoutUserNestedInput
 }
@@ -989,7 +868,6 @@ export type UserCreateWithoutRefreshTokensInput = {
   updatedAt?: Date | string
   ownedBoards?: Prisma.BoardCreateNestedManyWithoutOwnerInput
   collaborations?: Prisma.CollaboratorCreateNestedManyWithoutUserInput
-  comments?: Prisma.CommentCreateNestedManyWithoutAuthorInput
   chatMessages?: Prisma.ChatMessageCreateNestedManyWithoutAuthorInput
   starredBoards?: Prisma.StarredBoardCreateNestedManyWithoutUserInput
 }
@@ -1007,7 +885,6 @@ export type UserUncheckedCreateWithoutRefreshTokensInput = {
   updatedAt?: Date | string
   ownedBoards?: Prisma.BoardUncheckedCreateNestedManyWithoutOwnerInput
   collaborations?: Prisma.CollaboratorUncheckedCreateNestedManyWithoutUserInput
-  comments?: Prisma.CommentUncheckedCreateNestedManyWithoutAuthorInput
   chatMessages?: Prisma.ChatMessageUncheckedCreateNestedManyWithoutAuthorInput
   starredBoards?: Prisma.StarredBoardUncheckedCreateNestedManyWithoutUserInput
 }
@@ -1041,7 +918,6 @@ export type UserUpdateWithoutRefreshTokensInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   ownedBoards?: Prisma.BoardUpdateManyWithoutOwnerNestedInput
   collaborations?: Prisma.CollaboratorUpdateManyWithoutUserNestedInput
-  comments?: Prisma.CommentUpdateManyWithoutAuthorNestedInput
   chatMessages?: Prisma.ChatMessageUpdateManyWithoutAuthorNestedInput
   starredBoards?: Prisma.StarredBoardUpdateManyWithoutUserNestedInput
 }
@@ -1059,7 +935,6 @@ export type UserUncheckedUpdateWithoutRefreshTokensInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   ownedBoards?: Prisma.BoardUncheckedUpdateManyWithoutOwnerNestedInput
   collaborations?: Prisma.CollaboratorUncheckedUpdateManyWithoutUserNestedInput
-  comments?: Prisma.CommentUncheckedUpdateManyWithoutAuthorNestedInput
   chatMessages?: Prisma.ChatMessageUncheckedUpdateManyWithoutAuthorNestedInput
   starredBoards?: Prisma.StarredBoardUncheckedUpdateManyWithoutUserNestedInput
 }
@@ -1077,7 +952,6 @@ export type UserCreateWithoutStarredBoardsInput = {
   updatedAt?: Date | string
   ownedBoards?: Prisma.BoardCreateNestedManyWithoutOwnerInput
   collaborations?: Prisma.CollaboratorCreateNestedManyWithoutUserInput
-  comments?: Prisma.CommentCreateNestedManyWithoutAuthorInput
   chatMessages?: Prisma.ChatMessageCreateNestedManyWithoutAuthorInput
   refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
 }
@@ -1095,7 +969,6 @@ export type UserUncheckedCreateWithoutStarredBoardsInput = {
   updatedAt?: Date | string
   ownedBoards?: Prisma.BoardUncheckedCreateNestedManyWithoutOwnerInput
   collaborations?: Prisma.CollaboratorUncheckedCreateNestedManyWithoutUserInput
-  comments?: Prisma.CommentUncheckedCreateNestedManyWithoutAuthorInput
   chatMessages?: Prisma.ChatMessageUncheckedCreateNestedManyWithoutAuthorInput
   refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
 }
@@ -1129,7 +1002,6 @@ export type UserUpdateWithoutStarredBoardsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   ownedBoards?: Prisma.BoardUpdateManyWithoutOwnerNestedInput
   collaborations?: Prisma.CollaboratorUpdateManyWithoutUserNestedInput
-  comments?: Prisma.CommentUpdateManyWithoutAuthorNestedInput
   chatMessages?: Prisma.ChatMessageUpdateManyWithoutAuthorNestedInput
   refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
 }
@@ -1147,7 +1019,6 @@ export type UserUncheckedUpdateWithoutStarredBoardsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   ownedBoards?: Prisma.BoardUncheckedUpdateManyWithoutOwnerNestedInput
   collaborations?: Prisma.CollaboratorUncheckedUpdateManyWithoutUserNestedInput
-  comments?: Prisma.CommentUncheckedUpdateManyWithoutAuthorNestedInput
   chatMessages?: Prisma.ChatMessageUncheckedUpdateManyWithoutAuthorNestedInput
   refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
 }
@@ -1160,7 +1031,6 @@ export type UserUncheckedUpdateWithoutStarredBoardsInput = {
 export type UserCountOutputType = {
   ownedBoards: number
   collaborations: number
-  comments: number
   chatMessages: number
   refreshTokens: number
   starredBoards: number
@@ -1169,7 +1039,6 @@ export type UserCountOutputType = {
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   ownedBoards?: boolean | UserCountOutputTypeCountOwnedBoardsArgs
   collaborations?: boolean | UserCountOutputTypeCountCollaborationsArgs
-  comments?: boolean | UserCountOutputTypeCountCommentsArgs
   chatMessages?: boolean | UserCountOutputTypeCountChatMessagesArgs
   refreshTokens?: boolean | UserCountOutputTypeCountRefreshTokensArgs
   starredBoards?: boolean | UserCountOutputTypeCountStarredBoardsArgs
@@ -1197,13 +1066,6 @@ export type UserCountOutputTypeCountOwnedBoardsArgs<ExtArgs extends runtime.Type
  */
 export type UserCountOutputTypeCountCollaborationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.CollaboratorWhereInput
-}
-
-/**
- * UserCountOutputType without action
- */
-export type UserCountOutputTypeCountCommentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.CommentWhereInput
 }
 
 /**
@@ -1241,7 +1103,6 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   updatedAt?: boolean
   ownedBoards?: boolean | Prisma.User$ownedBoardsArgs<ExtArgs>
   collaborations?: boolean | Prisma.User$collaborationsArgs<ExtArgs>
-  comments?: boolean | Prisma.User$commentsArgs<ExtArgs>
   chatMessages?: boolean | Prisma.User$chatMessagesArgs<ExtArgs>
   refreshTokens?: boolean | Prisma.User$refreshTokensArgs<ExtArgs>
   starredBoards?: boolean | Prisma.User$starredBoardsArgs<ExtArgs>
@@ -1291,7 +1152,6 @@ export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = run
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   ownedBoards?: boolean | Prisma.User$ownedBoardsArgs<ExtArgs>
   collaborations?: boolean | Prisma.User$collaborationsArgs<ExtArgs>
-  comments?: boolean | Prisma.User$commentsArgs<ExtArgs>
   chatMessages?: boolean | Prisma.User$chatMessagesArgs<ExtArgs>
   refreshTokens?: boolean | Prisma.User$refreshTokensArgs<ExtArgs>
   starredBoards?: boolean | Prisma.User$starredBoardsArgs<ExtArgs>
@@ -1305,7 +1165,6 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   objects: {
     ownedBoards: Prisma.$BoardPayload<ExtArgs>[]
     collaborations: Prisma.$CollaboratorPayload<ExtArgs>[]
-    comments: Prisma.$CommentPayload<ExtArgs>[]
     chatMessages: Prisma.$ChatMessagePayload<ExtArgs>[]
     refreshTokens: Prisma.$RefreshTokenPayload<ExtArgs>[]
     starredBoards: Prisma.$StarredBoardPayload<ExtArgs>[]
@@ -1717,7 +1576,6 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   readonly [Symbol.toStringTag]: "PrismaPromise"
   ownedBoards<T extends Prisma.User$ownedBoardsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$ownedBoardsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BoardPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   collaborations<T extends Prisma.User$collaborationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$collaborationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CollaboratorPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  comments<T extends Prisma.User$commentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$commentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CommentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   chatMessages<T extends Prisma.User$chatMessagesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$chatMessagesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ChatMessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   refreshTokens<T extends Prisma.User$refreshTokensArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$refreshTokensArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RefreshTokenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   starredBoards<T extends Prisma.User$starredBoardsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$starredBoardsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$StarredBoardPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -2198,30 +2056,6 @@ export type User$collaborationsArgs<ExtArgs extends runtime.Types.Extensions.Int
   take?: number
   skip?: number
   distinct?: Prisma.CollaboratorScalarFieldEnum | Prisma.CollaboratorScalarFieldEnum[]
-}
-
-/**
- * User.comments
- */
-export type User$commentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the Comment
-   */
-  select?: Prisma.CommentSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the Comment
-   */
-  omit?: Prisma.CommentOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.CommentInclude<ExtArgs> | null
-  where?: Prisma.CommentWhereInput
-  orderBy?: Prisma.CommentOrderByWithRelationInput | Prisma.CommentOrderByWithRelationInput[]
-  cursor?: Prisma.CommentWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.CommentScalarFieldEnum | Prisma.CommentScalarFieldEnum[]
 }
 
 /**

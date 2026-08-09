@@ -37,7 +37,6 @@ export type InviteType = (typeof InviteType)[keyof typeof InviteType]
 export const CollaboratorRole = {
   OWNER: 'OWNER',
   EDITOR: 'EDITOR',
-  COMMENTER: 'COMMENTER',
   VIEWER: 'VIEWER'
 } as const
 

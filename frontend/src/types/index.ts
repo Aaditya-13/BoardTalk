@@ -1,6 +1,6 @@
 export type AuthProvider = "GOOGLE" | "GITHUB";
 export type BoardVisibility = "PRIVATE" | "PUBLIC" | "UNLISTED";
-export type CollaboratorRole = "OWNER" | "EDITOR" | "COMMENTER" | "VIEWER";
+export type CollaboratorRole = "OWNER" | "EDITOR" | "VIEWER";
 
 export interface AuthUser {
   id: string;

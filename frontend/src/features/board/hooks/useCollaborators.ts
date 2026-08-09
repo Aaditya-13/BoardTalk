@@ -5,7 +5,7 @@ export interface Collaborator {
   id: string;
   boardId: string;
   userId: string;
-  role: 'OWNER' | 'EDITOR' | 'COMMENTER' | 'VIEWER';
+  role: 'OWNER' | 'EDITOR' | 'VIEWER';
   joinedAt: string;
   user: {
     id: string;

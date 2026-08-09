@@ -43,11 +43,6 @@ export type Invite = Prisma.InviteModel
  */
 export type Snapshot = Prisma.SnapshotModel
 /**
- * Model Comment
- * 
- */
-export type Comment = Prisma.CommentModel
-/**
  * Model ChatMessage
  * 
  */

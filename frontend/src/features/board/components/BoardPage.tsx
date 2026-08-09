@@ -7,7 +7,7 @@ import { useCurrentUser } from '@/features/auth/hooks/useAuth';
 import { BoardSidebar } from './BoardSidebar';
 import { ShareBoardModal } from './ShareBoardModal';
 import { PresenceDock } from './PresenceDock';
-import { Loader2, Moon, Sun, Share2, MessageSquare, MessageCircle, Bot, Undo2, Redo2, Palette, Users, Trash2, Copy, EyeOff, Eye, Code2 } from 'lucide-react';
+import { Loader2, Moon, Sun, Share2, MessageSquare, Bot, Undo2, Redo2, Palette, Users, Trash2, Copy, EyeOff, Eye, Code2 } from 'lucide-react';
 import {
   Tldraw,
   DefaultMainMenu,
@@ -43,7 +43,7 @@ function ThemeAndRoleSync({ role }: { role?: string }) {
   }, [theme, editor]);
 
   useEffect(() => {
-    if (role === 'VIEWER' || role === 'COMMENTER') {
+    if (role === 'VIEWER') {
       editor.updateInstanceState({ isReadonly: true });
     } else {
       editor.updateInstanceState({ isReadonly: false });
@@ -172,7 +172,6 @@ function TopHeader({
         {/* Action Toggles */}
         <button onClick={() => setActiveSidebarTab('chat')} className={cn("w-9 h-9 flex items-center justify-center rounded-xl text-muted-foreground hover:text-foreground hover:bg-muted/80 transition-colors", isSidebarOpen && activeSidebarTab === 'chat' && "bg-primary/10 text-primary")} title="Chat"><MessageSquare className="h-[18px] w-[18px]" /></button>
         <button onClick={() => setActiveSidebarTab('ai')} className={cn("w-9 h-9 flex items-center justify-center rounded-xl text-muted-foreground hover:text-foreground hover:bg-muted/80 transition-colors", isSidebarOpen && activeSidebarTab === 'ai' && "bg-primary/10 text-primary")} title="AI Assistant"><Bot className="h-[18px] w-[18px]" /></button>
-        <button onClick={() => setActiveSidebarTab('comments')} className={cn("w-9 h-9 flex items-center justify-center rounded-xl text-muted-foreground hover:text-foreground hover:bg-muted/80 transition-colors", isSidebarOpen && activeSidebarTab === 'comments' && "bg-primary/10 text-primary")} title="Comments"><MessageCircle className="h-[18px] w-[18px]" /></button>
 
         {/* Appearance Palette */}
         <div className="relative">
@@ -345,7 +344,7 @@ export function BoardPage() {
             />
           )}
           <ThemeAndRoleSync role={role} />
-          
+
           {/* Tldraw Watermark */}
           <div className="absolute bottom-4 right-4 z-[500] pointer-events-auto">
             <a href="https://tldraw.com" target="_blank" rel="noopener noreferrer" className="text-[10px] font-bold text-muted-foreground hover:text-foreground transition-colors bg-background/50 px-2 py-1 rounded-md backdrop-blur-sm border border-border/50">

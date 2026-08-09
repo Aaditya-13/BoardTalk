@@ -2,7 +2,7 @@ import { useUIStore, type SidebarTab } from '@/stores/uiStore';
 import { ChatSidebar } from '@/features/chat/components/ChatSidebar';
 import { AISidebar } from '@/features/ai/components/AISidebar';
 import { VoiceRoomDock } from '@/features/voice/components/VoiceRoomDock';
-import { MessageSquare, Sparkles, Users, MessageCircle, X } from 'lucide-react';
+import { MessageSquare, Sparkles, Users, X } from 'lucide-react';
 import { cn } from '@/utils/cn';
 
 import { type TLStore, type Editor } from 'tldraw';
@@ -32,7 +32,6 @@ const TABS: TabConfig[] = [
   { id: 'users', icon: Users, label: 'People' },
   { id: 'chat', icon: MessageSquare, label: 'Chat' },
   { id: 'ai', icon: Sparkles, label: 'Ask AI' },
-  { id: 'comments', icon: MessageCircle, label: 'Comments' },
 ];
 
 function UsersList({ members, currentUserId }: { members: Record<string, RoomMember>; currentUserId?: string }) {
@@ -75,15 +74,6 @@ function UsersList({ members, currentUserId }: { members: Record<string, RoomMem
   );
 }
 
-function CommentsStub() {
-  return (
-    <div className="flex h-full flex-col items-center justify-center gap-3 px-6 text-center">
-      <MessageCircle className="h-10 w-10 text-muted-foreground/30" />
-      <p className="text-sm font-medium text-muted-foreground">Comments are coming soon</p>
-      <p className="text-xs text-muted-foreground/60">Leave annotations and feedback directly on the canvas.</p>
-    </div>
-  );
-}
 
 export function BoardSidebar({ boardId, presenceMembers, currentUserId, store, editor }: BoardSidebarProps) {
   const { isSidebarOpen, activeSidebarTab, setActiveSidebarTab, setActivePanel } = useUIStore();
@@ -132,7 +122,6 @@ export function BoardSidebar({ boardId, presenceMembers, currentUserId, store, e
         )}
         {activeSidebarTab === 'chat' && <ChatSidebar boardId={boardId} />}
         {activeSidebarTab === 'ai' && <AISidebar boardId={boardId} store={store} editor={editor} />}
-        {activeSidebarTab === 'comments' && <CommentsStub />}
       </div>
     </aside>
   );

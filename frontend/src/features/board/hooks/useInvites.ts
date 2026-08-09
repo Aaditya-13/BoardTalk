@@ -5,7 +5,7 @@ export interface Invite {
   id: string;
   boardId: string;
   token: string;
-  role: 'OWNER' | 'EDITOR' | 'COMMENTER' | 'VIEWER';
+  role: 'OWNER' | 'EDITOR' | 'VIEWER';
   type: 'LINK' | 'SHORT_CODE';
   uses: number;
   maxUses: number | null;

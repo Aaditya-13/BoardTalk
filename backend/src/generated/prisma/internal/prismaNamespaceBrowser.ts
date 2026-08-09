@@ -56,7 +56,6 @@ export const ModelName = {
   Collaborator: 'Collaborator',
   Invite: 'Invite',
   Snapshot: 'Snapshot',
-  Comment: 'Comment',
   ChatMessage: 'ChatMessage',
   RefreshToken: 'RefreshToken',
   StarredBoard: 'StarredBoard'
@@ -148,21 +147,6 @@ export const SnapshotScalarFieldEnum = {
 export type SnapshotScalarFieldEnum = (typeof SnapshotScalarFieldEnum)[keyof typeof SnapshotScalarFieldEnum]
 
 
-export const CommentScalarFieldEnum = {
-  id: 'id',
-  boardId: 'boardId',
-  authorId: 'authorId',
-  content: 'content',
-  position: 'position',
-  shapeId: 'shapeId',
-  resolved: 'resolved',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-} as const
-
-export type CommentScalarFieldEnum = (typeof CommentScalarFieldEnum)[keyof typeof CommentScalarFieldEnum]
-
-
 export const ChatMessageScalarFieldEnum = {
   id: 'id',
   boardId: 'boardId',
@@ -208,14 +192,6 @@ export const JsonNullValueInput = {
 } as const
 
 export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
-
-
-export const NullableJsonNullValueInput = {
-  DbNull: DbNull,
-  JsonNull: JsonNull
-} as const
-
-export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
 
 
 export const QueryMode = {

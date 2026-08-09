@@ -226,7 +226,6 @@ export type BoardWhereInput = {
   collaborators?: Prisma.CollaboratorListRelationFilter
   invites?: Prisma.InviteListRelationFilter
   snapshots?: Prisma.SnapshotListRelationFilter
-  comments?: Prisma.CommentListRelationFilter
   chatMessages?: Prisma.ChatMessageListRelationFilter
   starredBy?: Prisma.StarredBoardListRelationFilter
 }
@@ -246,7 +245,6 @@ export type BoardOrderByWithRelationInput = {
   collaborators?: Prisma.CollaboratorOrderByRelationAggregateInput
   invites?: Prisma.InviteOrderByRelationAggregateInput
   snapshots?: Prisma.SnapshotOrderByRelationAggregateInput
-  comments?: Prisma.CommentOrderByRelationAggregateInput
   chatMessages?: Prisma.ChatMessageOrderByRelationAggregateInput
   starredBy?: Prisma.StarredBoardOrderByRelationAggregateInput
 }
@@ -269,7 +267,6 @@ export type BoardWhereUniqueInput = Prisma.AtLeast<{
   collaborators?: Prisma.CollaboratorListRelationFilter
   invites?: Prisma.InviteListRelationFilter
   snapshots?: Prisma.SnapshotListRelationFilter
-  comments?: Prisma.CommentListRelationFilter
   chatMessages?: Prisma.ChatMessageListRelationFilter
   starredBy?: Prisma.StarredBoardListRelationFilter
 }, "id">
@@ -320,7 +317,6 @@ export type BoardCreateInput = {
   collaborators?: Prisma.CollaboratorCreateNestedManyWithoutBoardInput
   invites?: Prisma.InviteCreateNestedManyWithoutBoardInput
   snapshots?: Prisma.SnapshotCreateNestedManyWithoutBoardInput
-  comments?: Prisma.CommentCreateNestedManyWithoutBoardInput
   chatMessages?: Prisma.ChatMessageCreateNestedManyWithoutBoardInput
   starredBy?: Prisma.StarredBoardCreateNestedManyWithoutBoardInput
 }
@@ -339,7 +335,6 @@ export type BoardUncheckedCreateInput = {
   collaborators?: Prisma.CollaboratorUncheckedCreateNestedManyWithoutBoardInput
   invites?: Prisma.InviteUncheckedCreateNestedManyWithoutBoardInput
   snapshots?: Prisma.SnapshotUncheckedCreateNestedManyWithoutBoardInput
-  comments?: Prisma.CommentUncheckedCreateNestedManyWithoutBoardInput
   chatMessages?: Prisma.ChatMessageUncheckedCreateNestedManyWithoutBoardInput
   starredBy?: Prisma.StarredBoardUncheckedCreateNestedManyWithoutBoardInput
 }
@@ -358,7 +353,6 @@ export type BoardUpdateInput = {
   collaborators?: Prisma.CollaboratorUpdateManyWithoutBoardNestedInput
   invites?: Prisma.InviteUpdateManyWithoutBoardNestedInput
   snapshots?: Prisma.SnapshotUpdateManyWithoutBoardNestedInput
-  comments?: Prisma.CommentUpdateManyWithoutBoardNestedInput
   chatMessages?: Prisma.ChatMessageUpdateManyWithoutBoardNestedInput
   starredBy?: Prisma.StarredBoardUpdateManyWithoutBoardNestedInput
 }
@@ -377,7 +371,6 @@ export type BoardUncheckedUpdateInput = {
   collaborators?: Prisma.CollaboratorUncheckedUpdateManyWithoutBoardNestedInput
   invites?: Prisma.InviteUncheckedUpdateManyWithoutBoardNestedInput
   snapshots?: Prisma.SnapshotUncheckedUpdateManyWithoutBoardNestedInput
-  comments?: Prisma.CommentUncheckedUpdateManyWithoutBoardNestedInput
   chatMessages?: Prisma.ChatMessageUncheckedUpdateManyWithoutBoardNestedInput
   starredBy?: Prisma.StarredBoardUncheckedUpdateManyWithoutBoardNestedInput
 }
@@ -566,20 +559,6 @@ export type BoardUpdateOneRequiredWithoutSnapshotsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.BoardUpdateToOneWithWhereWithoutSnapshotsInput, Prisma.BoardUpdateWithoutSnapshotsInput>, Prisma.BoardUncheckedUpdateWithoutSnapshotsInput>
 }
 
-export type BoardCreateNestedOneWithoutCommentsInput = {
-  create?: Prisma.XOR<Prisma.BoardCreateWithoutCommentsInput, Prisma.BoardUncheckedCreateWithoutCommentsInput>
-  connectOrCreate?: Prisma.BoardCreateOrConnectWithoutCommentsInput
-  connect?: Prisma.BoardWhereUniqueInput
-}
-
-export type BoardUpdateOneRequiredWithoutCommentsNestedInput = {
-  create?: Prisma.XOR<Prisma.BoardCreateWithoutCommentsInput, Prisma.BoardUncheckedCreateWithoutCommentsInput>
-  connectOrCreate?: Prisma.BoardCreateOrConnectWithoutCommentsInput
-  upsert?: Prisma.BoardUpsertWithoutCommentsInput
-  connect?: Prisma.BoardWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.BoardUpdateToOneWithWhereWithoutCommentsInput, Prisma.BoardUpdateWithoutCommentsInput>, Prisma.BoardUncheckedUpdateWithoutCommentsInput>
-}
-
 export type BoardCreateNestedOneWithoutChatMessagesInput = {
   create?: Prisma.XOR<Prisma.BoardCreateWithoutChatMessagesInput, Prisma.BoardUncheckedCreateWithoutChatMessagesInput>
   connectOrCreate?: Prisma.BoardCreateOrConnectWithoutChatMessagesInput
@@ -621,7 +600,6 @@ export type BoardCreateWithoutOwnerInput = {
   collaborators?: Prisma.CollaboratorCreateNestedManyWithoutBoardInput
   invites?: Prisma.InviteCreateNestedManyWithoutBoardInput
   snapshots?: Prisma.SnapshotCreateNestedManyWithoutBoardInput
-  comments?: Prisma.CommentCreateNestedManyWithoutBoardInput
   chatMessages?: Prisma.ChatMessageCreateNestedManyWithoutBoardInput
   starredBy?: Prisma.StarredBoardCreateNestedManyWithoutBoardInput
 }
@@ -639,7 +617,6 @@ export type BoardUncheckedCreateWithoutOwnerInput = {
   collaborators?: Prisma.CollaboratorUncheckedCreateNestedManyWithoutBoardInput
   invites?: Prisma.InviteUncheckedCreateNestedManyWithoutBoardInput
   snapshots?: Prisma.SnapshotUncheckedCreateNestedManyWithoutBoardInput
-  comments?: Prisma.CommentUncheckedCreateNestedManyWithoutBoardInput
   chatMessages?: Prisma.ChatMessageUncheckedCreateNestedManyWithoutBoardInput
   starredBy?: Prisma.StarredBoardUncheckedCreateNestedManyWithoutBoardInput
 }
@@ -699,7 +676,6 @@ export type BoardCreateWithoutCollaboratorsInput = {
   owner: Prisma.UserCreateNestedOneWithoutOwnedBoardsInput
   invites?: Prisma.InviteCreateNestedManyWithoutBoardInput
   snapshots?: Prisma.SnapshotCreateNestedManyWithoutBoardInput
-  comments?: Prisma.CommentCreateNestedManyWithoutBoardInput
   chatMessages?: Prisma.ChatMessageCreateNestedManyWithoutBoardInput
   starredBy?: Prisma.StarredBoardCreateNestedManyWithoutBoardInput
 }
@@ -717,7 +693,6 @@ export type BoardUncheckedCreateWithoutCollaboratorsInput = {
   deletedAt?: Date | string | null
   invites?: Prisma.InviteUncheckedCreateNestedManyWithoutBoardInput
   snapshots?: Prisma.SnapshotUncheckedCreateNestedManyWithoutBoardInput
-  comments?: Prisma.CommentUncheckedCreateNestedManyWithoutBoardInput
   chatMessages?: Prisma.ChatMessageUncheckedCreateNestedManyWithoutBoardInput
   starredBy?: Prisma.StarredBoardUncheckedCreateNestedManyWithoutBoardInput
 }
@@ -751,7 +726,6 @@ export type BoardUpdateWithoutCollaboratorsInput = {
   owner?: Prisma.UserUpdateOneRequiredWithoutOwnedBoardsNestedInput
   invites?: Prisma.InviteUpdateManyWithoutBoardNestedInput
   snapshots?: Prisma.SnapshotUpdateManyWithoutBoardNestedInput
-  comments?: Prisma.CommentUpdateManyWithoutBoardNestedInput
   chatMessages?: Prisma.ChatMessageUpdateManyWithoutBoardNestedInput
   starredBy?: Prisma.StarredBoardUpdateManyWithoutBoardNestedInput
 }
@@ -769,7 +743,6 @@ export type BoardUncheckedUpdateWithoutCollaboratorsInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   invites?: Prisma.InviteUncheckedUpdateManyWithoutBoardNestedInput
   snapshots?: Prisma.SnapshotUncheckedUpdateManyWithoutBoardNestedInput
-  comments?: Prisma.CommentUncheckedUpdateManyWithoutBoardNestedInput
   chatMessages?: Prisma.ChatMessageUncheckedUpdateManyWithoutBoardNestedInput
   starredBy?: Prisma.StarredBoardUncheckedUpdateManyWithoutBoardNestedInput
 }
@@ -787,7 +760,6 @@ export type BoardCreateWithoutInvitesInput = {
   owner: Prisma.UserCreateNestedOneWithoutOwnedBoardsInput
   collaborators?: Prisma.CollaboratorCreateNestedManyWithoutBoardInput
   snapshots?: Prisma.SnapshotCreateNestedManyWithoutBoardInput
-  comments?: Prisma.CommentCreateNestedManyWithoutBoardInput
   chatMessages?: Prisma.ChatMessageCreateNestedManyWithoutBoardInput
   starredBy?: Prisma.StarredBoardCreateNestedManyWithoutBoardInput
 }
@@ -805,7 +777,6 @@ export type BoardUncheckedCreateWithoutInvitesInput = {
   deletedAt?: Date | string | null
   collaborators?: Prisma.CollaboratorUncheckedCreateNestedManyWithoutBoardInput
   snapshots?: Prisma.SnapshotUncheckedCreateNestedManyWithoutBoardInput
-  comments?: Prisma.CommentUncheckedCreateNestedManyWithoutBoardInput
   chatMessages?: Prisma.ChatMessageUncheckedCreateNestedManyWithoutBoardInput
   starredBy?: Prisma.StarredBoardUncheckedCreateNestedManyWithoutBoardInput
 }
@@ -839,7 +810,6 @@ export type BoardUpdateWithoutInvitesInput = {
   owner?: Prisma.UserUpdateOneRequiredWithoutOwnedBoardsNestedInput
   collaborators?: Prisma.CollaboratorUpdateManyWithoutBoardNestedInput
   snapshots?: Prisma.SnapshotUpdateManyWithoutBoardNestedInput
-  comments?: Prisma.CommentUpdateManyWithoutBoardNestedInput
   chatMessages?: Prisma.ChatMessageUpdateManyWithoutBoardNestedInput
   starredBy?: Prisma.StarredBoardUpdateManyWithoutBoardNestedInput
 }
@@ -857,7 +827,6 @@ export type BoardUncheckedUpdateWithoutInvitesInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   collaborators?: Prisma.CollaboratorUncheckedUpdateManyWithoutBoardNestedInput
   snapshots?: Prisma.SnapshotUncheckedUpdateManyWithoutBoardNestedInput
-  comments?: Prisma.CommentUncheckedUpdateManyWithoutBoardNestedInput
   chatMessages?: Prisma.ChatMessageUncheckedUpdateManyWithoutBoardNestedInput
   starredBy?: Prisma.StarredBoardUncheckedUpdateManyWithoutBoardNestedInput
 }
@@ -875,7 +844,6 @@ export type BoardCreateWithoutSnapshotsInput = {
   owner: Prisma.UserCreateNestedOneWithoutOwnedBoardsInput
   collaborators?: Prisma.CollaboratorCreateNestedManyWithoutBoardInput
   invites?: Prisma.InviteCreateNestedManyWithoutBoardInput
-  comments?: Prisma.CommentCreateNestedManyWithoutBoardInput
   chatMessages?: Prisma.ChatMessageCreateNestedManyWithoutBoardInput
   starredBy?: Prisma.StarredBoardCreateNestedManyWithoutBoardInput
 }
@@ -893,7 +861,6 @@ export type BoardUncheckedCreateWithoutSnapshotsInput = {
   deletedAt?: Date | string | null
   collaborators?: Prisma.CollaboratorUncheckedCreateNestedManyWithoutBoardInput
   invites?: Prisma.InviteUncheckedCreateNestedManyWithoutBoardInput
-  comments?: Prisma.CommentUncheckedCreateNestedManyWithoutBoardInput
   chatMessages?: Prisma.ChatMessageUncheckedCreateNestedManyWithoutBoardInput
   starredBy?: Prisma.StarredBoardUncheckedCreateNestedManyWithoutBoardInput
 }
@@ -927,7 +894,6 @@ export type BoardUpdateWithoutSnapshotsInput = {
   owner?: Prisma.UserUpdateOneRequiredWithoutOwnedBoardsNestedInput
   collaborators?: Prisma.CollaboratorUpdateManyWithoutBoardNestedInput
   invites?: Prisma.InviteUpdateManyWithoutBoardNestedInput
-  comments?: Prisma.CommentUpdateManyWithoutBoardNestedInput
   chatMessages?: Prisma.ChatMessageUpdateManyWithoutBoardNestedInput
   starredBy?: Prisma.StarredBoardUpdateManyWithoutBoardNestedInput
 }
@@ -945,95 +911,6 @@ export type BoardUncheckedUpdateWithoutSnapshotsInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   collaborators?: Prisma.CollaboratorUncheckedUpdateManyWithoutBoardNestedInput
   invites?: Prisma.InviteUncheckedUpdateManyWithoutBoardNestedInput
-  comments?: Prisma.CommentUncheckedUpdateManyWithoutBoardNestedInput
-  chatMessages?: Prisma.ChatMessageUncheckedUpdateManyWithoutBoardNestedInput
-  starredBy?: Prisma.StarredBoardUncheckedUpdateManyWithoutBoardNestedInput
-}
-
-export type BoardCreateWithoutCommentsInput = {
-  id?: string
-  title: string
-  description?: string | null
-  thumbnailUrl?: string | null
-  visibility?: $Enums.BoardVisibility
-  canvasColor?: string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  deletedAt?: Date | string | null
-  owner: Prisma.UserCreateNestedOneWithoutOwnedBoardsInput
-  collaborators?: Prisma.CollaboratorCreateNestedManyWithoutBoardInput
-  invites?: Prisma.InviteCreateNestedManyWithoutBoardInput
-  snapshots?: Prisma.SnapshotCreateNestedManyWithoutBoardInput
-  chatMessages?: Prisma.ChatMessageCreateNestedManyWithoutBoardInput
-  starredBy?: Prisma.StarredBoardCreateNestedManyWithoutBoardInput
-}
-
-export type BoardUncheckedCreateWithoutCommentsInput = {
-  id?: string
-  title: string
-  description?: string | null
-  thumbnailUrl?: string | null
-  visibility?: $Enums.BoardVisibility
-  canvasColor?: string | null
-  ownerId: string
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  deletedAt?: Date | string | null
-  collaborators?: Prisma.CollaboratorUncheckedCreateNestedManyWithoutBoardInput
-  invites?: Prisma.InviteUncheckedCreateNestedManyWithoutBoardInput
-  snapshots?: Prisma.SnapshotUncheckedCreateNestedManyWithoutBoardInput
-  chatMessages?: Prisma.ChatMessageUncheckedCreateNestedManyWithoutBoardInput
-  starredBy?: Prisma.StarredBoardUncheckedCreateNestedManyWithoutBoardInput
-}
-
-export type BoardCreateOrConnectWithoutCommentsInput = {
-  where: Prisma.BoardWhereUniqueInput
-  create: Prisma.XOR<Prisma.BoardCreateWithoutCommentsInput, Prisma.BoardUncheckedCreateWithoutCommentsInput>
-}
-
-export type BoardUpsertWithoutCommentsInput = {
-  update: Prisma.XOR<Prisma.BoardUpdateWithoutCommentsInput, Prisma.BoardUncheckedUpdateWithoutCommentsInput>
-  create: Prisma.XOR<Prisma.BoardCreateWithoutCommentsInput, Prisma.BoardUncheckedCreateWithoutCommentsInput>
-  where?: Prisma.BoardWhereInput
-}
-
-export type BoardUpdateToOneWithWhereWithoutCommentsInput = {
-  where?: Prisma.BoardWhereInput
-  data: Prisma.XOR<Prisma.BoardUpdateWithoutCommentsInput, Prisma.BoardUncheckedUpdateWithoutCommentsInput>
-}
-
-export type BoardUpdateWithoutCommentsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  title?: Prisma.StringFieldUpdateOperationsInput | string
-  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  visibility?: Prisma.EnumBoardVisibilityFieldUpdateOperationsInput | $Enums.BoardVisibility
-  canvasColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  owner?: Prisma.UserUpdateOneRequiredWithoutOwnedBoardsNestedInput
-  collaborators?: Prisma.CollaboratorUpdateManyWithoutBoardNestedInput
-  invites?: Prisma.InviteUpdateManyWithoutBoardNestedInput
-  snapshots?: Prisma.SnapshotUpdateManyWithoutBoardNestedInput
-  chatMessages?: Prisma.ChatMessageUpdateManyWithoutBoardNestedInput
-  starredBy?: Prisma.StarredBoardUpdateManyWithoutBoardNestedInput
-}
-
-export type BoardUncheckedUpdateWithoutCommentsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  title?: Prisma.StringFieldUpdateOperationsInput | string
-  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  visibility?: Prisma.EnumBoardVisibilityFieldUpdateOperationsInput | $Enums.BoardVisibility
-  canvasColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  ownerId?: Prisma.StringFieldUpdateOperationsInput | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  collaborators?: Prisma.CollaboratorUncheckedUpdateManyWithoutBoardNestedInput
-  invites?: Prisma.InviteUncheckedUpdateManyWithoutBoardNestedInput
-  snapshots?: Prisma.SnapshotUncheckedUpdateManyWithoutBoardNestedInput
   chatMessages?: Prisma.ChatMessageUncheckedUpdateManyWithoutBoardNestedInput
   starredBy?: Prisma.StarredBoardUncheckedUpdateManyWithoutBoardNestedInput
 }
@@ -1052,7 +929,6 @@ export type BoardCreateWithoutChatMessagesInput = {
   collaborators?: Prisma.CollaboratorCreateNestedManyWithoutBoardInput
   invites?: Prisma.InviteCreateNestedManyWithoutBoardInput
   snapshots?: Prisma.SnapshotCreateNestedManyWithoutBoardInput
-  comments?: Prisma.CommentCreateNestedManyWithoutBoardInput
   starredBy?: Prisma.StarredBoardCreateNestedManyWithoutBoardInput
 }
 
@@ -1070,7 +946,6 @@ export type BoardUncheckedCreateWithoutChatMessagesInput = {
   collaborators?: Prisma.CollaboratorUncheckedCreateNestedManyWithoutBoardInput
   invites?: Prisma.InviteUncheckedCreateNestedManyWithoutBoardInput
   snapshots?: Prisma.SnapshotUncheckedCreateNestedManyWithoutBoardInput
-  comments?: Prisma.CommentUncheckedCreateNestedManyWithoutBoardInput
   starredBy?: Prisma.StarredBoardUncheckedCreateNestedManyWithoutBoardInput
 }
 
@@ -1104,7 +979,6 @@ export type BoardUpdateWithoutChatMessagesInput = {
   collaborators?: Prisma.CollaboratorUpdateManyWithoutBoardNestedInput
   invites?: Prisma.InviteUpdateManyWithoutBoardNestedInput
   snapshots?: Prisma.SnapshotUpdateManyWithoutBoardNestedInput
-  comments?: Prisma.CommentUpdateManyWithoutBoardNestedInput
   starredBy?: Prisma.StarredBoardUpdateManyWithoutBoardNestedInput
 }
 
@@ -1122,7 +996,6 @@ export type BoardUncheckedUpdateWithoutChatMessagesInput = {
   collaborators?: Prisma.CollaboratorUncheckedUpdateManyWithoutBoardNestedInput
   invites?: Prisma.InviteUncheckedUpdateManyWithoutBoardNestedInput
   snapshots?: Prisma.SnapshotUncheckedUpdateManyWithoutBoardNestedInput
-  comments?: Prisma.CommentUncheckedUpdateManyWithoutBoardNestedInput
   starredBy?: Prisma.StarredBoardUncheckedUpdateManyWithoutBoardNestedInput
 }
 
@@ -1140,7 +1013,6 @@ export type BoardCreateWithoutStarredByInput = {
   collaborators?: Prisma.CollaboratorCreateNestedManyWithoutBoardInput
   invites?: Prisma.InviteCreateNestedManyWithoutBoardInput
   snapshots?: Prisma.SnapshotCreateNestedManyWithoutBoardInput
-  comments?: Prisma.CommentCreateNestedManyWithoutBoardInput
   chatMessages?: Prisma.ChatMessageCreateNestedManyWithoutBoardInput
 }
 
@@ -1158,7 +1030,6 @@ export type BoardUncheckedCreateWithoutStarredByInput = {
   collaborators?: Prisma.CollaboratorUncheckedCreateNestedManyWithoutBoardInput
   invites?: Prisma.InviteUncheckedCreateNestedManyWithoutBoardInput
   snapshots?: Prisma.SnapshotUncheckedCreateNestedManyWithoutBoardInput
-  comments?: Prisma.CommentUncheckedCreateNestedManyWithoutBoardInput
   chatMessages?: Prisma.ChatMessageUncheckedCreateNestedManyWithoutBoardInput
 }
 
@@ -1192,7 +1063,6 @@ export type BoardUpdateWithoutStarredByInput = {
   collaborators?: Prisma.CollaboratorUpdateManyWithoutBoardNestedInput
   invites?: Prisma.InviteUpdateManyWithoutBoardNestedInput
   snapshots?: Prisma.SnapshotUpdateManyWithoutBoardNestedInput
-  comments?: Prisma.CommentUpdateManyWithoutBoardNestedInput
   chatMessages?: Prisma.ChatMessageUpdateManyWithoutBoardNestedInput
 }
 
@@ -1210,7 +1080,6 @@ export type BoardUncheckedUpdateWithoutStarredByInput = {
   collaborators?: Prisma.CollaboratorUncheckedUpdateManyWithoutBoardNestedInput
   invites?: Prisma.InviteUncheckedUpdateManyWithoutBoardNestedInput
   snapshots?: Prisma.SnapshotUncheckedUpdateManyWithoutBoardNestedInput
-  comments?: Prisma.CommentUncheckedUpdateManyWithoutBoardNestedInput
   chatMessages?: Prisma.ChatMessageUncheckedUpdateManyWithoutBoardNestedInput
 }
 
@@ -1239,7 +1108,6 @@ export type BoardUpdateWithoutOwnerInput = {
   collaborators?: Prisma.CollaboratorUpdateManyWithoutBoardNestedInput
   invites?: Prisma.InviteUpdateManyWithoutBoardNestedInput
   snapshots?: Prisma.SnapshotUpdateManyWithoutBoardNestedInput
-  comments?: Prisma.CommentUpdateManyWithoutBoardNestedInput
   chatMessages?: Prisma.ChatMessageUpdateManyWithoutBoardNestedInput
   starredBy?: Prisma.StarredBoardUpdateManyWithoutBoardNestedInput
 }
@@ -1257,7 +1125,6 @@ export type BoardUncheckedUpdateWithoutOwnerInput = {
   collaborators?: Prisma.CollaboratorUncheckedUpdateManyWithoutBoardNestedInput
   invites?: Prisma.InviteUncheckedUpdateManyWithoutBoardNestedInput
   snapshots?: Prisma.SnapshotUncheckedUpdateManyWithoutBoardNestedInput
-  comments?: Prisma.CommentUncheckedUpdateManyWithoutBoardNestedInput
   chatMessages?: Prisma.ChatMessageUncheckedUpdateManyWithoutBoardNestedInput
   starredBy?: Prisma.StarredBoardUncheckedUpdateManyWithoutBoardNestedInput
 }
@@ -1283,7 +1150,6 @@ export type BoardCountOutputType = {
   collaborators: number
   invites: number
   snapshots: number
-  comments: number
   chatMessages: number
   starredBy: number
 }
@@ -1292,7 +1158,6 @@ export type BoardCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.
   collaborators?: boolean | BoardCountOutputTypeCountCollaboratorsArgs
   invites?: boolean | BoardCountOutputTypeCountInvitesArgs
   snapshots?: boolean | BoardCountOutputTypeCountSnapshotsArgs
-  comments?: boolean | BoardCountOutputTypeCountCommentsArgs
   chatMessages?: boolean | BoardCountOutputTypeCountChatMessagesArgs
   starredBy?: boolean | BoardCountOutputTypeCountStarredByArgs
 }
@@ -1331,13 +1196,6 @@ export type BoardCountOutputTypeCountSnapshotsArgs<ExtArgs extends runtime.Types
 /**
  * BoardCountOutputType without action
  */
-export type BoardCountOutputTypeCountCommentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.CommentWhereInput
-}
-
-/**
- * BoardCountOutputType without action
- */
 export type BoardCountOutputTypeCountChatMessagesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.ChatMessageWhereInput
 }
@@ -1365,7 +1223,6 @@ export type BoardSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   collaborators?: boolean | Prisma.Board$collaboratorsArgs<ExtArgs>
   invites?: boolean | Prisma.Board$invitesArgs<ExtArgs>
   snapshots?: boolean | Prisma.Board$snapshotsArgs<ExtArgs>
-  comments?: boolean | Prisma.Board$commentsArgs<ExtArgs>
   chatMessages?: boolean | Prisma.Board$chatMessagesArgs<ExtArgs>
   starredBy?: boolean | Prisma.Board$starredByArgs<ExtArgs>
   _count?: boolean | Prisma.BoardCountOutputTypeDefaultArgs<ExtArgs>
@@ -1418,7 +1275,6 @@ export type BoardInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   collaborators?: boolean | Prisma.Board$collaboratorsArgs<ExtArgs>
   invites?: boolean | Prisma.Board$invitesArgs<ExtArgs>
   snapshots?: boolean | Prisma.Board$snapshotsArgs<ExtArgs>
-  comments?: boolean | Prisma.Board$commentsArgs<ExtArgs>
   chatMessages?: boolean | Prisma.Board$chatMessagesArgs<ExtArgs>
   starredBy?: boolean | Prisma.Board$starredByArgs<ExtArgs>
   _count?: boolean | Prisma.BoardCountOutputTypeDefaultArgs<ExtArgs>
@@ -1437,7 +1293,6 @@ export type $BoardPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     collaborators: Prisma.$CollaboratorPayload<ExtArgs>[]
     invites: Prisma.$InvitePayload<ExtArgs>[]
     snapshots: Prisma.$SnapshotPayload<ExtArgs>[]
-    comments: Prisma.$CommentPayload<ExtArgs>[]
     chatMessages: Prisma.$ChatMessagePayload<ExtArgs>[]
     starredBy: Prisma.$StarredBoardPayload<ExtArgs>[]
   }
@@ -1850,7 +1705,6 @@ export interface Prisma__BoardClient<T, Null = never, ExtArgs extends runtime.Ty
   collaborators<T extends Prisma.Board$collaboratorsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Board$collaboratorsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CollaboratorPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   invites<T extends Prisma.Board$invitesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Board$invitesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$InvitePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   snapshots<T extends Prisma.Board$snapshotsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Board$snapshotsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SnapshotPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  comments<T extends Prisma.Board$commentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Board$commentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CommentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   chatMessages<T extends Prisma.Board$chatMessagesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Board$chatMessagesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ChatMessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   starredBy<T extends Prisma.Board$starredByArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Board$starredByArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$StarredBoardPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
@@ -2362,30 +2216,6 @@ export type Board$snapshotsArgs<ExtArgs extends runtime.Types.Extensions.Interna
   take?: number
   skip?: number
   distinct?: Prisma.SnapshotScalarFieldEnum | Prisma.SnapshotScalarFieldEnum[]
-}
-
-/**
- * Board.comments
- */
-export type Board$commentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the Comment
-   */
-  select?: Prisma.CommentSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the Comment
-   */
-  omit?: Prisma.CommentOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.CommentInclude<ExtArgs> | null
-  where?: Prisma.CommentWhereInput
-  orderBy?: Prisma.CommentOrderByWithRelationInput | Prisma.CommentOrderByWithRelationInput[]
-  cursor?: Prisma.CommentWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.CommentScalarFieldEnum | Prisma.CommentScalarFieldEnum[]
 }
 
 /**

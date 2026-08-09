@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-export type SidebarTab = 'users' | 'chat' | 'ai' | 'comments';
+export type SidebarTab = 'users' | 'chat' | 'ai';
 
 interface UIState {
   isSidebarOpen: boolean;

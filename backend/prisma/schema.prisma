@@ -26,7 +26,6 @@ enum InviteType {
 enum CollaboratorRole {
   OWNER
   EDITOR
-  COMMENTER
   VIEWER
 }
 
@@ -47,8 +46,6 @@ model User {
   ownedBoards Board[] @relation("BoardOwner")
 
   collaborations Collaborator[]
-
-  comments Comment[]
 
   chatMessages ChatMessage[]
 
@@ -77,8 +74,6 @@ model Board {
   invites Invite[]
 
   snapshots Snapshot[]
-
-  comments Comment[]
 
   chatMessages ChatMessage[]
 
@@ -144,30 +139,6 @@ model Snapshot {
   createdAt DateTime @default(now())
 
   @@unique([boardId, version])
-}
-
-model Comment {
-  id String @id @default(uuid(7))
-
-  boardId String
-
-  authorId String
-
-  content String
-
-  position Json?
-
-  shapeId String?
-
-  resolved Boolean @default(false)
-
-  board Board @relation(fields: [boardId], references: [id], onDelete: Cascade)
-
-  author User @relation(fields: [authorId], references: [id], onDelete: Cascade)
-
-  createdAt DateTime @default(now())
-
-  updatedAt DateTime @updatedAt
 }
 
 model ChatMessage {
