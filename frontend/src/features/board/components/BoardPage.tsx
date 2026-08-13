@@ -7,14 +7,19 @@ import { useCurrentUser } from '@/features/auth/hooks/useAuth';
 import { BoardSidebar } from './BoardSidebar';
 import { ShareBoardModal } from './ShareBoardModal';
 import { PresenceDock } from './PresenceDock';
-import { Loader2, Moon, Sun, Share2, MessageSquare, Bot, Undo2, Redo2, Palette, Users, Trash2, Copy, EyeOff, Eye, Code2 } from 'lucide-react';
+import { Loader2, Moon, Sun, Share2, MessageSquare, Undo2, Redo2, Palette, Users, Trash2, Copy, EyeOff, Eye, Code2, Sparkle, ChevronUp, ChevronDown } from 'lucide-react';
 import {
   Tldraw,
   DefaultMainMenu,
   DefaultStylePanel,
   DefaultToolbar,
+  DefaultToolbarContent,
   useEditor,
   useValue,
+  defaultShapeUtils,
+  defaultBindingUtils,
+  defaultTools,
+  defaultShapeTools,
   type Editor
 } from 'tldraw';
 import 'tldraw/tldraw.css';
@@ -162,21 +167,29 @@ function TopHeader({
 
       {/* CENTER: Main Collaboration Tools */}
       <div className="flex items-center gap-1.5 justify-center flex-1">
-        {/* Presence Avatars */}
-        <button onClick={() => setActiveSidebarTab('users')} className="mr-2 flex items-center rounded-xl px-1.5 py-1 transition-transform hover:scale-105 hover:bg-muted/80" title="View collaborators">
-          {Object.keys(presenceMembers).length > 0 ? <PresenceDock members={presenceMembers} currentUserId={myId} /> : <Users className="h-4 w-4 text-muted-foreground" />}
+        {/* Presence Avatars / Voice */}
+        <button onClick={() => setActiveSidebarTab('users')} className={cn("h-9 px-3 flex items-center gap-2 rounded-xl text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted/80 transition-colors", isSidebarOpen && activeSidebarTab === 'users' && "bg-primary/10 text-primary")} title="Team & Voice">
+          {Object.keys(presenceMembers).length > 0 ? <PresenceDock members={presenceMembers} currentUserId={myId} /> : <Users className="h-4 w-4" />}
+          <span className="hidden xl:inline-block">Voice</span>
         </button>
 
         <div className="w-px h-5 bg-border/60 mx-1" />
 
         {/* Action Toggles */}
-        <button onClick={() => setActiveSidebarTab('chat')} className={cn("w-9 h-9 flex items-center justify-center rounded-xl text-muted-foreground hover:text-foreground hover:bg-muted/80 transition-colors", isSidebarOpen && activeSidebarTab === 'chat' && "bg-primary/10 text-primary")} title="Chat"><MessageSquare className="h-[18px] w-[18px]" /></button>
-        <button onClick={() => setActiveSidebarTab('ai')} className={cn("w-9 h-9 flex items-center justify-center rounded-xl text-muted-foreground hover:text-foreground hover:bg-muted/80 transition-colors", isSidebarOpen && activeSidebarTab === 'ai' && "bg-primary/10 text-primary")} title="AI Assistant"><Bot className="h-[18px] w-[18px]" /></button>
+        <button onClick={() => setActiveSidebarTab('chat')} className={cn("h-9 px-3 flex items-center gap-2 rounded-xl text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted/80 transition-colors", isSidebarOpen && activeSidebarTab === 'chat' && "bg-primary/10 text-primary")} title="Chat">
+          <MessageSquare className="h-4 w-4" />
+          <span className="hidden xl:inline-block">Chat</span>
+        </button>
+        <button onClick={() => setActiveSidebarTab('ai')} className={cn("h-9 px-3 flex items-center gap-2 rounded-xl text-sm font-bold text-white bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 hover:opacity-90 shadow-sm transition-all hover:scale-105 active:scale-95", isSidebarOpen && activeSidebarTab === 'ai' && "ring-2 ring-offset-2 ring-purple-500 dark:ring-offset-[var(--bt-panel-bg)]")} title="AI Copilot">
+          <Sparkle className="h-4 w-4" />
+          <span className="hidden sm:inline-block">AI</span>
+        </button>
 
         {/* Appearance Palette */}
         <div className="relative">
-          <button onClick={() => setIsAppearanceOpen((o) => !o)} className={cn("w-9 h-9 flex items-center justify-center rounded-xl text-muted-foreground hover:text-foreground hover:bg-muted/80 transition-colors", isAppearanceOpen && "bg-primary/10 text-primary")} title="Canvas appearance">
-            <Palette className="h-[18px] w-[18px]" />
+          <button onClick={() => setIsAppearanceOpen((o) => !o)} className={cn("h-9 px-3 flex items-center gap-2 rounded-xl text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted/80 transition-colors", isAppearanceOpen && "bg-primary/10 text-primary")} title="Canvas appearance">
+            <Palette className="h-4 w-4" />
+            <span className="hidden xl:inline-block">Canvas</span>
           </button>
           {isAppearanceOpen && (
             <div className="absolute top-12 left-1/2 -translate-x-1/2 w-44 rounded-2xl border border-[var(--bt-panel-border)] bg-[var(--bt-panel-bg)] p-3 shadow-xl backdrop-blur-xl z-50 animate-in fade-in zoom-in-95 duration-100">
@@ -199,8 +212,9 @@ function TopHeader({
           const newBgIndex = newIsDark ? 2 : 1; // 2 = Dark Gray, 1 = Offwhite
           setCanvasBgIndex(newBgIndex);
           updateBoard.mutate({ boardId, payload: { canvasColor: CANVAS_COLORS[newBgIndex].name } });
-        }} className="w-9 h-9 flex items-center justify-center rounded-xl text-muted-foreground hover:text-foreground hover:bg-muted/80 transition-colors" title="Toggle Theme">
-          {isDark ? <Sun className="h-[18px] w-[18px]" /> : <Moon className="h-[18px] w-[18px]" />}
+        }} className="h-9 px-3 flex items-center gap-2 rounded-xl text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted/80 transition-colors" title="Toggle Theme">
+          {isDark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+          <span className="hidden xl:inline-block">Theme</span>
         </button>
       </div>
 
@@ -216,14 +230,17 @@ function TopHeader({
 }
 
 // ── Collapsible Bottom Dock Toolbar ──────────────────────────────────────────
-const BottomDockToolbar = () => {
+const BottomDockToolbar = (props: any) => {
   const [isMinimized, setIsMinimized] = useState(false);
 
   return (
     <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-[300] pointer-events-auto flex items-center gap-2">
       {/* Tldraw's native toolbar, no longer restricted by our heavy wrapper */}
-      <div className={cn("transition-all duration-300 ease-out origin-bottom", isMinimized ? "opacity-0 scale-95 pointer-events-none w-0 overflow-hidden" : "opacity-100 scale-100")}>
-        <DefaultToolbar />
+      <div className={cn("transition-all duration-300 ease-out origin-bottom", isMinimized ? "opacity-0 translate-y-4 pointer-events-none" : "opacity-100 translate-y-0")}>
+        <DefaultToolbar {...props} maxItems={10}>
+          {/* Prevent early truncation by specifying a high maxItems */}
+          <DefaultToolbarContent />
+        </DefaultToolbar>
       </div>
 
       {/* Toggle Button */}
@@ -238,6 +255,30 @@ const BottomDockToolbar = () => {
   );
 };
 
+const CustomStylePanel = () => {
+  const [isExpanded, setIsExpanded] = useState(true);
+
+  return (
+    <div className="absolute top-[80px] left-4 z-[300] pointer-events-auto flex flex-col gap-2 items-start">
+      <button
+        onClick={() => setIsExpanded(!isExpanded)}
+        className="h-8 px-3 flex items-center justify-between gap-2 rounded-xl text-xs font-bold uppercase tracking-wider text-muted-foreground hover:text-foreground bg-[var(--bt-panel-bg)] border border-[var(--bt-panel-border)] shadow-sm hover:bg-muted/50 transition-colors"
+      >
+        Styles
+        {isExpanded ? <ChevronUp className="h-3 w-3" /> : <ChevronDown className="h-3 w-3" />}
+      </button>
+
+      <div className={cn("transition-all duration-200 origin-top", isExpanded ? "opacity-100 scale-100" : "opacity-0 scale-95 pointer-events-none")}>
+        {isExpanded && (
+          <div className="bt-style-panel-wrapper shadow-2xl animate-in fade-in slide-in-from-top-2 duration-200">
+            <DefaultStylePanel />
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
 // ── Tldraw Override Components ──────────────────────────────────────────────
 const components = {
   MainMenu: () => null, // We have a custom unified header
@@ -246,11 +287,7 @@ const components = {
   ZoomMenu: () => null,
   SharePanel: () => null,
   Toolbar: BottomDockToolbar,
-  StylePanel: () => (
-    <div className="bt-style-panel-wrapper absolute top-[80px] left-4 z-[300] pointer-events-auto shadow-2xl">
-      <DefaultStylePanel />
-    </div>
-  ),
+  StylePanel: CustomStylePanel,
 };
 
 // ── Main export ──────────────────────────────────────────────────────────────
@@ -331,6 +368,9 @@ export function BoardPage() {
           components={tldrawComponents}
           onMount={setEditor}
           licenseKey={import.meta.env.VITE_TLDRAW_LICENSE_KEY}
+          shapeUtils={defaultShapeUtils}
+          bindingUtils={defaultBindingUtils}
+          tools={[...defaultTools, ...defaultShapeTools]}
         >
           {storeWithStatus.status === 'synced-remote' && (
             <TopHeader

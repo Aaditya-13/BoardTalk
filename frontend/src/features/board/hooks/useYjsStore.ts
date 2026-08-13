@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { createTLStore, defaultShapeUtils, loadSnapshot, getSnapshot, throttle } from 'tldraw';
+import { createTLStore, defaultShapeUtils, defaultBindingUtils, loadSnapshot, getSnapshot, throttle } from 'tldraw';
 import type { TLRecord, TLStoreWithStatus } from 'tldraw';
 import { socket, connectSocket } from '@/lib/socket';
 import * as Y from 'yjs';
@@ -16,7 +16,10 @@ export function useYjsStore(boardId: string) {
     const yMap = yDoc.getMap<any>('tldraw');
 
     // 2. Create the Tldraw store
-    const store = createTLStore({ shapeUtils: defaultShapeUtils });
+    const store = createTLStore({ 
+      shapeUtils: defaultShapeUtils,
+      bindingUtils: defaultBindingUtils 
+    });
 
     // 3. Keep track of what we are updating to avoid infinite loops
     let isApplyingYjsChanges = false;
@@ -142,19 +145,19 @@ export function useYjsStore(boardId: string) {
 
           if (isMemoryActive) {
             // Server already has Y.Doc in memory. Skip snapshot, just sync Yjs.
-            socket.emit('board:yjs:sync-step-1', { 
-              boardId, 
-              stateVector: Y.encodeStateVector(yDoc) 
+            socket.emit('board:yjs:sync-step-1', {
+              boardId,
+              stateVector: Y.encodeStateVector(yDoc)
             });
           } else {
             // Server Y.Doc is empty. We must load the database snapshot and push it.
             const payload = await snapshotPromise;
-            
+
             if (payload.boardId === boardId && payload.snapshot?.documentJson) {
               try {
                 loadSnapshot(store, payload.snapshot.documentJson);
                 console.log('Y.Doc loaded');
-                
+
                 // Push loaded records into Yjs map
                 yDoc.transact(() => {
                   const records = store.allRecords();
@@ -170,9 +173,9 @@ export function useYjsStore(boardId: string) {
             }
 
             // After loading snapshot (or if there is none), sync with server
-            socket.emit('board:yjs:sync-step-1', { 
-              boardId, 
-              stateVector: Y.encodeStateVector(yDoc) 
+            socket.emit('board:yjs:sync-step-1', {
+              boardId,
+              stateVector: Y.encodeStateVector(yDoc)
             });
           }
         }
