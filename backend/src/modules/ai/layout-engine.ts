@@ -27,7 +27,7 @@ function measureText(text: string | undefined): { width: number; height: number 
 // Layout Engines
 // ---------------------------------------------------------------------------
 
-function routeWireframe(elements: IntentElement[], viewport: Viewport): BoardElement[] {
+function routeWireframe(elements: IntentElement[], viewport: Viewport, existingMap: Map<string, any>): BoardElement[] {
   const result: BoardElement[] = [];
   const PADDING = 24;
   const GAP = 16;
@@ -53,8 +53,12 @@ function routeWireframe(elements: IntentElement[], viewport: Viewport): BoardEle
 
   // 3. Recursive Layout Function
   function layoutNode(node: IntentElement, x: number, y: number): { width: number, height: number, childrenEls: BoardElement[] } {
-    let currentX = x + PADDING;
-    let currentY = y + PADDING;
+    const existing = existingMap.get(node.id);
+    const lockedX = existing && existing.x !== undefined ? existing.x : x;
+    const lockedY = existing && existing.y !== undefined ? existing.y : y;
+
+    let currentX = lockedX + PADDING;
+    let currentY = lockedY + PADDING;
     let maxWidth = 0;
     let maxHeight = 0;
     
@@ -66,16 +70,20 @@ function routeWireframe(elements: IntentElement[], viewport: Viewport): BoardEle
     for (const child of children) {
       const childLayout = layoutNode(child, currentX, currentY);
       
-      // The child itself (drawn BEFORE its children so it sits behind them in tldraw)
+      const childExisting = existingMap.get(child.id);
+      
       let childType: any = "rectangle";
       if (child.type === "text") childType = "text";
       else if (child.type === "input" || child.type === "button") childType = "rectangle";
 
+      const childFinalX = childExisting && childExisting.x !== undefined ? childExisting.x : currentX;
+      const childFinalY = childExisting && childExisting.y !== undefined ? childExisting.y : currentY;
+
       childrenEls.push({
         id: getRealId(child.id),
-        type: childType,
-        x: currentX,
-        y: currentY,
+        type: childExisting && childExisting.type ? childExisting.type : childType,
+        x: childFinalX,
+        y: childFinalY,
         width: childLayout.width,
         height: childLayout.height,
         label: child.label,
@@ -85,14 +93,16 @@ function routeWireframe(elements: IntentElement[], viewport: Viewport): BoardEle
       // Now push its children
       childrenEls.push(...childLayout.childrenEls);
 
-      if (isHorizontal) {
-        currentX += childLayout.width + GAP;
-        maxHeight = Math.max(maxHeight, childLayout.height);
-        maxWidth += childLayout.width + GAP;
-      } else {
-        currentY += childLayout.height + GAP;
-        maxWidth = Math.max(maxWidth, childLayout.width);
-        maxHeight += childLayout.height + GAP;
+      if (!childExisting) {
+        if (isHorizontal) {
+          currentX += childLayout.width + GAP;
+          maxHeight = Math.max(maxHeight, childLayout.height);
+          maxWidth += childLayout.width + GAP;
+        } else {
+          currentY += childLayout.height + GAP;
+          maxWidth = Math.max(maxWidth, childLayout.width);
+          maxHeight += childLayout.height + GAP;
+        }
       }
     }
 
@@ -104,7 +114,6 @@ function routeWireframe(elements: IntentElement[], viewport: Viewport): BoardEle
       baseWidth = Math.max(100, textMetrics.width + PADDING * 2);
       baseHeight = Math.max(40, textMetrics.height + PADDING);
     } else {
-      // Remove trailing gap
       if (isHorizontal) maxWidth -= GAP;
       else maxHeight -= GAP;
       
@@ -112,10 +121,18 @@ function routeWireframe(elements: IntentElement[], viewport: Viewport): BoardEle
       baseHeight = maxHeight + PADDING * 2;
     }
 
-    // If node has text but also has children (like a labeled container), ensure width fits label
     if (children.length > 0 && node.label) {
        const textMetrics = measureText(node.label);
        baseWidth = Math.max(baseWidth, textMetrics.width + PADDING * 2);
+    }
+
+    if (existing && existing.w && existing.h) {
+       // if we have existing size, try to respect it if we are just a leaf node, 
+       // but if we have children we probably need to resize to fit them.
+       if (children.length === 0) {
+         baseWidth = existing.w;
+         baseHeight = existing.h;
+       }
     }
 
     return { width: baseWidth, height: baseHeight, childrenEls };
@@ -126,13 +143,17 @@ function routeWireframe(elements: IntentElement[], viewport: Viewport): BoardEle
   let startX = viewport.x + viewport.w / 4;
 
   for (const root of rootElements) {
-    const layout = layoutNode(root, startX, currentRootY);
+    const existing = existingMap.get(root.id);
+    const rootX = existing && existing.x !== undefined ? existing.x : startX;
+    const rootY = existing && existing.y !== undefined ? existing.y : currentRootY;
+    
+    const layout = layoutNode(root, rootX, rootY);
     
     result.push({
       id: getRealId(root.id),
-      type: "frame",
-      x: startX,
-      y: currentRootY,
+      type: existing && existing.type ? existing.type : "frame",
+      x: rootX,
+      y: rootY,
       width: layout.width,
       height: layout.height,
       label: root.label,
@@ -140,13 +161,15 @@ function routeWireframe(elements: IntentElement[], viewport: Viewport): BoardEle
     });
 
     result.push(...layout.childrenEls);
-    currentRootY += layout.height + PADDING * 2;
+    if (!existing) {
+      currentRootY += layout.height + PADDING * 2;
+    }
   }
 
   return result;
 }
 
-function routeFlowchart(elements: IntentElement[], viewport: Viewport): BoardElement[] {
+function routeFlowchart(elements: IntentElement[], viewport: Viewport, existingMap: Map<string, any>): BoardElement[] {
   const result: BoardElement[] = [];
   const idMap = new Map<string, string>();
   for (const el of elements) {
@@ -167,30 +190,37 @@ function routeFlowchart(elements: IntentElement[], viewport: Viewport): BoardEle
     const el = elements[i];
     if (el.type === "arrow") continue;
     
+    const existing = existingMap.get(el.id);
     const textMetrics = measureText(el.label);
-    const width = Math.max(150, textMetrics.width + 48);
-    const height = Math.max(80, textMetrics.height + 48);
+    
+    const width = existing && existing.w ? existing.w : Math.max(150, textMetrics.width + 48);
+    const height = existing && existing.h ? existing.h : Math.max(80, textMetrics.height + 48);
+    
+    const finalX = existing && existing.x !== undefined ? existing.x : x;
+    const finalY = existing && existing.y !== undefined ? existing.y : y;
 
     result.push({
       id: getRealId(el.id),
-      type: "rectangle",
-      x,
-      y,
+      type: existing && existing.type ? existing.type : "rectangle",
+      x: finalX,
+      y: finalY,
       width,
       height,
       label: el.label,
       style: el.style
     });
     
-    placedNodes.set(el.id, { x, y, w: width, h: height });
+    placedNodes.set(el.id, { x: finalX, y: finalY, w: width, h: height });
     
-    x += width + GAP;
-    rowMaxHeight = Math.max(rowMaxHeight, height);
+    if (!existing) {
+      x += width + GAP;
+      rowMaxHeight = Math.max(rowMaxHeight, height);
 
-    if (x > viewport.x + viewport.w - width) {
-      x = viewport.x + 100;
-      y += rowMaxHeight + GAP;
-      rowMaxHeight = 0;
+      if (x > viewport.x + viewport.w - width) {
+        x = viewport.x + 100;
+        y += rowMaxHeight + GAP;
+        rowMaxHeight = 0;
+      }
     }
   }
 
@@ -233,7 +263,7 @@ function routeFlowchart(elements: IntentElement[], viewport: Viewport): BoardEle
   return result;
 }
 
-function routeCluster(elements: IntentElement[], viewport: Viewport): BoardElement[] {
+function routeCluster(elements: IntentElement[], viewport: Viewport, existingMap: Map<string, any>): BoardElement[] {
   // Simple radial placement
   const result: BoardElement[] = [];
   const idMap = new Map<string, string>();
@@ -248,17 +278,22 @@ function routeCluster(elements: IntentElement[], viewport: Viewport): BoardEleme
 
   for (let i = 0; i < elements.length; i++) {
     const el = elements[i];
-    const angle = (i / elements.length) * Math.PI * 2;
-    const x = centerX + Math.cos(angle) * radius - 75; // -75 to center the sticky
-    const y = centerY + Math.sin(angle) * radius - 75;
+    const existing = existingMap.get(el.id);
     
+    const angle = (i / elements.length) * Math.PI * 2;
+    const gridX = centerX + Math.cos(angle) * radius - 75; // -75 to center the sticky
+    const gridY = centerY + Math.sin(angle) * radius - 75;
+    
+    const finalX = existing && existing.x !== undefined ? existing.x : gridX;
+    const finalY = existing && existing.y !== undefined ? existing.y : gridY;
+
     result.push({
       id: getRealId(el.id),
-      type: "sticky",
-      x,
-      y,
-      width: 150,
-      height: 150,
+      type: existing && existing.type ? existing.type : "sticky",
+      x: finalX,
+      y: finalY,
+      width: existing && existing.w ? existing.w : 150,
+      height: existing && existing.h ? existing.h : 150,
       label: el.label,
       style: el.style
     });
@@ -267,16 +302,23 @@ function routeCluster(elements: IntentElement[], viewport: Viewport): BoardEleme
   return result;
 }
 
-export function routeIntentLayout(payload: IntentPayload, viewport: Viewport): BoardElement[] {
+export function routeIntentLayout(payload: IntentPayload, viewport: Viewport, existingElements: any[] = []): BoardElement[] {
+  const existingMap = new Map<string, any>();
+  for (const el of existingElements) {
+    const rawId = el.id.startsWith("shape:") ? el.id.replace("shape:", "") : el.id;
+    existingMap.set(rawId, el);
+    existingMap.set(el.id, el);
+  }
+
   switch (payload.intent) {
     case "wireframe":
-      return routeWireframe(payload.elements, viewport);
+      return routeWireframe(payload.elements, viewport, existingMap);
     case "flowchart":
-      return routeFlowchart(payload.elements, viewport);
+      return routeFlowchart(payload.elements, viewport, existingMap);
     case "cluster":
-      return routeCluster(payload.elements, viewport);
+      return routeCluster(payload.elements, viewport, existingMap);
     default:
       // Fallback
-      return routeCluster(payload.elements, viewport);
+      return routeCluster(payload.elements, viewport, existingMap);
   }
 }

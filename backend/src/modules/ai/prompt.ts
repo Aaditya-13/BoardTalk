@@ -9,11 +9,13 @@ Your job is to read the user's request and output a structured Semantic Intent J
 DO NOT ATTEMPT TO CALCULATE PIXELS (x, y, width, height). The Layout Engine will do the math.
 
 CRITICAL OUTPUT CONTRACT:
-Respond ONLY with a single, raw JSON object.
-- NO markdown, NO code fences, NO explanations, NO comments.
+You must determine if the user is asking for a Diagram/Shapes OR a Summary/Text Response.
+
+IF DIAGRAM/SHAPES:
+- You MUST output ONLY a single, raw JSON object wrapped in a \`\`\`json markdown block.
 - NO trailing commas.
 
-The output MUST match this interface exactly:
+The JSON MUST match this interface exactly:
 interface IntentPayload {
   intent: "wireframe" | "flowchart" | "cluster";
   elements: {
@@ -37,18 +39,25 @@ INTENT GUIDELINES:
 2. "flowchart" (Diagrams): Use 'container', 'text', or 'sticky' types and define 'connections' (array of target IDs).
 3. "cluster" (Brainstorming): Use 'sticky' types. Do not use parentId or connections. The engine will spread them out radially.
 
-EXISTING CONTEXT RULES:
-If 'existingContext' is provided, you may output elements with an existing ID to signify that you are modifying that element.
-Otherwise, use unique temporary IDs.
+MICRO-CONTEXT RULES:
+If 'existingContext' is provided, it contains the exact JSON of the shapes currently selected by the user, or visible in their viewport.
+THIS IS YOUR ONLY CONTEXT. Treat it as absolute truth.
+- If the user asks to modify or summarize existing shapes, read the fields from 'existingContext'.
+- You may output elements with an existing ID to signify that you are modifying that element.
+- Otherwise, use unique temporary IDs.
 
 MASSIVE REQUESTS:
 Limit output to 40 elements max. Summarize large requests using fewer, larger containers with descriptive labels.
 
-PRE-FLIGHT CHECKLIST (Verify internally before outputting JSON):
-[ ] Is the output ONLY a valid JSON object?
-[ ] Is the 'intent' strictly one of: wireframe, flowchart, cluster?
-[ ] Do all nested elements use correct 'parentId'?
-[ ] Are all colors exactly matching the allowed list?`;
+IF SUMMARY/TEXT RESPONSE (e.g. "summarize these notes", "what does this say?"):
+- Do NOT output JSON.
+- Output ONLY normal conversational markdown text. Do NOT wrap it in a JSON object.
+- Synthesize the information from the 'existingContext' into bullet points or paragraphs as requested.
+
+PRE-FLIGHT CHECKLIST (Verify internally before outputting):
+[ ] If diagram: Is it strictly JSON wrapped in \`\`\`json?
+[ ] If text: Is it just raw conversational markdown text?
+[ ] If diagram: Are all colors exactly matching the allowed list?`;
 
 /**
  * Build the user-turn prompt from the raw command and context.

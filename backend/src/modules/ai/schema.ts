@@ -59,6 +59,13 @@ export const intentPayloadSchema = z.object({
 
 export const aiCommandSchema = z.object({
   command: z.string().min(1).max(1000),
+  viewport: z.object({
+    x: z.number(),
+    y: z.number(),
+    w: z.number(),
+    h: z.number(),
+  }).optional(),
+  existingElements: z.array(z.any()).optional(),
 });
 
 export type AiCommandDto = z.infer<typeof aiCommandSchema>;

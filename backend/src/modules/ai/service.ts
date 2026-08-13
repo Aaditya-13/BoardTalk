@@ -25,7 +25,8 @@ class AiService {
     userId: string,
     rawCommand: string,
     viewport?: { x: number; y: number; w: number; h: number },
-    existingElements?: any[]
+    existingElements?: any[],
+    onStream?: (chunk: string) => void
   ): Promise<AiGenerateResult> {
     await collaboratorService.assertBoardWriteAccess(boardId, userId);
 
@@ -38,7 +39,7 @@ class AiService {
       throw new InternalServerError("User not found.");
     }
 
-    if (user.isGuest && user.aiPromptsUsed >= 3) {
+    if (user.isGuest && user.aiPromptsUsed >= 5) {
       throw new PaymentRequiredError("limit_reached");
     }
 
@@ -47,19 +48,51 @@ class AiService {
     // Initialize the new GoogleGenAI client
     const ai = new GoogleGenAI({ apiKey: env.GEMINI_API_KEY });
 
-    const response = await ai.models.generateContent({
+    const resultStream = await ai.models.generateContentStream({
       model: "gemini-3.6-flash",
       contents: userPrompt,
       config: {
         systemInstruction: SYSTEM_PROMPT,
-        responseMimeType: "application/json",
       }
     });
 
-    const responseText = response.text || "[]";
+    let fullText = "";
+    let isJson = false;
+    let isFirstChunk = true;
 
-    const viewportSafe = viewport || { x: 0, y: 0, w: 1000, h: 800 };
-    const elements = parseAiResponse(responseText, viewportSafe);
+    for await (const chunk of resultStream) {
+      const text = chunk.text;
+      if (!text) continue;
+
+      fullText += text;
+
+      if (isFirstChunk) {
+        isFirstChunk = false;
+        const trimmed = fullText.trimStart();
+        if (trimmed.startsWith("{") || trimmed.startsWith("```json")) {
+          isJson = true;
+        }
+      }
+
+      if (!isJson && onStream) {
+        onStream(text);
+      }
+    }
+
+    let elements: any[] = [];
+    if (isJson) {
+      // Clean up markdown block if the LLM outputted it
+      let cleanJson = fullText.trim();
+      if (cleanJson.startsWith("```json")) {
+        cleanJson = cleanJson.replace(/^```json\n?/, "");
+      }
+      if (cleanJson.endsWith("```")) {
+        cleanJson = cleanJson.replace(/\n?```$/, "");
+      }
+
+      const viewportSafe = viewport || { x: 0, y: 0, w: 1000, h: 800 };
+      elements = parseAiResponse(cleanJson, viewportSafe, existingElements);
+    }
 
     if (user.isGuest) {
       await userRepository.incrementAiPrompts(userId);
@@ -73,7 +106,7 @@ class AiService {
         userId,
         rawCommand,
         refinedPrompt: userPrompt,
-        llmRawOutput: responseText,
+        llmRawOutput: fullText,
         finalElements: elements,
       };
       

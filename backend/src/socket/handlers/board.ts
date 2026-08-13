@@ -238,13 +238,26 @@ export function registerBoardSocketHandlers(
         socket.data.user.id,
         payload.prompt,
         payload.viewport,
-        payload.existingElements
+        payload.existingElements,
+        (chunk: string) => {
+          socket.emit("ai:stream", {
+            boardId: payload.boardId,
+            requestId,
+            chunk,
+          });
+        }
       );
 
       socket.emit("ai:result", {
         boardId: payload.boardId,
         requestId,
         elements: result.elements,
+      });
+
+      // Signal stream is complete (if any stream occurred)
+      socket.emit("ai:stream:done", {
+        boardId: payload.boardId,
+        requestId,
       });
     } catch (aiError) {
       console.error("[AI ERROR]:", aiError);

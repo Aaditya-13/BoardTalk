@@ -26,7 +26,7 @@ function clamp(value: number, min: number, max: number): number {
  *  4. Route to the deterministic Layout Engine to calculate coordinates
  *  5. Clamp coordinates to canvas bounds
  */
-export function parseAiResponse(raw: string, viewport: { x: number; y: number; w: number; h: number }): BoardElement[] {
+export function parseAiResponse(raw: string, viewport: { x: number; y: number; w: number; h: number }, existingElements: any[] = []): BoardElement[] {
   // --- 1. Extract JSON from anywhere in the string ---
   let jsonString = raw;
   const jsonMatch = raw.match(/\{\s*"intent"[\s\S]*\}\s*$/m) || raw.match(/\{[\s\S]*\}/);
@@ -56,7 +56,7 @@ export function parseAiResponse(raw: string, viewport: { x: number; y: number; w
   }
 
   // --- 4. Route to Layout Engine ---
-  const generatedElements = routeIntentLayout(result.data, viewport);
+  const generatedElements = routeIntentLayout(result.data, viewport, existingElements);
 
   // --- 5. Clamp coordinates ---
   return generatedElements.map((el): BoardElement => ({
