@@ -24,11 +24,14 @@ export interface BoardElement {
   y: number;
   width: number;
   height: number;
-  /** Text label or sticky note content */
   label?: string;
   style?: BoardElementStyle;
   /** Control points for arrow elements only */
   points?: { x: number; y: number }[];
+  /** Target node ID for the start of an arrow */
+  startShapeId?: string;
+  /** Target node ID for the end of an arrow */
+  endShapeId?: string;
 }
 
 export interface AiGenerateResult {
@@ -37,4 +40,21 @@ export interface AiGenerateResult {
   prompt: string;
   /** Original raw command string from the user */
   rawCommand: string;
+}
+
+export type AiLayoutIntent = "wireframe" | "flowchart" | "cluster";
+
+export interface IntentElement {
+  id: string; // The LLM will provide temporary string IDs like "e1", "e2"
+  type: "container" | "text" | "button" | "input" | "arrow" | "sticky";
+  label?: string;
+  parentId?: string; // For nesting in wireframes
+  connections?: string[]; // IDs of targets for arrows
+  layoutHint?: "vertical" | "horizontal"; // Hint for containers
+  style?: BoardElementStyle;
+}
+
+export interface IntentPayload {
+  intent: AiLayoutIntent;
+  elements: IntentElement[];
 }

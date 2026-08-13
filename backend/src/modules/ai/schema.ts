@@ -28,9 +28,30 @@ export const boardElementSchema = z.object({
   points: z
     .array(z.object({ x: z.number(), y: z.number() }))
     .optional(),
+  startShapeId: z.string().optional(),
+  endShapeId: z.string().optional(),
 });
 
 export const boardElementArraySchema = z.array(boardElementSchema);
+
+// ---------------------------------------------------------------------------
+// IntentPayload — used by the layout engine
+// ---------------------------------------------------------------------------
+
+export const intentElementSchema = z.object({
+  id: z.string(),
+  type: z.enum(["container", "text", "button", "input", "arrow", "sticky"]),
+  label: z.string().optional(),
+  parentId: z.string().optional(),
+  connections: z.array(z.string()).optional(),
+  layoutHint: z.enum(["vertical", "horizontal"]).optional(),
+  style: boardElementStyleSchema.optional(),
+});
+
+export const intentPayloadSchema = z.object({
+  intent: z.enum(["wireframe", "flowchart", "cluster"]),
+  elements: z.array(intentElementSchema)
+});
 
 // ---------------------------------------------------------------------------
 // AiCommand — used by the REST endpoint body

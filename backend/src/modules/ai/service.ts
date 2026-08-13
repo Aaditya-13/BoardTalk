@@ -1,5 +1,7 @@
 import { GoogleGenAI } from "@google/genai";
-
+import * as fs from "node:fs/promises";
+import * as path from "node:path";
+import { randomUUID } from "node:crypto";
 import { env } from "../../config/env.js";
 import { collaboratorService } from "../collaborator/service.js";
 import { InternalServerError, PaymentRequiredError } from "../shared/errors.js";
@@ -56,10 +58,29 @@ class AiService {
 
     const responseText = response.text || "[]";
 
-    const elements = parseAiResponse(responseText);
+    const viewportSafe = viewport || { x: 0, y: 0, w: 1000, h: 800 };
+    const elements = parseAiResponse(responseText, viewportSafe);
 
     if (user.isGuest) {
       await userRepository.incrementAiPrompts(userId);
+    }
+
+    // --- Logging ---
+    try {
+      const logEntry = {
+        timestamp: new Date().toISOString(),
+        boardId,
+        userId,
+        rawCommand,
+        refinedPrompt: userPrompt,
+        llmRawOutput: responseText,
+        finalElements: elements,
+      };
+      
+      const logPath = path.join(process.cwd(), "logs", "ai-execution.log");
+      await fs.appendFile(logPath, JSON.stringify(logEntry, null, 2) + "\n\n=========================================\n\n");
+    } catch (err) {
+      console.error("Failed to write to AI execution log:", err);
     }
 
     return {

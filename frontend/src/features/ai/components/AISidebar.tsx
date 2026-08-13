@@ -87,6 +87,33 @@ export function AISidebar({ boardId, store, editor }: { boardId: string; store: 
         if (editor) {
           editor.markHistoryStoppingPoint('ai-generation');
           editor.createShapes(tlShapes as any);
+
+          // Create explicit bindings for arrows
+          const bindings: any[] = [];
+          payload.elements.forEach((el) => {
+            if (el.type === 'arrow' && (el.startShapeId || el.endShapeId)) {
+              if (el.startShapeId) {
+                bindings.push({
+                  type: 'arrow',
+                  fromId: `shape:${el.id}`,
+                  toId: `shape:${el.startShapeId}`,
+                  props: { terminal: 'start', isExact: false, isPrecise: false }
+                });
+              }
+              if (el.endShapeId) {
+                bindings.push({
+                  type: 'arrow',
+                  fromId: `shape:${el.id}`,
+                  toId: `shape:${el.endShapeId}`,
+                  props: { terminal: 'end', isExact: false, isPrecise: false }
+                });
+              }
+            }
+          });
+
+          if (bindings.length > 0) {
+            editor.createBindings(bindings);
+          }
         }
       }
     };
